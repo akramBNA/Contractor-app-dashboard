@@ -30,12 +30,12 @@ export class LoginComponent {
     });
   }
 
-  onSubmit() {
+  onSubmit() {    
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/main-page']);
         },
         error: (err) => {
           this.loginError = err.error.message || 'Login failed';
