@@ -6,3 +6,5 @@ It is being developed using **Angular** for the frontend and **Node.js** for the
 The dashboard will provide tools to manage contractors, monitor activity, and interact with backend services.
 
 ### ⚠️ This application is still in development.
+
+### ⚠️ THIS PROJECT IS PRIVATE PROPERTY. PLEASE DO NOT REUSE OR REDISTRIBUTE ANY PART OF THIS CODE.
