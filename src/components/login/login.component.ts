@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
+  current_year:number = new Date().getFullYear();
   loginForm: FormGroup;
   loginError: string = '';
 
