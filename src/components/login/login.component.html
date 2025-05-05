@@ -1,4 +1,9 @@
 <div class="flex items-center justify-center h-screen bg-gradient-to-br from-green-900 to-green-400 relative">
+
+    <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-[9999]">
+      <mat-spinner diameter="100"></mat-spinner>
+    </div>
+  
     <div class="absolute top-30 text-white text-4xl font-semibold text-center w-full">
       Welcome Back!
     </div>
