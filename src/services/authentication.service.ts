@@ -17,10 +17,10 @@ export class AuthService {
     return this.http.post(`${this.baseURL}/users/UserLogin/`, credentials);
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
-    return !!sessionStorage.getItem('token');
-  }
+  // isLoggedIn(): boolean {
+  //   return !!localStorage.getItem('token');
+  //   return !!sessionStorage.getItem('token');
+  // }
 
   logout(): void {
     sessionStorage.removeItem('token');

@@ -16,4 +16,8 @@ export class AuthGuard implements CanActivate {
       return false;
     }
   }
+
+  canActivateChild(): boolean {
+    return this.canActivate();
+  }
 }
