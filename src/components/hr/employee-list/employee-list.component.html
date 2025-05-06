@@ -1,1 +1,111 @@
-<p>employee-list works!</p>
+<div class="breadcrumb-card mb-25 d-md-flex align-items-center justify-content-space-between">
+    <h5 class="mb-0">Employees</h5>
+    <ol class="breadcrumb mb-0 ps-0">
+        <li class="breadcrumb-item">
+            <a routerLink="/">
+                <i class="ri-home-8-line"></i> HR
+            </a>
+        </li>
+        <li class="breadcrumb-item fw-semibold">Employees</li>
+    </ol>
+</div>
+
+<div class="row">
+    <div class="col-xl-3 col-lg-6 col-md-12" *ngFor="let card of [
+      {title: 'Total Employees', count: totalEmployees, color: 'success', icon: 'las la-users'},
+      {title: 'Total Male Employees', count: totalMaleEmployees, color: 'primary', icon: 'las la-male'},
+      {title: 'Total Female Employees', count: totalFemaleEmployees, color: 'warning', icon: 'las la-female'},
+      {title: 'Total New Employees', count: totalNewEmployees, color: 'danger', icon: 'las la-user-friends'}
+    ]">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-7">
+                        <div class="mt-0 text-start">
+                            <span class="font-weight-semibold">{{ card.title }}</span>
+                            <h3 class="mb-0 mt-1 text-{{ card.color }}">
+                                {{ card.count }}
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="icon1 bg-{{ card.color }}-transparent my-auto float-end">
+                            <i [class]="card.icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Table Section -->
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">Employee List</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="d-flex justify-content-between">
+                <input class="form-control" placeholder="Search by name" />
+            </div>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <ng-container matColumnDef="matricule">
+                    <th mat-header-cell *matHeaderCellDef> Matricule </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.matricule }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.name }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="gender">
+                    <th mat-header-cell *matHeaderCellDef> Gender </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.gender }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef> Address </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.address }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef> Email </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.email }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="leaveBalance">
+                    <th mat-header-cell *matHeaderCellDef> Leave Balance </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.leaveBalance }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="joinDate">
+                    <th mat-header-cell *matHeaderCellDef> Join Date </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.joinDate }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="department">
+                    <th mat-header-cell *matHeaderCellDef> Department </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.department }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="groupWork">
+                    <th mat-header-cell *matHeaderCellDef> Group Work </th>
+                    <td mat-cell *matCellDef="let employee"> {{ employee.groupWork }} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <td mat-cell *matCellDef="let employee">
+                        <button mat-button> Edit </button>
+                        <button mat-button color="warn"> Delete </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>
