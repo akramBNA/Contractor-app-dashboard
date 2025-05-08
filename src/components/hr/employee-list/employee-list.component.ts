@@ -4,8 +4,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 import { Store } from '@ngrx/store';
 import { getAllEmployees } from '../../../store/employees/employees.actions';
-import { selectAllEmployees, selectEmployeesLoading } from '../../../store/employees/employees.selectors';
-
+import {
+  selectAllEmployees,
+  selectEmployeesLoading,
+} from '../../../store/employees/employees.selectors';
 
 @Component({
   standalone: true,
@@ -22,10 +24,11 @@ export class EmployeeListComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.employees$ = this.store.select(selectAllEmployees);
-    this.loading$ = this.store.select(selectEmployeesLoading);
-    const DATA =  this.store.dispatch(getAllEmployees());
-    console.log("data ? -------> ");
-     
+    console.log("tet");
+    
+    this.store.dispatch(getAllEmployees());
+    this.store.select(selectAllEmployees).subscribe((data: any) => {
+      console.log('data =====> ', data);
+    });
   }
 }

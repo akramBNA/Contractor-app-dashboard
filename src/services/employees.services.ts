@@ -11,6 +11,8 @@ export class EmployeesService {
     readonly base_url = environment.backendURL;
 
   getAllEmployees(): Observable<Employee[]> {
+    console.log("URL =====> ", `${this.base_url}/employees/getAllEmployees/`);
+    
     return this.http.get<Employee[]>(`${this.base_url}/employees/getAllEmployees/`);
   }
 }
