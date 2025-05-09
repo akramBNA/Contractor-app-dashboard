@@ -10,8 +10,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { provideStore } from '@ngrx/store';
-import { employeesReducer } from '../store/employees/employees.reducers';
+import { provideState, provideStore } from '@ngrx/store';
+// import { employeesReducer } from '../store/employees/employees.reducers';
+// import { EmployeesEffects } from '../store/employees/employees.effects';
+import { provideEffects } from '@ngrx/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,6 +21,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     importProvidersFrom(MatTableModule, MatPaginatorModule, MatSortModule),
-    provideStore(employeesReducer),
+    // provideStore({ employees: employeesReducer }),
+    // provideState('employees', employeesReducer),
+    // provideEffects(EmployeesEffects),
   ],
 };
