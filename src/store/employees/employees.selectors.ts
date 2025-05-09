@@ -1,19 +1,19 @@
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { EmployeesState } from './employees.reducers';
+// import { createFeatureSelector, createSelector } from '@ngrx/store';
+// import { EmployeesState } from './employees.reducers';
 
-export const selectEmployeesState = createFeatureSelector<EmployeesState>('employees');
+// export const selectEmployeesState = createFeatureSelector<EmployeesState>('employees');
 
-export const selectAllEmployees = createSelector(
-  selectEmployeesState,
-  (state) => state.employees
-);
+// export const selectAllEmployees = createSelector(
+//   selectEmployeesState,
+//   (state: EmployeesState) => state.employees
+// );
 
-export const selectEmployeesLoading = createSelector(
-  selectEmployeesState,
-  (state) => state.loading
-);
+// export const selectEmployeesLoading = createSelector(
+//   selectEmployeesState,
+//   (state: EmployeesState) => state.loading
+// );
 
-export const selectEmployeesError = createSelector(
-  selectEmployeesState,
-  (state) => state.error
-);
+// export const selectEmployeesError = createSelector(
+//   selectEmployeesState,
+//   (state: EmployeesState) => state.error
+// );
