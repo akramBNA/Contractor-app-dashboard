@@ -22,42 +22,32 @@ import { EmployeesService } from '../../../services/employees.services';
 export class EmployeeListComponent implements OnInit {
   employees$: any;
   loading$: any;
-  DATA: any = [];
   currentPage: number = 1;
   pageSize: number = 20;
+  employeeList: any = [];
+  total_employees_count: number = 0;
+  male_employees_count: number = 0;
+  female_employees_count: number = 0;
+  new_employees_count: number = 0;
 
   constructor(
-    private store: Store,
+    // private store: Store,
     private employeeServicee: EmployeesService
   ) {}
-  employeeList = [
-    {
-      employee_matricule: 'EMP001',
-      employee_name: 'John',
-      employee_lastname: 'Doe',
-      employee_adress: '123 Main St',
-      employee_email: 'john.doe@example.com',
-      employee_birth_date: '1990-01-15',
-    },
-    {
-      employee_matricule: 'EMP002',
-      employee_name: 'Jane',
-      employee_lastname: 'Smith',
-      employee_adress: '456 Elm St',
-      employee_email: 'jane.smith@example.com',
-      employee_birth_date: '1985-06-22',
-    },
-  ];
 
   ngOnInit(): void {
     // this.store.dispatch(getAllEmployees( 20, 0, ''));
     // this.store.select(selectAllEmployees).subscribe((data: any) => {
     //   console.log('data =====> ', data);
     // });
-    console.log('service =====> ', this.employeeServicee.getAllEmployees);
 
     this.employeeServicee.getAllEmployees(20, 0, '').subscribe((data: any) => {
       console.log('data =====> ', data);
+      this.employeeList = data.data;
+      this.total_employees_count = data.statistics.total;
+      this.male_employees_count = data.statistics.male;
+      this.female_employees_count = data.statistics.female;
+      this.new_employees_count = data.statistics.newEmployees;
     });
   }
 
