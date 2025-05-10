@@ -2,19 +2,19 @@
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-white shadow rounded-lg p-4">
-    <h2 class="text-gray-900 text-sm">Total Employees</h2>
+    <h2 class="text-gray-900 text-sm">Nombre des Employés</h2>
     <p class="text-2xl font-bold text-green-600">42</p>
   </div>
   <div class="bg-white shadow rounded-lg p-4">
-    <h2 class="text-gray-900 text-sm">Male Employees</h2>
+    <h2 class="text-gray-900 text-sm">Employés Males</h2>
     <p class="text-2xl font-bold text-blue-600">25</p>
   </div>
   <div class="bg-white shadow rounded-lg p-4">
-    <h2 class="text-gray-900 text-sm">Female Employees</h2>
+    <h2 class="text-gray-900 text-sm">Employés Femèles</h2>
     <p class="text-2xl font-bold text-red-600">17</p>
   </div>
   <div class="bg-white shadow rounded-lg p-4">
-    <h2 class="text-gray-900 text-sm">New Employees</h2>
+    <h2 class="text-gray-900 text-sm">Nouveaux Employés</h2>
     <p class="text-2xl font-bold text-yellow-600">5</p>
   </div>
 </div>
@@ -24,11 +24,11 @@
     <thead class="bg-gray-100">
       <tr>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Matricule</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Name</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Last Name</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Address</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Prénom</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Addresse</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Email</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Birth Date</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Naissance</th>
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
@@ -45,11 +45,11 @@
 
   <div class="flex justify-between items-center mt-4 flex-wrap">
     <div class="text-sm text-gray-700">
-      Page Size:
+      Taille des pages:
       <select class="ml-2 border rounded px-2 py-1" [(ngModel)]="pageSize" (change)="setPageSize(pageSize)">
-        <option [value]="5">5</option>
-        <option [value]="10">10</option>
         <option [value]="20">20</option>
+        <option [value]="50">50</option>
+        <option [value]="100">100</option>
       </select>
     </div>
 
@@ -59,14 +59,14 @@
         (click)="currentPage = currentPage - 1"
         [disabled]="currentPage === 1"
       >
-        Prev
+        Préc
       </button>
       <button
         class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
         (click)="currentPage = currentPage + 1"
         [disabled]="currentPage >= totalPages"
       >
-        Next
+        Suiv
       </button>
     </div>
   </div>

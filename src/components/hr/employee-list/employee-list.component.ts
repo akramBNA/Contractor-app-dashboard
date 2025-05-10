@@ -1,15 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Add this import
+import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-
 import { Store } from '@ngrx/store';
+import { EmployeesService } from '../../../services/employees.services';
+
 // import { getAllEmployees } from '../../../store/employees/employees.actions';
 // import {
 //   selectAllEmployees,
 //   selectEmployeesLoading,
 // } from '../../../store/employees/employees.selectors';
-import { EmployeesService } from '../../../services/employees.services';
+
 
 @Component({
   standalone: true,
@@ -23,10 +24,10 @@ export class EmployeeListComponent implements OnInit {
   loading$: any;
   DATA: any = [];
   currentPage: number = 1;
-  pageSize: number = 5;
+  pageSize: number = 20;
 
   constructor(
-    // private store: Store,
+    private store: Store,
     private employeeServicee: EmployeesService
   ) {}
   employeeList = [
@@ -46,7 +47,6 @@ export class EmployeeListComponent implements OnInit {
       employee_email: 'jane.smith@example.com',
       employee_birth_date: '1985-06-22',
     },
-    // Add more entries as needed
   ];
 
   ngOnInit(): void {
