@@ -44,14 +44,14 @@
   </table>
 
   <div class="flex justify-between items-center mt-4 flex-wrap">
-    <div class="text-sm text-gray-700">
-      Taille des pages:
-      <select class="ml-2 border rounded px-2 py-1" [(ngModel)]="pageSize" (change)="setPageSize(pageSize)">
-        <option [value]="20">20</option>
-        <option [value]="50">50</option>
-        <option [value]="100">100</option>
+      <div class="text-sm text-gray-700">
+        Taille des pages:
+      <select class="ml-2 border rounded px-2 py-1" [(ngModel)]="limit" (change)="setPageSize(limit)">
+       <option [value]="20">20</option>
+       <option [value]="50">50</option>
+       <option [value]="100">100</option>
       </select>
-    </div>
+      </div>
 
     <div class="space-x-2 mt-2 sm:mt-0">
       <button

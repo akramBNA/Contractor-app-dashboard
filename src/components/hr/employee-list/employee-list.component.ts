@@ -20,6 +20,10 @@ import { EmployeesService } from '../../../services/employees.services';
   styleUrls: ['./employee-list.component.css'],
 })
 export class EmployeeListComponent implements OnInit {
+  limit: number = 20;
+  offset: number = 0;
+  keyword: string = '';
+
   employees$: any;
   loading$: any;
   currentPage: number = 1;
@@ -34,14 +38,8 @@ export class EmployeeListComponent implements OnInit {
     // private store: Store,
     private employeeServicee: EmployeesService
   ) {}
-
-  ngOnInit(): void {
-    // this.store.dispatch(getAllEmployees( 20, 0, ''));
-    // this.store.select(selectAllEmployees).subscribe((data: any) => {
-    //   console.log('data =====> ', data);
-    // });
-
-    this.employeeServicee.getAllEmployees(20, 0, '').subscribe((data: any) => {
+  getAllEmployeesFunction(lim: number, off: number, key: string) {
+      this.employeeServicee.getAllEmployees(lim, off, key).subscribe((data: any) => {
       console.log('data =====> ', data);
       this.employeeList = data.data;
       this.total_employees_count = data.statistics.total;
@@ -49,6 +47,24 @@ export class EmployeeListComponent implements OnInit {
       this.female_employees_count = data.statistics.female;
       this.new_employees_count = data.statistics.newEmployees;
     });
+  }
+
+  ngOnInit(): void {
+    // this.store.dispatch(getAllEmployees( 20, 0, ''));
+    // this.store.select(selectAllEmployees).subscribe((data: any) => {
+    //   console.log('data =====> ', data);
+    // });
+
+    /*this.employeeServicee.getAllEmployees(this.limit, this.offset, this.keyword).subscribe((data: any) => {
+      console.log('data =====> ', data);
+      this.employeeList = data.data;
+      this.total_employees_count = data.statistics.total;
+      this.male_employees_count = data.statistics.male;
+      this.female_employees_count = data.statistics.female;
+      this.new_employees_count = data.statistics.newEmployees;
+    }); */
+
+    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
   }
 
   get paginatedEmployees() {
@@ -61,7 +77,8 @@ export class EmployeeListComponent implements OnInit {
   }
 
   setPageSize(size: number) {
-    this.pageSize = size;
-    this.currentPage = 1;
+    // this.pageSize = size;
+    // this.currentPage = 1;
+    this.getAllEmployeesFunction(size, this.offset, this.keyword);
   }
 }
