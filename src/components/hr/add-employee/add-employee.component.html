@@ -1,1 +1,110 @@
-<p>add-employee works!</p>
+<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Ajouter un Employé</h1>
+
+<form class="space-y-12 px-6 md:px-12 pb-16">
+
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations générales</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>N° de Téléphone</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Adresse</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>CIN</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Sexe</label>
+        <select class="input">
+          <option value="">-- Sélectionner --</option>
+          <option value="Homme">Homme</option>
+          <option value="Femme">Femme</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date de Naissance</label>
+        <input type="date" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Titre d'emploi</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Matricule</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Date de début</label>
+        <input type="date" class="input" />
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations du Contrat</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="form-group">
+        <label>Type du Contrat</label>
+        <select class="input">
+          <option value="">-- Sélectionner --</option>
+          <option>CDI</option>
+          <option>CDD</option>
+          <option>Stage</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Salaire</label>
+        <input type="number" class="input" />
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations Bancaires</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="form-group">
+        <label>Nom & Prénom</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>N° de Compte</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Banque</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Branche</label>
+        <input type="text" class="input" />
+      </div>
+      <div class="form-group">
+        <label>Identificateur Fiscale</label>
+        <input type="text" class="input" />
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center pt-6">
+    <button type="submit"
+      class="bg-blue-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
+      Ajouter
+    </button>
+  </div>
+</form>
