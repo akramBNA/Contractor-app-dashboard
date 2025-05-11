@@ -14,4 +14,8 @@ export class EmployeesService {
   getAllEmployees(limit: number, offset: number, keyword?: string): Observable<Employee[]> {
     return this.http.get<Employee[]>(`${this.base_url}/employees/getAllEmployees/?limit=${limit}&offset=${offset}&keyword=${keyword}`);
   }
+
+  addOneEmployee(employee_data: any): Observable<Employee> {
+    return this.http.post<Employee>(`${this.base_url}/employees/addOneEmployee/`, employee_data);
+  }
 }

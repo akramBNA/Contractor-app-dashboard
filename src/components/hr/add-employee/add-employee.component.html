@@ -1,110 +1,116 @@
 <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Ajouter un Employé</h1>
 
-<form class="space-y-12 px-6 md:px-12 pb-16">
+<form [formGroup]="employeeForm" class="space-y-12 px-6 md:px-12">
 
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations générales</h2>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations Générales</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="form-group">
         <label>Prénom</label>
-        <input type="text" class="input" />
+        <input formControlName="employee_name" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Nom</label>
-        <input type="text" class="input" />
+        <input formControlName="employee_lastname" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>N° de Téléphone</label>
-        <input type="text" class="input" />
+        <input formControlName="employee_phone_number" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Email</label>
-        <input type="email" class="input" />
+        <input formControlName="employee_email" type="email" class="input" />
       </div>
       <div class="form-group">
         <label>Adresse</label>
-        <input type="text" class="input" />
+        <input formControlName="employee_address" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>CIN</label>
-        <input type="text" class="input" />
+        <input formControlName="employee_national_id" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Sexe</label>
-        <select class="input">
+        <select formControlName="employee_gender" class="input">
           <option value="">-- Sélectionner --</option>
-          <option value="Homme">Homme</option>
-          <option value="Femme">Femme</option>
+          <option value="Male">Homme</option>
+          <option value="Female">Femme</option>
         </select>
       </div>
       <div class="form-group">
         <label>Date de Naissance</label>
-        <input type="date" class="input" />
+        <input formControlName="employee_birth_date" type="date" class="input" />
       </div>
       <div class="form-group">
         <label>Titre d'emploi</label>
-        <input type="text" class="input" />
+        <input formControlName="employee_job_title" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Matricule</label>
-        <input type="text" class="input" />
+        <input formControlName="employee_matricule" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Date de début</label>
-        <input type="date" class="input" />
+        <input formControlName="employee_joining_date" type="date" class="input" />
       </div>
     </div>
   </div>
+</form>
 
+<form [formGroup]="contactForm" class="space-y-12 px-6 md:px-12 mt-12">
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations du Contrat</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="form-group">
         <label>Type du Contrat</label>
-        <select class="input">
+        <select formControlName="contract_type_id" class="input">
           <option value="">-- Sélectionner --</option>
-          <option>CDI</option>
-          <option>CDD</option>
-          <option>Stage</option>
+          <option value=1>CDI</option>
+          <option value=2>CDD</option>
+          <option value=3>CIVP</option>
+          <option value=4>CE</option>
         </select>
       </div>
       <div class="form-group">
         <label>Salaire</label>
-        <input type="number" class="input" />
+        <input formControlName="salary" type="number" class="input" />
       </div>
     </div>
   </div>
+</form>
 
+<form [formGroup]="bankDetailsForm" class="space-y-12 px-6 md:px-12 mt-12">
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations Bancaires</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="form-group">
         <label>Nom & Prénom</label>
-        <input type="text" class="input" />
+        <input formControlName="account_holder_name" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>N° de Compte</label>
-        <input type="text" class="input" />
+        <input formControlName="account_number" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Banque</label>
-        <input type="text" class="input" />
+        <input formControlName="bank_name" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Branche</label>
-        <input type="text" class="input" />
+        <input formControlName="branch_location" type="text" class="input" />
       </div>
       <div class="form-group">
         <label>Identificateur Fiscale</label>
-        <input type="text" class="input" />
+        <input formControlName="tax_payer_id" type="text" class="input" />
       </div>
     </div>
   </div>
-
-  <div class="text-center pt-6">
-    <button type="submit"
-      class="bg-blue-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-      Ajouter
-    </button>
-  </div>
 </form>
+
+<div class="text-center pt-6">
+  <button type="button"
+    (click)="onSubmitAll()"
+    class="bg-blue-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
+    Ajouter
+  </button>
+</div>
