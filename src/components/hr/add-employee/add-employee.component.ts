@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { EmployeesService } from '../../../services/employees.services';
+import { ContractTypesService } from '../../../services/contract_types.services'
 import Swal from 'sweetalert2';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -17,15 +18,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './add-employee.component.html',
   styleUrl: './add-employee.component.css',
 })
-export class AddEmployeeComponent {
+export class AddEmployeeComponent implements OnInit {
   employeeForm: FormGroup;
   contactForm: FormGroup;
   bankDetailsForm: FormGroup;
   isLoading: boolean = false;
+  contract_types_data: any = [];
 
   constructor(
     private fb: FormBuilder,
-    private employeeService: EmployeesService
+    private employeeService: EmployeesService,
+    private contractTypesService: ContractTypesService
   ) {
     this.employeeForm = this.fb.group({
       employee_name: ['', Validators.required],
@@ -53,6 +56,13 @@ export class AddEmployeeComponent {
       branch_location: ['', Validators.required],
       tax_payer_id: ['', Validators.required],
     });
+  }
+
+  ngOnInit(): void {
+    this.contractTypesService.getAllContractTypes().subscribe((data: any) => {
+      console.log('Contract Types:', data.data);
+      this.contract_types_data = data.data;
+    })
   }
 
   onSubmitAll() {
@@ -88,9 +98,15 @@ export class AddEmployeeComponent {
         }
       });
     } else {
-      this.employeeForm.markAllAsTouched();
-      this.contactForm.markAllAsTouched();
-      this.bankDetailsForm.markAllAsTouched();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "Veuillez remplir tous les champs obligatoires",
+      }).then(() => {
+        this.employeeForm.markAllAsTouched();
+        this.contactForm.markAllAsTouched();
+        this.bankDetailsForm.markAllAsTouched();
+      })
     }
   }
 }
