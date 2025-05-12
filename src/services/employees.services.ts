@@ -18,4 +18,8 @@ export class EmployeesService {
   addOneEmployee(employee_data: any): Observable<Employee> {
     return this.http.post<Employee>(`${this.base_url}/employees/addOneEmployee/`, employee_data);
   }
+
+  getEmployeeById(id: number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.base_url}/employees/getEmployeeById/${id}`);
+  }
 }

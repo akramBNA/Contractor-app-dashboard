@@ -28,7 +28,8 @@
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Addresse</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Email</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Naissance</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">N° de Téléphone</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
@@ -38,7 +39,16 @@
         <td class="px-4 py-2 text-sm">{{ employee.employee_lastname }}</td>
         <td class="px-4 py-2 text-sm">{{ employee.employee_address }}</td>
         <td class="px-4 py-2 text-sm">{{ employee.employee_email }}</td>
-        <td class="px-4 py-2 text-sm">{{ employee.employee_birth_date }}</td>
+        <td class="px-4 py-2 text-sm">{{ employee.employee_phone_number }}</td>
+            <td class="px-4 py-2 text-sm flex space-x-2">
+              <button mat-icon-button color="primary" (click)="onEditEmployee(employee.employee_id)">
+                <mat-icon style="color: #3b82f6;">edit</mat-icon>
+              </button>
+
+              <button mat-icon-button color="warn" (click)="onDeleteEmployee(employee.employee_id)">
+                <mat-icon style="color: #ef4444;">delete</mat-icon>
+              </button>
+            </td>
       </tr>
     </tbody>
   </table>
