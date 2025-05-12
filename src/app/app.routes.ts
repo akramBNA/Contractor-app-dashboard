@@ -6,6 +6,7 @@ import { AuthGuard } from '../guards/authentication.guards';
 import { AddEmployeeComponent } from '../components/hr/add-employee/add-employee.component';
 import { EmployeeListComponent } from '../components/hr/employee-list/employee-list.component';
 import { HrStatsComponent } from '../components/hr/hr-stats/hr-stats.component';
+import { EditEmployeeComponent } from '../components/hr/edit-employee/edit-employee.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -21,6 +22,7 @@ export const routes: Routes = [
           { path: 'add-employee', component: AddEmployeeComponent },
           { path: 'employees-list', component: EmployeeListComponent },
           { path: 'hr-stats', component: HrStatsComponent },
+          { path: 'edit-employee/:id', component: EditEmployeeComponent },
         ],
       },
     ],
