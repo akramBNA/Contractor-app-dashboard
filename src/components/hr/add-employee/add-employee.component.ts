@@ -60,7 +60,6 @@ export class AddEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.contractTypesService.getAllContractTypes().subscribe((data: any) => {
-      console.log('Contract Types:', data.data);
       this.contract_types_data = data.data;
     })
   }
@@ -76,7 +75,6 @@ export class AddEmployeeComponent implements OnInit {
         ...this.contactForm.value,
         ...this.bankDetailsForm.value,
       };
-      console.log('All Forms Data:', payload);
       this.employeeService.addOneEmployee(payload).subscribe((data: any) => {
         this.isLoading = true;
         if (data.status) {
