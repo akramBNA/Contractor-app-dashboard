@@ -7,6 +7,8 @@ import { AddEmployeeComponent } from '../components/hr/add-employee/add-employee
 import { EmployeeListComponent } from '../components/hr/employee-list/employee-list.component';
 import { HrStatsComponent } from '../components/hr/hr-stats/hr-stats.component';
 import { EditEmployeeComponent } from '../components/hr/edit-employee/edit-employee.component';
+import { MaterialsComponent } from '../components/materials/materials/materials.component';
+import { MissionsComponent } from '../components/missions/missions/missions.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -25,6 +27,8 @@ export const routes: Routes = [
           { path: 'edit-employee/:id', component: EditEmployeeComponent },
         ],
       },
+  { path: 'material', component: MaterialsComponent},
+  { path: 'missions', component: MissionsComponent},
     ],
   },
   { path: 'access-denied', component: AccessDeniedComponent },
