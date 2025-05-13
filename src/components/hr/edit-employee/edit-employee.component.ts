@@ -31,50 +31,76 @@ export class EditEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchEmployeeData();
-    // this.initializeForms();
+    this.initializeForms();
   }
 
   initializeForms() {
     this.employeeForm = this.fb.group({
-      employee_name: [this.employee_data.employee_name],
-      employee_lastname: [this.employee_data.employee_lastname],
-      employee_phone_number: [this.employee_data.employee_phone_number],
-      employee_email: [this.employee_data.employee_email],
-      employee_address: [ this.employee_data.employee_address],
-      employee_national_id: [this.employee_data.employee_national_id],
-      employee_gender: [this.employee_data.employee_gender],
-      employee_birth_date: [this.employee_data.employee_birth_date],
-      employee_job_title: [this.employee_data.employee_job_title],
-      employee_matricule: [this.employee_data.employee_matricule],
-      employee_joining_date: [this.employee_data.employee_joining_date],
+      employee_name: [''],
+      employee_lastname: [''],
+      employee_phone_number: [''],
+      employee_email: [''],
+      employee_address: [ ''],
+      employee_national_id: [''],
+      employee_gender: [''],
+      employee_birth_date: [''],
+      employee_job_title: [],
+      employee_matricule: [''],
+      employee_joining_date: [''],
     });
 
     this.contactForm = this.fb.group({
-      contract_type_id: [ this.employee_data.contract_type_id],
-      salary: [this.employee_data.salary],
+      contract_type_id: [ ''],
+      salary: [''],
     });
 
     this.bankDetailsForm = this.fb.group({
-      account_holder_name: [this.employee_data.account_holder_name],
-      account_number: [this.employee_data.account_number],
-      bank_name: [this.employee_data.bank_name],
-      branch_location: [this.employee_data.branch_location],
-      tax_payer_id: [this.employee_data.tax_payer_id],
+      account_holder_name: [''],
+      account_number: [''],
+      bank_name: [''],
+      branch_location: [''],
+      tax_payer_id: [''],
+    });
+  }
+
+  initializeFormsWithData(data: any) {
+    this.employeeForm = this.fb.group({
+      employee_name: [data.employee_name || ''],
+      employee_lastname: [data.employee_lastname || ''],
+      employee_phone_number: [data.employee_phone_number || ''],
+      employee_email: [data.employee_email || ''],
+      employee_address: [ data.employee_address || ''],
+      employee_national_id: [data.employee_national_id || ''],
+      employee_gender: [data.employee_gender || ''],
+      employee_birth_date: [data.employee_birth_date || ''],
+      employee_job_title: [data.employee_job_title || ''],
+      employee_matricule: [data.employee_matricule || ''],
+      employee_joining_date: [data.employee_joining_date || ''],
+    });
+
+    this.contactForm = this.fb.group({
+      contract_type_id: [ data.contract_type_id || ''],
+      salary: [data.salary || ''],
+    });
+
+    this.bankDetailsForm = this.fb.group({
+      account_holder_name: [data.account_holder_name || ''],
+      account_number: [data.account_number || ''],
+      bank_name: [data.bank_name || ''],
+      branch_location: [data.branch_location || ''],
+      tax_payer_id: [data.tax_payer_id || ''],
     });
   }
 
   fetchEmployeeData() {
     const employeeId = this.route.snapshot.paramMap.get('id');
-    console.log(" the id ======>  ", employeeId);
-    
     this.isLoading = true;
 
     this.employeeService.getEmployeeById(Number(employeeId)).subscribe((data: any) => {
       if(data.status){
         this.isLoading = false
-        console.log(" employee data ======> ", data);
         this.employee_data = data.data;
-        this.initializeForms();
+        this.initializeFormsWithData(this.employee_data);
       }
     })
   }
@@ -88,7 +114,7 @@ export class EditEmployeeComponent implements OnInit {
 
     console.log('Updated employee:', updatedEmployee);
 
-    //
+    // to be continued...
   }
 
   onCancel() {
