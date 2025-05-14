@@ -5,6 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmployeesService } from '../../../services/employees.services';
+import { ContractTypesService } from '../../../services/contract_types.services'
+
 
 @Component({
   standalone: true,
@@ -27,9 +29,14 @@ export class EditEmployeeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private employeeService: EmployeesService,
+    private contractTypesService: ContractTypesService
+
   ) {}
 
   ngOnInit(): void {
+    this.contractTypesService.getAllContractTypes().subscribe((data: any) => {
+    this.contract_types_data = data.data;
+    })
     this.fetchEmployeeData();
     this.initializeForms();
   }

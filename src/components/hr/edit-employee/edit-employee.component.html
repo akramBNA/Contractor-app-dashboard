@@ -70,19 +70,12 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="form-group">
         <label>Type du Contrat: </label>
-        <!-- <select formControlName="contract_type_id" class="input">
+        <select formControlName="contract_type_id" class="input">
           <option value="">-- Sélectionner --</option>
           <option *ngFor="let contract of contract_types_data" [value]="contract.contract_type_id">
             {{ contract.contract_name }}
           </option>
-        </select> -->
-          <select formControlName="contract_type_id" class="input">
-            <option value="">-- Sélectionner --</option>
-            <option value="1">CDI</option>
-            <option value="2">CDD</option>
-            <option value="3">CIVP</option>
-            <option value="4">CE</option>
-          </select>
+        </select>
       </div>
       <div class="form-group">
         <label>Salaire: </label>
