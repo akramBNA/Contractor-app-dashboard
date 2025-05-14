@@ -46,7 +46,10 @@
       </div>
       <div class="form-group">
         <label>Titre d'Emploi: </label>
-        <input formControlName="employee_job_title" type="text" class="input" />
+        <select formControlName="employee_job_title" class="input">
+          <option value="">-- Sélectionner --</option>
+          <option *ngFor="let jobs of jobs_data" [value]="jobs.job_name">{{ jobs.job_name }}</option>
+        </select>
       </div>
       <div class="form-group">
         <label>Matricule: </label>

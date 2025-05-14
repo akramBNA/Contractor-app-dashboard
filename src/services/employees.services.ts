@@ -22,4 +22,8 @@ export class EmployeesService {
   getEmployeeById(id: number): Observable<Employee> {
     return this.http.get<Employee>(`${this.base_url}/employees/getEmployeeById/${id}`);
   }
+
+  getJobsAndContractTypes(): Observable<any> {
+    return this.http.get<any>(`${this.base_url}/employees/getJobsAndContractTypes/`);
+  }
 }
