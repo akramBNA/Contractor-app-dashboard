@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { EmployeesService } from '../../../services/employees.services';
-import { ContractTypesService } from '../../../services/contract_types.services'
 import Swal from 'sweetalert2';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -24,11 +23,11 @@ export class AddEmployeeComponent implements OnInit {
   bankDetailsForm: FormGroup;
   isLoading: boolean = false;
   contract_types_data: any = [];
+  jobs_data: any = [];
 
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeesService,
-    private contractTypesService: ContractTypesService
   ) {
     this.employeeForm = this.fb.group({
       employee_name: ['', Validators.required],
@@ -59,8 +58,9 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.contractTypesService.getAllContractTypes().subscribe((data: any) => {
-      this.contract_types_data = data.data;
+    this.employeeService.getJobsAndContractTypes().subscribe((data: any) => {      
+      this.contract_types_data = data.data_contract_types;
+      this.jobs_data = data.data_jobs;
     })
   }
 
@@ -77,7 +77,7 @@ export class AddEmployeeComponent implements OnInit {
       };
       this.employeeService.addOneEmployee(payload).subscribe((data: any) => {
         this.isLoading = true;
-        if (data.status) {
+        if (data.success) {
           this.isLoading = false;
           Swal.fire({
             icon: 'success',

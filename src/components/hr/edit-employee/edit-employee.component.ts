@@ -5,7 +5,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmployeesService } from '../../../services/employees.services';
-import { ContractTypesService } from '../../../services/contract_types.services'
 
 
 @Component({
@@ -21,6 +20,7 @@ export class EditEmployeeComponent implements OnInit {
   bankDetailsForm!: FormGroup;
   isLoading = false;
   contract_types_data: any[] = [];
+  jobs_data: any = [];
 
   employee_data: any = []
 
@@ -28,15 +28,15 @@ export class EditEmployeeComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private employeeService: EmployeesService,
-    private contractTypesService: ContractTypesService
-
+    private employeeService: EmployeesService
   ) {}
 
   ngOnInit(): void {
-    this.contractTypesService.getAllContractTypes().subscribe((data: any) => {
-    this.contract_types_data = data.data;
-    })
+    this.employeeService.getJobsAndContractTypes().subscribe((data: any) => {
+      this.contract_types_data = data.data_contract_types;
+      this.jobs_data = data.data_jobs;
+    });
+
     this.fetchEmployeeData();
     this.initializeForms();
   }
@@ -104,7 +104,7 @@ export class EditEmployeeComponent implements OnInit {
     this.isLoading = true;
 
     this.employeeService.getEmployeeById(Number(employeeId)).subscribe((data: any) => {
-      if(data.status){
+      if(data.success){
         this.isLoading = false
         this.employee_data = data.data;
         this.initializeFormsWithData(this.employee_data);
