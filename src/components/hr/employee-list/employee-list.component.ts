@@ -7,21 +7,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { EmployeesService } from '../../../services/employees.services';
-
-// import { getAllEmployees } from '../../../store/employees/employees.actions';
-// import {
-//   selectAllEmployees,
-//   selectEmployeesLoading,
-// } from '../../../store/employees/employees.selectors';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import Swal from 'sweetalert2';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MatTableModule, FormsModule, MatIconModule, MatButtonModule],
+  imports: [CommonModule, MatTableModule, FormsModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
 })
 export class EmployeeListComponent implements OnInit {
+  isLoading: boolean = false;
+
   limit: number = 20;
   offset: number = 0;
   keyword: string = '';
@@ -41,31 +39,20 @@ export class EmployeeListComponent implements OnInit {
     private router: Router,
   ) {}
   getAllEmployeesFunction(lim: number, off: number, key: string) {
+    this.isLoading = true;
     this.employeeServicee.getAllEmployees(lim, off, key).subscribe((data: any) => {
-        console.log('data =====> ', data);
+      if(data.success){
+        this.isLoading = false;
         this.employeeList = data.data;
         this.total_employees_count = data.statistics.total;
         this.male_employees_count = data.statistics.male;
         this.female_employees_count = data.statistics.female;
         this.new_employees_count = data.statistics.newEmployees;
+      }
       });
   }
 
   ngOnInit(): void {
-    // this.store.dispatch(getAllEmployees( 20, 0, ''));
-    // this.store.select(selectAllEmployees).subscribe((data: any) => {
-    //   console.log('data =====> ', data);
-    // });
-
-    /*this.employeeServicee.getAllEmployees(this.limit, this.offset, this.keyword).subscribe((data: any) => {
-      console.log('data =====> ', data);
-      this.employeeList = data.data;
-      this.total_employees_count = data.statistics.total;
-      this.male_employees_count = data.statistics.male;
-      this.female_employees_count = data.statistics.female;
-      this.new_employees_count = data.statistics.newEmployees;
-    }); */
-
     this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
   }
 
@@ -85,21 +72,18 @@ export class EmployeeListComponent implements OnInit {
   }
 
   onEditEmployee(employeeId: number) {
-    // Navigate to your edit route with the employee ID
     console.log('Editing employee with ID:', employeeId);
-    // TODO: Replace with actual route once ready
     this.router.navigate(['/main-page/hr/edit-employee', employeeId]);
   }
 
   onDeleteEmployee(employeeId: number) {
-    const confirmed = confirm(
-      'Êtes-vous sûr de vouloir supprimer cet employé ?'
-    );
-    if (confirmed) {
-      // this.employeeServicee.deleteEmployee(employeeId).subscribe(() => {
-      //   // Refresh the list after deletion
-      //   this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
-      // });
-    }
+    Swal.fire({
+      icon: 'warning',
+      title: 'Attention !',
+      text: 'Êtes-vous sûr de vouloir supprimer cet employé ?',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // to be done later !
+      }})
   }
 }
