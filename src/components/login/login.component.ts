@@ -41,7 +41,6 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
           this.authService.saveToken(response.token);
-          // localStorage.setItem('token', response.token);
           this.router.navigate(['/main-page/hr/hr-stats']);
         },
         error: (err) => {
