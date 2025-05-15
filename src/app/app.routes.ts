@@ -9,6 +9,8 @@ import { HrStatsComponent } from '../components/hr/hr-stats/hr-stats.component';
 import { EditEmployeeComponent } from '../components/hr/edit-employee/edit-employee.component';
 import { MaterialsComponent } from '../components/materials/materials/materials.component';
 import { MissionsComponent } from '../components/missions/missions/missions.component';
+import { AddProjectComponent } from '../components/planning/add-project/add-project.component';
+import { ShowProjectsComponent } from '../components/planning/show-projects/show-projects.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -27,8 +29,17 @@ export const routes: Routes = [
           { path: 'edit-employee/:id', component: EditEmployeeComponent },
         ],
       },
-  { path: 'material', component: MaterialsComponent},
-  { path: 'missions', component: MissionsComponent},
+      {
+        path: 'planning',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        children: [
+          { path: 'add-project', component: AddProjectComponent },
+          { path: 'show-project', component: ShowProjectsComponent },
+        ],
+      },
+      { path: 'material', component: MaterialsComponent },
+      { path: 'missions', component: MissionsComponent },
     ],
   },
   { path: 'access-denied', component: AccessDeniedComponent },
