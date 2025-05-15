@@ -1,5 +1,80 @@
-<div class="bg-white/40 backdrop-blur-sm relative">
-  <h1 class="absolute top-6 left-6 text-4xl md:text-5xl font-bold text-gray-700">
-    Show projects is coming Soon..
-  </h1>
+<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Projets</h1>
+
+<div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-[9999]">
+  <mat-spinner diameter="100"></mat-spinner>
+</div>
+
+<div class="bg-white shadow-md rounded-lg p-4 overflow-x-auto">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom du Projet</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Description</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Début</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Fin</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Durée</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Statut</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200">
+      <tr *ngFor="let project of paginatedProjects">
+        <td class="px-4 py-2 text-sm">{{ project.project_name }}</td>
+        <td class="px-4 py-2 text-sm">{{ project.description }}</td>
+        <td class="px-4 py-2 text-sm">{{ project.start_date }}</td>
+        <td class="px-4 py-2 text-sm">{{ project.end_date }}</td>
+        <td class="px-4 py-2 text-sm">{{ project.duration }} jours</td>
+        <td class="px-4 py-2 text-sm">
+            <span
+            class="px-2 py-1 rounded text-white font-semibold text-xs"
+            [ngClass]="{
+                'bg-blue-600': project.status === 'Not Started',
+                'bg-green-600': project.status === 'Finished',
+                'bg-yellow-500': project.status === 'In Progress',
+                'bg-red-600': project.status === 'Canceled'
+            }"
+            >
+            {{ project.status }}
+            </span>
+        </td>
+        <td class="px-4 py-2 text-sm flex space-x-2">
+          <button mat-icon-button color="primary" (click)="ViewProject(project.project_id)">
+            <mat-icon style="color: #3b82f6;">visibility</mat-icon>
+          </button>
+
+          <button mat-icon-button color="warn" (click)="DeleteProject(project.project_id)">
+            <mat-icon style="color: #ef4444;">delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="flex justify-between items-center mt-4 flex-wrap">
+    <div class="text-sm text-gray-700">
+      Taille des pages:
+      <select class="ml-2 border rounded px-2 py-1" [(ngModel)]="limit" (change)="setPageSize(limit)">
+        <option [value]="20">20</option>
+        <option [value]="50">50</option>
+        <option [value]="100">100</option>
+      </select>
+    </div>
+
+    <div class="space-x-2 mt-2 sm:mt-0">
+      <button
+        class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+        (click)="currentPage = currentPage - 1"
+        [disabled]="currentPage === 1"
+      >
+        Préc
+      </button>
+      <button
+        class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+        (click)="currentPage = currentPage + 1"
+        [disabled]="currentPage >= totalPages"
+      >
+        Suiv
+      </button>
+    </div>
+  </div>
 </div>
