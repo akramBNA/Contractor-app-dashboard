@@ -21,6 +21,13 @@ export class ShowProjectsComponent {
   totalPages = 1;
   isLoading = false;
 
+  projectStats = {
+  notStarted: 0,
+  inProgress: 0,
+  finished: 0,
+  canceled: 0
+  };
+
   constructor(private projectService: ProjectsService) {}
 
   ngOnInit() {
@@ -35,7 +42,8 @@ export class ShowProjectsComponent {
       if (data.success) {
         this.isLoading = false;
         this.projects_data = data.data;
-        this.paginatedProjects = this.projects_data
+        this.paginatedProjects = this.projects_data;
+         this.projectStats = data.stats;
       }
     });
   }
