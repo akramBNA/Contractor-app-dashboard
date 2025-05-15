@@ -14,11 +14,16 @@ export class MainComponentComponent {
   current_year: number = new Date().getFullYear();
   my_web_resume_link: string = 'https://akrambna.github.io/My-Web-Resume/';
   showRHSubmenu: boolean = false;
+  showPlanningSubmenu: boolean = false;
 
   constructor(private authService: AuthService) {}
 
   toggleRHSubmenu() {
     this.showRHSubmenu = !this.showRHSubmenu;
+  }
+
+    togglePlanningSubmenu() {
+    this.showPlanningSubmenu = !this.showPlanningSubmenu;
   }
 
   logout(): void {
