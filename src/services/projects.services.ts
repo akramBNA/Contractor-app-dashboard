@@ -11,5 +11,9 @@ export class ProjectsService {
 
     getAllProjects(): Observable<any> {
       return this.http.get<any>(`${this.base_url}/projects/getAllProjects/`);
+    };
+
+    addProject(project_data: any): Observable<any> {    
+      return this.http.post<any>(`${this.base_url}/projects/addProject/`, project_data);
     }
 }
