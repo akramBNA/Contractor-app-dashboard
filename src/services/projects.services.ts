@@ -16,4 +16,8 @@ export class ProjectsService {
     addProject(project_data: any): Observable<any> {    
       return this.http.post<any>(`${this.base_url}/projects/addProject/`, project_data);
     }
+
+    getProjectById(project_id: number): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/projects/getProjectById/${project_id}`);
+    };
 }

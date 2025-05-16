@@ -11,6 +11,7 @@ import { MaterialsComponent } from '../components/materials/materials/materials.
 import { MissionsComponent } from '../components/missions/missions/missions.component';
 import { AddProjectComponent } from '../components/planning/add-project/add-project.component';
 import { ShowProjectsComponent } from '../components/planning/show-projects/show-projects.component';
+import { ViewProjectComponent } from '../components/planning/view-project/view-project.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -36,6 +37,7 @@ export const routes: Routes = [
         children: [
           { path: 'add-project', component: AddProjectComponent },
           { path: 'show-project', component: ShowProjectsComponent },
+          { path: 'view-project/:id', component: ViewProjectComponent },
         ],
       },
       { path: 'material', component: MaterialsComponent },
