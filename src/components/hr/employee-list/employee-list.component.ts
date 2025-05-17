@@ -12,7 +12,14 @@ import Swal from 'sweetalert2';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MatTableModule, FormsModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    FormsModule,
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+  ],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
@@ -36,19 +43,20 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(
     private employeeServicee: EmployeesService,
-    private router: Router,
+    private router: Router
   ) {}
+
   getAllEmployeesFunction(lim: number, off: number, key: string) {
     this.isLoading = true;
     this.employeeServicee.getAllEmployees(lim, off, key).subscribe((data: any) => {
-      if(data.success){
-        this.isLoading = false;
-        this.employeeList = data.data;
-        this.total_employees_count = data.statistics.total;
-        this.male_employees_count = data.statistics.male;
-        this.female_employees_count = data.statistics.female;
-        this.new_employees_count = data.statistics.newEmployees;
-      }
+        if (data.success) {
+          this.isLoading = false;
+          this.employeeList = data.data;
+          this.total_employees_count = data.statistics.total;
+          this.male_employees_count = data.statistics.male;
+          this.female_employees_count = data.statistics.female;
+          this.new_employees_count = data.statistics.newEmployees;
+        }
       });
   }
 
@@ -72,18 +80,46 @@ export class EmployeeListComponent implements OnInit {
   }
 
   onEditEmployee(employeeId: number) {
-    console.log('Editing employee with ID:', employeeId);
     this.router.navigate(['/main-page/hr/edit-employee', employeeId]);
   }
 
-  onDeleteEmployee(employeeId: number) {
+  onDeleteEmployee(employeeId: number) { 
     Swal.fire({
       icon: 'warning',
       title: 'Attention !',
       text: 'Êtes-vous sûr de vouloir supprimer cet employé ?',
+      showCancelButton: true,
+      confirmButtonText: 'Oui',
+      cancelButtonText: 'Non',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      reverseButtons: false    
     }).then((result) => {
       if (result.isConfirmed) {
-        // to be done later !
-      }})
+        this.employeeServicee.deleteEmployee(Number(employeeId)).subscribe((data: any) => {
+            if (data.success) {
+              this.isLoading = false;
+              Swal.fire({
+                icon: 'success',
+                title: 'Succès',
+                text: "L'employé a été supprimé avec succès.",
+              }).then(() => {
+                this.getAllEmployeesFunction(
+                  this.limit,
+                  this.offset,
+                  this.keyword
+                );
+              });
+            } else {
+              this.isLoading = false;
+              Swal.fire({
+                icon: 'error',
+                title: 'Erreur',
+                text: "Une erreur s'est produite lors de la suppression de l'employé.",
+              });
+            }
+          });
+      }
+    });
   }
 }
