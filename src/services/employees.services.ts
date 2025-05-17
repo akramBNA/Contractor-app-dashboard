@@ -25,4 +25,8 @@ export class EmployeesService {
   getJobsAndContractTypes(): Observable<any> {
     return this.http.get<any>(`${this.base_url}/employees/getJobsAndContractTypes/`);
   }
+
+  updateEmployee(id: number, employee_data: any): Observable<Employee> {
+    return this.http.put<Employee>(`${this.base_url}/employees/editEmployee/${id}`, employee_data);
+  }
 }

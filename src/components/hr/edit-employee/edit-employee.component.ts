@@ -5,14 +5,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmployeesService } from '../../../services/employees.services';
-
+import Swal from 'sweetalert2';
 
 @Component({
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, MatProgressSpinnerModule],
   selector: 'app-edit-employee',
   templateUrl: './edit-employee.component.html',
-  styleUrls: ['./edit-employee.component.css']
+  styleUrls: ['./edit-employee.component.css'],
 })
 export class EditEmployeeComponent implements OnInit {
   employeeForm!: FormGroup;
@@ -22,7 +22,8 @@ export class EditEmployeeComponent implements OnInit {
   contract_types_data: any[] = [];
   jobs_data: any = [];
 
-  employee_data: any = []
+  employee_data: any = [];
+  employee_id: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -47,7 +48,7 @@ export class EditEmployeeComponent implements OnInit {
       employee_lastname: [''],
       employee_phone_number: [''],
       employee_email: [''],
-      employee_address: [ ''],
+      employee_address: [''],
       employee_national_id: [''],
       employee_gender: [''],
       employee_birth_date: [''],
@@ -57,7 +58,7 @@ export class EditEmployeeComponent implements OnInit {
     });
 
     this.contactForm = this.fb.group({
-      contract_type_id: [ ''],
+      contract_type_id: [''],
       salary: [''],
     });
 
@@ -76,7 +77,7 @@ export class EditEmployeeComponent implements OnInit {
       employee_lastname: [data.employee_lastname || ''],
       employee_phone_number: [data.employee_phone_number || ''],
       employee_email: [data.employee_email || ''],
-      employee_address: [ data.employee_address || ''],
+      employee_address: [data.employee_address || ''],
       employee_national_id: [data.employee_national_id || ''],
       employee_gender: [data.employee_gender || ''],
       employee_birth_date: [data.employee_birth_date || ''],
@@ -86,7 +87,7 @@ export class EditEmployeeComponent implements OnInit {
     });
 
     this.contactForm = this.fb.group({
-      contract_type_id: [ data.contract_type_id || ''],
+      contract_type_id: [data.contract_type_id || ''],
       salary: [data.salary || ''],
     });
 
@@ -100,28 +101,54 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   fetchEmployeeData() {
-    const employeeId = this.route.snapshot.paramMap.get('id');
+   this.employee_id = Number(this.route.snapshot.paramMap.get('id'));
     this.isLoading = true;
 
-    this.employeeService.getEmployeeById(Number(employeeId)).subscribe((data: any) => {
-      if(data.success){
-        this.isLoading = false
-        this.employee_data = data.data;
-        this.initializeFormsWithData(this.employee_data);
-      }
-    })
+    this.employeeService.getEmployeeById(Number(this.employee_id)).subscribe((data: any) => {
+        if (data.success) {
+          this.isLoading = false;
+          this.employee_data = data.data;
+          this.initializeFormsWithData(this.employee_data);
+        }
+      });
   }
 
   UpdateEmployee() {
-    const updatedEmployee = {
+    this.isLoading = true;
+    const updatedEmployeeData = {
       ...this.employeeForm.value,
       ...this.contactForm.value,
-      ...this.bankDetailsForm.value
+      ...this.bankDetailsForm.value,
     };
-
-    console.log('Updated employee:', updatedEmployee);
-
-    // to be continued...
+    
+    if(this.employeeForm.valid || this.contactForm.valid || this.bankDetailsForm.valid) {
+          this.employeeService.updateEmployee(this.employee_id, updatedEmployeeData).subscribe((data: any) => {
+        if (data.success) {
+          this.isLoading = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: "Les données de l'employé ont été mises à jour avec succès.",
+          }).then(() => {
+            this.router.navigate(['/main-page/hr/employees-list']);
+          });
+        } else {
+          this.isLoading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "Une erreur s'est produite lors de la mise à jour des données de l'employé.",
+          });
+        }
+      });
+    }else{
+      this.isLoading = false;
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: "Veuillez vérifier vos données.",
+      });
+    }
   }
 
   onCancel() {
