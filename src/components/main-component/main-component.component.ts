@@ -15,6 +15,7 @@ export class MainComponentComponent {
   my_web_resume_link: string = 'https://akrambna.github.io/My-Web-Resume/';
   showRHSubmenu: boolean = false;
   showPlanningSubmenu: boolean = false;
+  showSettingsSubmenu: boolean = false;
 
   constructor(private authService: AuthService) {}
 
@@ -22,8 +23,12 @@ export class MainComponentComponent {
     this.showRHSubmenu = !this.showRHSubmenu;
   }
 
-    togglePlanningSubmenu() {
+  togglePlanningSubmenu() {
     this.showPlanningSubmenu = !this.showPlanningSubmenu;
+  }
+
+  toggleSettingsSubmenu() {
+    this.showSettingsSubmenu = !this.showSettingsSubmenu;
   }
 
   logout(): void {

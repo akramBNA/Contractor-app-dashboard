@@ -12,6 +12,10 @@ import { MissionsComponent } from '../components/missions/missions/missions.comp
 import { AddProjectComponent } from '../components/planning/add-project/add-project.component';
 import { ShowProjectsComponent } from '../components/planning/show-projects/show-projects.component';
 import { ViewProjectComponent } from '../components/planning/view-project/view-project.component';
+import { AccountSettingsComponent } from '../components/settings/account-settings/account-settings.component';
+import { CompanySettingsComponent } from '../components/settings/company-settings/company-settings.component';
+import { ContractsSettingsComponent } from '../components/settings/contracts-settings/contracts-settings.component';
+import { HrSettingsComponent } from '../components/settings/hr-settings/hr-settings.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -42,6 +46,17 @@ export const routes: Routes = [
       },
       { path: 'material', component: MaterialsComponent },
       { path: 'missions', component: MissionsComponent },
+          {
+        path: 'settings',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        children: [
+          { path: 'account-settings', component: AccountSettingsComponent },
+          { path: 'company-settings', component: CompanySettingsComponent },
+          { path: 'contracts-settings', component: ContractsSettingsComponent },
+          { path: 'hr-settings', component: HrSettingsComponent },
+        ],
+      },
     ],
   },
   { path: 'access-denied', component: AccessDeniedComponent },
