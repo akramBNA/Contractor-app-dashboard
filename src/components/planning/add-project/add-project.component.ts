@@ -32,11 +32,13 @@ import Swal from 'sweetalert2';
   ],
   templateUrl: './add-project.component.html',
   styleUrl: './add-project.component.css',
-  encapsulation: ViewEncapsulation.None, // 👈 important
+  encapsulation: ViewEncapsulation.None,
 })
 export class AddProjectComponent {
   projectForm: FormGroup;
   isLoading: boolean = false;
+  formSubmitted: boolean = false;
+
 
   constructor(
     private projectService: ProjectsService,
@@ -55,11 +57,11 @@ export class AddProjectComponent {
   }
 
   onSubmit() {
+    this.formSubmitted = true;
+    this.isLoading = true;
     if (this.projectForm.valid) {
-      this.isLoading = true;
       const formData = this.projectForm.value;
       this.projectService.addProject(formData).subscribe((data: any) => {
-        console.log('data ====> ', data);
         if (data.success) {
           this.isLoading = false;
           Swal.fire({
@@ -82,6 +84,7 @@ export class AddProjectComponent {
         }
       });
     }else{
+      this.projectForm.markAllAsTouched();
       Swal.fire({
         icon: 'warning',
         title: 'warning',

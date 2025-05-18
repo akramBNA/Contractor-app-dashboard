@@ -7,8 +7,15 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="form-group">
-          <label>Nom du Projet</label>
-          <input type="text" formControlName="project_name" class="input" />
+          <label>
+            Nom du Projet <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="project_name"
+            [class.border-red-500]="projectForm.get('project_name')?.invalid && projectForm.get('project_name')?.touched || formSubmitted"
+            class="input"
+          />
         </div>
 
         <div class="form-group">
@@ -17,23 +24,50 @@
         </div>
 
         <div class="form-group">
-          <label>Date de Début</label>
-          <input type="date" formControlName="start_date" class="input" />
+          <label>
+            Date de Début <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            formControlName="start_date"
+            [class.border-red-500]="projectForm.get('start_date')?.invalid && projectForm.get('start_date')?.touched || formSubmitted"
+            class="input"
+          />
         </div>
 
         <div class="form-group">
-          <label>Date de Fin</label>
-          <input type="date" formControlName="end_date" class="input" />
+          <label>
+            Date de Fin <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            formControlName="end_date"
+            [class.border-red-500]="projectForm.get('end_date')?.invalid && projectForm.get('end_date')?.touched || formSubmitted"
+            class="input"
+          />
         </div>
 
         <div class="form-group md:col-span-2">
-          <label>Description</label>
-          <textarea rows="4" formControlName="description" class="input resize-none"></textarea>
+          <label>
+            Description <span class="text-red-500">*</span>
+          </label>
+          <textarea
+            rows="4"
+            formControlName="description"
+            [class.border-red-500]="projectForm.get('description')?.invalid && projectForm.get('description')?.touched || formSubmitted"
+            class="input resize-none"
+          ></textarea>
         </div>
 
         <div class="form-group">
-          <label>Statut</label>
-          <select formControlName="status" class="input">
+          <label>
+            Statut <span class="text-red-500">*</span>
+          </label>
+          <select
+            formControlName="status"
+            [class.border-red-500]="projectForm.get('status')?.invalid && projectForm.get('status')?.touched || formSubmitted"
+            class="input"
+          >
             <option value="">-- Sélectionner --</option>
             <option value="Not Started">Non Commencé</option>
             <option value="In Progress">En Cours</option>
@@ -43,8 +77,14 @@
         </div>
 
         <div class="form-group">
-          <label>Priorité</label>
-          <select formControlName="priority" class="input">
+          <label>
+            Priorité <span class="text-red-500">*</span>
+          </label>
+          <select
+            formControlName="priority"
+            [class.border-red-500]="projectForm.get('priority')?.invalid && projectForm.get('priority')?.touched || formSubmitted"
+            class="input"
+          >
             <option value="">-- Sélectionner --</option>
             <option value="Low">Basse</option>
             <option value="Medium">Moyenne</option>
