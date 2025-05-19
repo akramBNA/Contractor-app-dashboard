@@ -59,9 +59,9 @@
         <label>Date de Début: </label>
         <input formControlName="employee_joining_date" type="date" class="input" />
       </div>
-      <div >
+      <div class="form-group">
         <label>Date de la Fin: </label>
-        <input  type="date" class="input" />
+        <input formControlName="employee_end_date" type="date" class="input" [placeholder]="employeeForm.get('employee_end_date')?.value ? '' : 'Active Employee'"/>
       </div>
     </div>
   </div>

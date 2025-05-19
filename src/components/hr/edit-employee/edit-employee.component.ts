@@ -24,6 +24,7 @@ export class EditEmployeeComponent implements OnInit {
 
   employee_data: any = [];
   employee_id: number = 0;
+form: any;
 
   constructor(
     private fb: FormBuilder,
@@ -55,6 +56,7 @@ export class EditEmployeeComponent implements OnInit {
       employee_job_title: [],
       employee_matricule: [''],
       employee_joining_date: [''],
+      employee_end_date: ['']
     });
 
     this.contactForm = this.fb.group({
@@ -84,6 +86,7 @@ export class EditEmployeeComponent implements OnInit {
       employee_job_title: [data.employee_job_title || ''],
       employee_matricule: [data.employee_matricule || ''],
       employee_joining_date: [data.employee_joining_date || ''],
+      employee_end_date: [data.employee_end_date || ''],
     });
 
     this.contactForm = this.fb.group({
