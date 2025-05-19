@@ -41,6 +41,7 @@ export class AddEmployeeComponent implements OnInit {
       employee_job_title: [''],
       employee_matricule: [''],
       employee_joining_date: [''],
+      employee_end_date: [''],
     });
 
     this.contactForm = this.fb.group({
