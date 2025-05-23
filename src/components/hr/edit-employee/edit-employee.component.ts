@@ -85,8 +85,8 @@ form: any;
       employee_birth_date: [data.employee_birth_date || ''],
       employee_job_title: [data.employee_job_title || ''],
       employee_matricule: [data.employee_matricule || ''],
-      employee_joining_date: [data.employee_joining_date || ''],
-      employee_end_date: [data.employee_end_date || ''],
+      employee_joining_date: [data.employee_joining_date || null],
+      employee_end_date: [data.employee_end_date || null],
     });
 
     this.contactForm = this.fb.group({

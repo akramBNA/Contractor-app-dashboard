@@ -39,7 +39,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response: any) => {
+        next: (response: any) => {          
           this.authService.saveToken(response.token);
           this.router.navigate(['/main-page/hr/hr-stats']);
         },
