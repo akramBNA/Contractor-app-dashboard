@@ -39,8 +39,10 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response: any) => {          
+        next: (response: any) => {         
+          this.isLoading = false;
           this.authService.saveToken(response.token);
+          this.authService.setUserData(response);
           this.router.navigate(['/main-page/hr/hr-stats']);
         },
         error: (err) => {

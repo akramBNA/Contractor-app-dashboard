@@ -7,7 +7,7 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseURL = environment.backendURL
+  private baseURL = environment.backendURL;
   constructor(private http: HttpClient) {}
 
   login(credentials: {
@@ -19,6 +19,9 @@ export class AuthService {
 
   logout(): void {
     sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user_name');
+    sessionStorage.removeItem('user_lastname');
+    sessionStorage.removeItem('user_role');
   }
 
   saveToken(token: string): void {
@@ -27,5 +30,11 @@ export class AuthService {
 
   getToken(): string | null {
     return sessionStorage.getItem('token');
+  }
+
+  setUserData(userData: any): void {
+    sessionStorage.setItem('user_name',JSON.stringify(userData.data.user_name));
+    sessionStorage.setItem('user_lastname',JSON.stringify(userData.data.user_lastname));
+    sessionStorage.setItem('user_role',JSON.stringify(userData.data.user_role_type));
   }
 }
