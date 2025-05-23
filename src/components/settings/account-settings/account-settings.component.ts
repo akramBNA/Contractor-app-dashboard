@@ -14,17 +14,27 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class AccountSettingsComponent implements OnInit {
   users_data: any[] = [];
   isLoading: boolean = false;
+  user_role: string = '';
+  flag: boolean = false;
 
   constructor(private usersService: UsersService) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this.usersService.getAllUsers().subscribe((data: any) => {
-      if (data.success) {
-        this.isLoading = false;
-        this.users_data = data.data;
-      }
-    });
+    this.user_role = sessionStorage.getItem('user_role') || '';
+
+    if (this.user_role === 'super_admin') {
+      this.flag = true;
+      this.usersService.getAllUsers().subscribe((data: any) => {
+        if (data.success) {
+          this.isLoading = false;
+          this.users_data = data.data;
+        }
+      });
+    } else {
+      this.isLoading = false;
+      this.flag = false;
+    }
   }
 
   onEditUser(user: any) {}
