@@ -1,4 +1,10 @@
-<div class="bg-white/40 backdrop-blur-sm relative max-h-screen px-4 py-8">
+<div *ngIf="!flag" class="bg-white/40 backdrop-blur-sm relative">
+  <h1 class="absolute top-6 left-6 text-4xl md:text-5xl font-bold text-gray-700">
+    Vous n'etes pas autorisé! Seul l'administrateur peut accéder à cette page.
+  </h1>
+</div>
+
+<div *ngIf="flag" class="bg-white/40 backdrop-blur-sm relative max-h-screen px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Utilisateurs</h1>
 
   <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-[9999]">

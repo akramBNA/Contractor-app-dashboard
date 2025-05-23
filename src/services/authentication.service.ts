@@ -33,8 +33,8 @@ export class AuthService {
   }
 
   setUserData(userData: any): void {
-    sessionStorage.setItem('user_name',JSON.stringify(userData.data.user_name));
-    sessionStorage.setItem('user_lastname',JSON.stringify(userData.data.user_lastname));
-    sessionStorage.setItem('user_role',JSON.stringify(userData.data.user_role_type));
+    sessionStorage.setItem('user_name',userData.data.user_name);
+    sessionStorage.setItem('user_lastname',userData.data.user_lastname);
+    sessionStorage.setItem('user_role',userData.data.user_role_type);
   }
 }
