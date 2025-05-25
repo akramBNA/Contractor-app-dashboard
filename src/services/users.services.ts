@@ -12,4 +12,7 @@ export class UsersService {
     getAllUsers(): Observable<any> {
       return this.http.get<any>(`${this.base_url}/users/getAllUsers/`);
     };
+    addUser( userData:any): Observable<any> {
+      return this.http.post<any>(`${this.base_url}/users/addUser/`, userData)
+    }
 }
