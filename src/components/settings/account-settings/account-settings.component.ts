@@ -3,21 +3,34 @@ import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../services/users.services';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule, ReactiveFormsModule],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css',
 })
 export class AccountSettingsComponent implements OnInit {
+  usersForm: FormGroup;
+  roles_data: any[] = [];
   users_data: any[] = [];
   isLoading: boolean = false;
   user_role: string = '';
   flag: boolean = false;
 
-  constructor(private usersService: UsersService) {}
+  constructor(private usersService: UsersService, private fb: FormBuilder) {
+    this.usersForm = this.fb.group({
+      user_name: ['', Validators.required],
+      user_lastname: ['', Validators.required],
+      user_email: ['', [Validators.required, Validators.email]],
+      user_password: ['', [Validators.required]],
+      user_role_id: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.isLoading = true;
@@ -29,11 +42,42 @@ export class AccountSettingsComponent implements OnInit {
         if (data.success) {
           this.isLoading = false;
           this.users_data = data.data;
+          this.roles_data = data.roles;
         }
       });
     } else {
       this.isLoading = false;
       this.flag = false;
+    }
+  }
+
+  onAddUser() {
+    this.isLoading = true;
+    if (this.usersForm.valid) {
+      this.usersService.addUser(this.usersForm.value).subscribe((data: any) => {
+        if (data.success) {
+          this.isLoading = false;
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: "L'utilisateur est ajouté avec succès",
+          }).then(() => {
+            this.usersForm.reset();
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "L'utilisateur n'est pas ajouté",
+          });
+        }
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Veuillez remplir tous les champs obligatoires',
+      }).then(() => {});
     }
   }
 

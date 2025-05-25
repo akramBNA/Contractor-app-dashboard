@@ -9,7 +9,7 @@ import {
 import { EmployeesService } from '../../../services/employees.services';
 import Swal from 'sweetalert2';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-employee',
@@ -28,6 +28,7 @@ export class AddEmployeeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeesService,
+    private router: Router
   ) {
     this.employeeForm = this.fb.group({
       employee_name: ['', Validators.required],
@@ -59,10 +60,10 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employeeService.getJobsAndContractTypes().subscribe((data: any) => {      
+    this.employeeService.getJobsAndContractTypes().subscribe((data: any) => {
       this.contract_types_data = data.data_contract_types;
       this.jobs_data = data.data_jobs;
-    })
+    });
   }
 
   onSubmitAll() {
@@ -84,10 +85,12 @@ export class AddEmployeeComponent implements OnInit {
             icon: 'success',
             title: 'Success',
             text: "L'employé est ajouté avec succès",
+          }).then(() => {
+            this.employeeForm.reset();
+            this.contactForm.reset();
+            this.bankDetailsForm.reset();
+            this.router.navigate(['/main-page/hr/employees-list']);
           });
-          this.employeeForm.reset();
-          this.contactForm.reset();
-          this.bankDetailsForm.reset();
         } else {
           Swal.fire({
             icon: 'error',
@@ -100,12 +103,12 @@ export class AddEmployeeComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: "Veuillez remplir tous les champs obligatoires",
+        text: 'Veuillez remplir tous les champs obligatoires',
       }).then(() => {
         this.employeeForm.markAllAsTouched();
         this.contactForm.markAllAsTouched();
         this.bankDetailsForm.markAllAsTouched();
-      })
+      });
     }
   }
 }
