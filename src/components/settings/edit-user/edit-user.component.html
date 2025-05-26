@@ -61,7 +61,7 @@
     </div>
 
     <div class="mt-8 flex justify-center gap-4">
-      <button type="submit" [disabled]="userForm.invalid || isLoading" (click)="updateUserData(user_id)" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer">Modifier</button>
+      <button type="submit" [disabled]="userForm.invalid || isLoading" (click)="updateUserData()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer">Modifier</button>
 
       <button type="button" (click)="cancelUpdate()" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition cursor-pointer">Annuler</button>
     </div>
