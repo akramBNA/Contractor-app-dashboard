@@ -16,6 +16,7 @@ import { AccountSettingsComponent } from '../components/settings/account-setting
 import { CompanySettingsComponent } from '../components/settings/company-settings/company-settings.component';
 import { ContractsSettingsComponent } from '../components/settings/contracts-settings/contracts-settings.component';
 import { HrSettingsComponent } from '../components/settings/hr-settings/hr-settings.component';
+import { EditUserComponent } from '../components/settings/edit-user/edit-user.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -55,6 +56,7 @@ export const routes: Routes = [
           { path: 'company-settings', component: CompanySettingsComponent },
           { path: 'contracts-settings', component: ContractsSettingsComponent },
           { path: 'hr-settings', component: HrSettingsComponent },
+          { path: 'edit-user/:id', component: EditUserComponent },
         ],
       },
     ],

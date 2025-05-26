@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-account-settings',
@@ -22,7 +23,11 @@ export class AccountSettingsComponent implements OnInit {
   user_role: string = '';
   flag: boolean = false;
 
-  constructor(private usersService: UsersService, private fb: FormBuilder) {
+  constructor(
+    private usersService: UsersService, 
+    private fb: FormBuilder,
+    private router: Router) 
+  {
     this.usersForm = this.fb.group({
       user_name: ['', Validators.required],
       user_lastname: ['', Validators.required],
@@ -81,7 +86,11 @@ export class AccountSettingsComponent implements OnInit {
     }
   }
 
-  onEditUser(user: any) {}
+  onEditUser(userId: any) {
+    // console.log("the id ? ---------> ", userId);
+    
+    this.router.navigate(['/main-page/settings/edit-user', userId]);
+  }
 
   onDeleteUser(user: any) {}
 }

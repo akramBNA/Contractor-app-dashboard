@@ -29,7 +29,7 @@
           <td class="px-4 py-2 text-sm text-gray-700">{{ user.user_email }}</td>
           <td class="px-4 py-2 text-sm text-gray-700">{{ user.role_type }}</td>
           <td class="px-4 py-2 text-sm flex space-x-2">
-            <button mat-icon-button color="primary" style="cursor: pointer" (click)="onEditUser(user)">
+            <button mat-icon-button color="primary" style="cursor: pointer" (click)="onEditUser(user.user_id)">
               <mat-icon style="color: #3b82f6;">edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" style="cursor: pointer" (click)="onDeleteUser(user)">
