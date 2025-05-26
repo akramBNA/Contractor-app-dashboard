@@ -87,8 +87,6 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   onEditUser(userId: any) {
-    // console.log("the id ? ---------> ", userId);
-    
     this.router.navigate(['/main-page/settings/edit-user', userId]);
   }
 
