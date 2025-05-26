@@ -90,5 +90,40 @@ export class AccountSettingsComponent implements OnInit {
     this.router.navigate(['/main-page/settings/edit-user', userId]);
   }
 
-  onDeleteUser(user: any) {}
+  onDeleteUser(user_id: any) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Attention !',
+      text: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
+      showCancelButton: true,
+      confirmButtonText: 'Oui',
+      cancelButtonText: 'Non',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      reverseButtons: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.usersService.deleteUser(user_id).subscribe((data: any) => {
+          if (data.success) {
+            this.isLoading = false;
+            Swal.fire({
+              icon: 'success',
+              title: 'Succès',
+              text: "L'utilisateur a été supprimé avec succès.",
+            }).then(() => {
+              this.ngOnInit();
+            });
+          } else {
+            this.isLoading = false;
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: "Une erreur s'est produite lors de la suppression de l'utilisateur.",
+            });
+          }
+        });
+      }
+    });
+  }
 }
