@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-edit-user',
@@ -64,8 +65,38 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  updateUserData(userId: number) {
+  updateUserData() {
     this.isLoading = true;
+    if (this.userForm.invalid) {
+      this.isLoading = false;
+      Swal.fire({
+        title: 'Erreur',
+        text: 'Veuillez remplir tous les champs obligatoires',
+        icon: 'error',
+      }).then(() => {
+        this.isLoading = false;
+      });
+    };
+
+    this.usersService.updateUser(this.user_id, this.userForm.value).subscribe((data: any) => {
+      if( data.success) {
+        this.isLoading = false;     
+        Swal.fire({
+          title: 'Succès',
+          text: 'Utilisateur mis à jour avec succès',
+          icon: 'success',
+        }).then(() => {
+          this.router.navigate(['/main-page/settings/account-settings']);
+        });
+      } else {
+        this.isLoading = false;
+        Swal.fire({
+          title: 'Erreur',
+          text: 'Failed to update user',
+          icon: 'error',
+        });
+      }
+    })
   }
 
   cancelUpdate() {
