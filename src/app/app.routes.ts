@@ -8,7 +8,7 @@ import { EmployeeListComponent } from '../components/hr/employee-list/employee-l
 import { HrStatsComponent } from '../components/hr/hr-stats/hr-stats.component';
 import { EditEmployeeComponent } from '../components/hr/edit-employee/edit-employee.component';
 import { MaterialsComponent } from '../components/materials/materials/materials.component';
-import { MissionsComponent } from '../components/missions/missions/missions.component';
+import { MissionsListComponent } from '../components/missions/missions-list/missions-list.component';
 import { AddProjectComponent } from '../components/planning/add-project/add-project.component';
 import { ShowProjectsComponent } from '../components/planning/show-projects/show-projects.component';
 import { ViewProjectComponent } from '../components/planning/view-project/view-project.component';
@@ -17,7 +17,6 @@ import { CompanySettingsComponent } from '../components/settings/company-setting
 import { ContractsSettingsComponent } from '../components/settings/contracts-settings/contracts-settings.component';
 import { HrSettingsComponent } from '../components/settings/hr-settings/hr-settings.component';
 import { EditUserComponent } from '../components/settings/edit-user/edit-user.component';
-import { MissionsListComponent } from '../components/missions/missions-list/missions-list.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
