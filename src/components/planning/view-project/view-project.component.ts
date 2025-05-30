@@ -31,15 +31,17 @@ export class ViewProjectComponent {
   getProjectById(project_id: number) {
     this.isLoading = true;
     this.projectsService.getProjectById(project_id).subscribe((data: any) => {
-      if(data.success) {
+      if (data.success) {
         this.isLoading = false;
         this.project_data = data.data;
-      }else {
+      } else {
         this.isLoading = false;
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: data.message || 'une erreur s\'est produite lors de la récupération du projet.',
+          text:
+            data.message ||
+            "une erreur s'est produite lors de la récupération du projet.",
         });
       }
     });
