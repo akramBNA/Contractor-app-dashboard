@@ -17,6 +17,7 @@ import { CompanySettingsComponent } from '../components/settings/company-setting
 import { ContractsSettingsComponent } from '../components/settings/contracts-settings/contracts-settings.component';
 import { HrSettingsComponent } from '../components/settings/hr-settings/hr-settings.component';
 import { EditUserComponent } from '../components/settings/edit-user/edit-user.component';
+import { AddMissionsComponent } from '../components/missions/add-missions/add-missions.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -50,7 +51,10 @@ export const routes: Routes = [
         path: 'missions',
         canActivate: [AuthGuard],
         canActivateChild: [AuthGuard],
-        children: [{ path: 'missions-list', component: MissionsListComponent }],
+        children: [
+          { path: 'missions-list', component: MissionsListComponent },
+          { path: 'add-mission', component: AddMissionsComponent },
+        ],
       },
       {
         path: 'settings',
