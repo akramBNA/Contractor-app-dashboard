@@ -16,6 +16,7 @@ export class MainComponentComponent {
   showRHSubmenu: boolean = false;
   showPlanningSubmenu: boolean = false;
   showSettingsSubmenu: boolean = false;
+  showMissionsSubmenu: boolean = false;
 
   constructor(private authService: AuthService) {}
 
@@ -29,6 +30,10 @@ export class MainComponentComponent {
 
   toggleSettingsSubmenu() {
     this.showSettingsSubmenu = !this.showSettingsSubmenu;
+  }
+
+  toggleMissionsSubmenu(): void {
+    this.showMissionsSubmenu = !this.showMissionsSubmenu;
   }
 
   logout(): void {
