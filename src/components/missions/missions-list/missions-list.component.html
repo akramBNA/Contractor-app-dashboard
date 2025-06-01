@@ -4,11 +4,10 @@
   <mat-spinner diameter="100"></mat-spinner>
 </div>
 
-<!-- Cards Section -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Nombre Total des Missions</h2>
-    <p class="text-2xl font-bold text-green-600">{{ total_missions_count }}</p>
+    <p class="text-2xl font-bold text-green-600">{{ missions_data.length }}</p>
   </div>
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Missions en Cours</h2>
@@ -30,7 +29,6 @@
   </div>
 </div>
 
-<!-- Missions Table -->
 <div class="bg-white shadow-md rounded-lg p-4">
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-100">
@@ -46,18 +44,18 @@
     </thead>
     <tbody class="divide-y divide-gray-200">
       <tr *ngFor="let mission of missions_data">
-        <td class="px-4 py-2 text-sm">{{ mission.name }}</td>
-        <td class="px-4 py-2 text-sm">{{ mission.description }}</td>
+        <td class="px-4 py-2 text-sm">{{ mission.mission_name }}</td>
+        <td class="px-4 py-2 text-sm">{{ mission.mission_description }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.assigned_to }}</td>
-        <td class="px-4 py-2 text-sm">{{ mission.start_date | date: 'dd/MM/yyyy' }}</td>
-        <td class="px-4 py-2 text-sm">{{ mission.end_date | date: 'dd/MM/yyyy' }}</td>
+        <td class="px-4 py-2 text-sm">{{ mission.start_at | date: 'dd/MM/yyyy' }}</td>
+        <td class="px-4 py-2 text-sm">{{ mission.end_at | date: 'dd/MM/yyyy' }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.priority }}</td>
         <td class="px-4 py-2 text-sm flex space-x-2">
-          <button mat-icon-button color="primary" (click)="onEditMission(mission.id)">
+          <button mat-icon-button color="primary" (click)="onEditMission(mission.id)" class="cursor-pointer">
             <mat-icon style="color: #3b82f6;">edit</mat-icon>
           </button>
 
-          <button mat-icon-button color="warn" (click)="onDeleteMission(mission.id)">
+          <button mat-icon-button color="warn" (click)="onDeleteMission(mission.id)" class="cursor-pointer">
             <mat-icon style="color: #ef4444;">delete</mat-icon>
           </button>
         </td>
