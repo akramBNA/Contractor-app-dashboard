@@ -32,6 +32,8 @@ export class MissionsListComponent {
   getAllMissions() {
     this.isLoading = true;
     this.missionsService.getAllActiveMissions().subscribe((data: any) => {
+      console.log("data ?? ", data);
+      
       if (data.success) {
         this.isLoading = false;
         this.missions_data = data.data;
