@@ -55,7 +55,7 @@ export const routes: Routes = [
         children: [
           { path: 'missions-list', component: MissionsListComponent },
           { path: 'add-mission', component: AddMissionsComponent },
-          { path: 'mission-details', component: MissionDetailsComponent },
+          { path: 'mission-details/:id', component: MissionDetailsComponent },
         ],
       },
       {
