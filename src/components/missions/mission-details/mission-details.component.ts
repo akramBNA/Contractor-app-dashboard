@@ -65,6 +65,8 @@ export class MissionDetailsComponent implements OnInit {
 
   updateMission() {}
 
+  downloadPdf() {}
+
   goBack() {
     this.router.navigate(['/main-page/missions/missions-list']);
   }

@@ -48,17 +48,28 @@
   </div>
 </form>
 
-<div class="text-center pt-6 space-x-4">
-  <button
-    type="button"
-    (click)="updateMission()"
-    class="bg-green-600 text-white font-semibold px-12 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer">
-    Modifier
-  </button>
-  <button
-    type="button"
-    (click)="goBack()"
-    class="bg-red-600 text-white font-semibold px-12 py-2 rounded-lg hover:bg-red-700 transition cursor-pointer">
-    Annuler
-  </button>
+<div class="text-center pt-6">
+  <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+    <button
+      type="button"
+      (click)="updateMission()"
+      class="bg-green-600 text-white font-semibold px-8 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer w-full md:w-auto">
+      Modifier
+    </button>
+
+    <button
+      type="button"
+      (click)="downloadPdf()"
+      class="bg-blue-600 text-white font-semibold px-8 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer w-full md:w-auto">
+      Télécharger PDF
+    </button>
+
+    <button
+      type="button"
+      (click)="goBack()"
+      class="bg-red-600 text-white font-semibold px-8 py-2 rounded-lg hover:bg-red-700 transition cursor-pointer w-full md:w-auto">
+      Annuler
+    </button>
+  </div>
 </div>
+
