@@ -4,7 +4,7 @@
   <mat-spinner diameter="100"></mat-spinner>
 </div>
 
-<form *ngIf="missionForm" [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
+<form id="pdfContent" *ngIf="missionForm" [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations de la Mission</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -58,10 +58,10 @@
     </button>
 
     <button
-      type="button"
-      (click)="downloadPdf()"
-      class="bg-blue-600 text-white font-semibold px-8 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer w-full md:w-auto">
-      Télécharger PDF
+        type="button"
+        (click)="downloadPDF()"
+        class="bg-blue-600 text-white font-semibold px-8 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
+        Télécharger PDF
     </button>
 
     <button
@@ -71,5 +71,46 @@
       Annuler
     </button>
   </div>
+</div>
+
+<div id="pdfContent" class="bg-white p-6 rounded shadow-md">
+  <form *ngIf="missionForm" [formGroup]="missionForm" class="space-y-12">
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations de la Mission</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="form-group">
+          <label>Nom de la Mission:</label>
+          <p class="input">{{ missionForm.value.mission_name }}</p>
+        </div>
+
+        <div class="form-group">
+          <label>Description:</label>
+          <p class="input">{{ missionForm.value.mission_description }}</p>
+        </div>
+
+        <div class="form-group">
+          <label>Date de Début:</label>
+          <p class="input">{{ missionForm.value.start_at }}</p>
+        </div>
+
+        <div class="form-group">
+          <label>Date de Fin:</label>
+          <p class="input">{{ missionForm.value.end_at }}</p>
+        </div>
+
+        <div class="form-group">
+          <label>Priorité:</label>
+          <p class="input">{{ missionForm.value.priority }}</p>
+        </div>
+
+        <div class="form-group">
+          <label>Frais (TND):</label>
+          <p class="input">{{ missionForm.value.expenses }}</p>
+        </div>
+
+      </div>
+    </div>
+  </form>
 </div>
 
