@@ -12,5 +12,7 @@ export class MissionsService {
     getAllActiveMissions(): Observable<any> {
       return this.http.get<any>(`${this.base_url}/missions/getAllMissions/`);
     };
-    
+    getMissionById(missionId: string): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/missions/getMissionById/${missionId}`);
+    };
 }
