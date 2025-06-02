@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MissionsService } from '../../../services/missions.services';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-missions-list',
@@ -23,7 +24,10 @@ export class MissionsListComponent {
   completed_missions_count = 0;
   canceled_missions_count = 0;
 
-  constructor(private missionsService: MissionsService) {}
+  constructor(
+    private missionsService: MissionsService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getAllMissions();
@@ -44,7 +48,9 @@ export class MissionsListComponent {
     });
   }
 
-  onEditMission(missionId: string) {}
+  onEditMission(missionId: string) {    
+    this.router.navigate(['/main-page/missions/mission-details', missionId]);
+  }
 
   onDeleteMission(missionId: string) {}
 }
