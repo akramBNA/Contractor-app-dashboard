@@ -18,6 +18,7 @@ import { ContractsSettingsComponent } from '../components/settings/contracts-set
 import { HrSettingsComponent } from '../components/settings/hr-settings/hr-settings.component';
 import { EditUserComponent } from '../components/settings/edit-user/edit-user.component';
 import { AddMissionsComponent } from '../components/missions/add-missions/add-missions.component';
+import { MissionDetailsComponent } from '../components/missions/mission-details/mission-details.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -54,6 +55,7 @@ export const routes: Routes = [
         children: [
           { path: 'missions-list', component: MissionsListComponent },
           { path: 'add-mission', component: AddMissionsComponent },
+          { path: 'mission-details', component: MissionDetailsComponent },
         ],
       },
       {
