@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -9,7 +9,8 @@ import { MissionsService } from '../../../services/missions.services';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import html2pdf from 'html2pdf.js';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-mission-details',
@@ -21,6 +22,8 @@ import html2pdf from 'html2pdf.js';
 export class MissionDetailsComponent implements OnInit {
   isLoading: boolean = false;
   missionForm!: FormGroup;
+
+  @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
   constructor(
     private missionsService: MissionsService,
@@ -73,24 +76,41 @@ export class MissionDetailsComponent implements OnInit {
 
   updateMission() {}
 
-  downloadPDF(): void {
-    const element = document.getElementById('pdfContent');
-    console.log("element", element);
-    
-    const options = {
-      margin: 0.5,
-      filename: 'mission-details.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-    };
-
-    if (element) {
-      html2pdf().from(element).set(options).save();
-    }
-  }
-
   goBack() {
     this.router.navigate(['/main-page/missions/missions-list']);
+  }
+
+  downloadPDF(): void {
+    if (!this.pdfContent) {
+      console.error('PDF target (“#pdfContent”) not found');
+      return;
+    }
+
+    const element = this.pdfContent.nativeElement as HTMLElement;
+
+    html2canvas(element, { scale: 2, useCORS: true, allowTaint: true, logging: false,})
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'pt',
+          format: 'a4',
+        });
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const imgProps = pdf.getImageProperties(imgData);
+
+        const pdfImgWidth = pageWidth - 40;
+        const pdfImgHeight = (imgProps.height * pdfImgWidth) / imgProps.width;
+
+        pdf.addImage( imgData, 'JPEG', 20, 20, pdfImgWidth, pdfImgHeight, undefined, 'FAST');
+
+        pdf.save('mission-details.pdf');
+      })
+      .catch((err) => {
+        console.error('Error generating PDF:', err);
+      });
   }
 }
