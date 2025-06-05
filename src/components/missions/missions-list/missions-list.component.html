@@ -49,7 +49,16 @@
         <td class="px-4 py-2 text-sm">{{ mission.assigned_to }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.start_at | date: 'dd/MM/yyyy' }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.end_at | date: 'dd/MM/yyyy' }}</td>
-        <td class="px-4 py-2 text-sm">{{ mission.priority }}</td>
+        <td class="px-4 py-2 text-sm">
+          <span class="px-2 py-1 rounded-full text-white text-xs font-semibold"
+            [ngClass]="{
+              'bg-green-500': mission.priority === 'LOW',
+              'bg-yellow-500': mission.priority === 'MEDIUM',
+              'bg-red-500': mission.priority === 'HIGH'
+            }">
+            {{ mission.priority }}
+          </span>
+        </td>
         <td class="px-4 py-2 text-sm flex space-x-2">
           <button mat-icon-button color="primary" (click)="onEditMission(mission.mission_id)" class="cursor-pointer">
             <mat-icon style="color: #3b82f6;">edit</mat-icon>
