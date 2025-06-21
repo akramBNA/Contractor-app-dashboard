@@ -48,16 +48,19 @@
           <option value="HIGH">Élevée</option>
         </select>
       </div>
+    </div>
 
-      <div class="form-group md:col-span-2">
+    <div class="form-group w-full md:w-1/2">
         <label>Description</label>
         <textarea formControlName="mission_description" class="input h-32 resize-none"></textarea>
-      </div>
     </div>
   </div>
 
   <div class="text-center pt-6">
-    <button type="button" (click)="onSubmitMission()" class="bg-blue-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
+    <button
+      type="button"
+      (click)="onSubmitMission()"
+      class="bg-blue-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
       Ajouter
     </button>
   </div>
