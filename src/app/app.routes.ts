@@ -19,6 +19,7 @@ import { HrSettingsComponent } from '../components/settings/hr-settings/hr-setti
 import { EditUserComponent } from '../components/settings/edit-user/edit-user.component';
 import { AddMissionsComponent } from '../components/missions/add-missions/add-missions.component';
 import { MissionDetailsComponent } from '../components/missions/mission-details/mission-details.component';
+import { SalariesComponent } from '../components/hr/salaries/salaries.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -35,6 +36,8 @@ export const routes: Routes = [
           { path: 'employees-list', component: EmployeeListComponent },
           { path: 'hr-stats', component: HrStatsComponent },
           { path: 'edit-employee/:id', component: EditEmployeeComponent },
+          { path: 'salaries', component: SalariesComponent },
+
         ],
       },
       {
