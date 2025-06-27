@@ -15,13 +15,13 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
-      <tr *ngFor="let employee of salaries_data">
-        <td class="px-4 py-2 text-sm text-gray-700">{{ employee.firstName }}</td>
-        <td class="px-4 py-2 text-sm text-gray-700">{{ employee.lastName }}</td>
-        <td class="px-4 py-2 text-sm text-gray-700">{{ employee.salary }} DT || *** DT</td>
-        <td class="px-4 py-2 text-sm text-gray-700">{{ employee.tax }} DT || *** DT</td>
-        <td class="px-4 py-2 text-sm text-gray-700">{{ employee.cnss }} DT || *** DT</td>
-        <td class="px-4 py-2 text-sm text-gray-700 font-bold">{{ employee.total }} DT || *** DT</td>
+      <tr *ngFor="let salary of salaries_data">
+        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.employee_name }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.employee_lastname }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.salary }} DT</td>
+        <td class="px-4 py-2 text-sm text-gray-700"> *** DT </td>
+        <td class="px-4 py-2 text-sm text-gray-700"> *** DT </td>
+        <td class="px-4 py-2 text-sm text-gray-700 font-bold"> *** DT </td>
       </tr>
     </tbody>
   </table>
