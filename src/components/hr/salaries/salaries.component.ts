@@ -25,9 +25,10 @@ export class SalariesComponent implements OnInit {
       console.log(this.salaries_data);
     });
   }
+
   onPrint() {
     const printContents = document.getElementById('print-section')?.innerHTML;
-    const popupWin = window.open('', '_blank', 'width=800,height=600');
+    const popupWin = window.open('', '_blank', 'width=1920,height=1080');
 
     if (popupWin && printContents) {
       popupWin.document.open();
