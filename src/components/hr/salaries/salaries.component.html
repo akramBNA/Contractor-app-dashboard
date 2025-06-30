@@ -6,21 +6,21 @@
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-100">
       <tr>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Prénom</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Salaire</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Impôt</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">CNSS</th> 
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Prénom & Nom</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">N° du compte</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Banque</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Branche</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Salaire</th> 
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Total</th>
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
       <tr *ngFor="let salary of salaries_data">
-        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.employee_name }}</td>
-        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.employee_lastname }}</td>
-        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.salary }} DT</td>
-        <td class="px-4 py-2 text-sm text-gray-700"> *** TND </td>
-        <td class="px-4 py-2 text-sm text-gray-700"> *** TND </td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.account_holder_name }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.account_number }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700">{{ salary.bank_name }}</td>
+        <td class="px-4 py-2 text-sm text-gray-700"> {{ salary.branch_location }} </td>
+        <td class="px-4 py-2 text-sm text-gray-700"> {{ salary.salary }} DT </td>
         <td class="px-4 py-2 text-sm text-gray-700 font-bold"> *** TND </td>
       </tr>
     </tbody>
