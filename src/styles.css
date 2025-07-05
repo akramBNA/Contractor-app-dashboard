@@ -13,6 +13,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     @apply bg-green-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer
 }
 
-.btn-delete {
+.btn-cancel {
     @apply bg-red-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-red-700 transition cursor-pointer
 }
