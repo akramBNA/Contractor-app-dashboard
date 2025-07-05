@@ -1,4 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* Resuable buttons */
+
+.btn-add {
+  @apply bg-blue-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer
+}
+
+.btn-edit {
+    @apply bg-green-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-green-700 transition cursor-pointer
+}
+
+.btn-delete {
+    @apply bg-red-600 text-white font-semibold px-20 py-2 rounded-lg hover:bg-red-700 transition cursor-pointer
+}
