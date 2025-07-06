@@ -9,8 +9,8 @@ export class SalariesService {
 
   readonly base_url = environment.backendURL;    
 
-    getAllSalaries(): Observable<any> {
-      return this.http.get<any>(`${this.base_url}/salaries/getAllSalaries/`);
+    getAllSalaries(limit: number, offset: number, keyword: string): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/salaries/getAllSalaries/${JSON.stringify({ limit:limit, offset:offset, keyword:keyword })}`);
     };
   
 }
