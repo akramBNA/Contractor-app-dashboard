@@ -11,16 +11,20 @@ import { SalariesService } from '../../../services/salaries.services';
   styleUrl: './salaries.component.css',
 })
 export class SalariesComponent implements OnInit {
+  
   salaries_data: any[] = [];
+  limit: number = 20;
+  offset: number = 0;
+  keyword: string = '';
 
   constructor(private salariesService: SalariesService) {}
 
   ngOnInit(): void {
-    this.getAllSalaries();
+    this.getAllSalaries(this.limit, this.offset, this.keyword);
   }
 
-  getAllSalaries() {
-    this.salariesService.getAllSalaries().subscribe((data: any) => {
+  getAllSalaries(lim: number, off: number, key: string) {
+    this.salariesService.getAllSalaries(lim, off, key).subscribe((data: any) => {
       this.salaries_data = data.data;
       console.log(this.salaries_data);
     });
