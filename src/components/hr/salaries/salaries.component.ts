@@ -4,15 +4,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { SalariesService } from '../../../services/salaries.services';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @Component({
   selector: 'app-salaries',
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatPaginatorModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatProgressSpinnerModule],
   templateUrl: './salaries.component.html',
   styleUrl: './salaries.component.css',
 })
 export class SalariesComponent implements OnInit {
+
+  isLoading: boolean = false;
   salaries_data: any[] = [];
   limit: number = 20;
   offset: number = 0;
@@ -26,9 +29,13 @@ export class SalariesComponent implements OnInit {
   }
 
   getAllSalaries(limit: number, offset: number, keyword: string): void {
+    this.isLoading = true;
     this.salariesService.getAllSalaries(limit, offset, keyword).subscribe((res: any) => {
-      this.salaries_data = res.data;
-      this.total = res.attributes?.total || 0;
+      if( res.success){
+        this.isLoading = false;
+        this.salaries_data = res.data;
+        this.total = res.attributes?.total || 0;
+      }
     });
   }
 
