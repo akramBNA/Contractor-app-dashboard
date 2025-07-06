@@ -26,9 +26,17 @@
     </tbody>
   </table>
 
+  <mat-paginator
+    [length]="total"
+    [pageSize]="limit"
+    [pageIndex]="offset / limit"
+    [pageSizeOptions]="[5, 20, 50, 100]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
+
   <div class="flex justify-end mt-4">
     <button mat-raised-button color="primary" (click)="onPrint()">
       <mat-icon class="mr-2">print</mat-icon> Imprimer
     </button>
   </div>
-</div>
