@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MissionsService } from '../../../services/missions.services';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-missions-list',
-  imports: [MatIconModule, CommonModule, MatProgressSpinnerModule],
+  imports: [MatIconModule, CommonModule, LoadingSpinnerComponent],
   templateUrl: './missions-list.component.html',
   styleUrl: './missions-list.component.css',
 })
