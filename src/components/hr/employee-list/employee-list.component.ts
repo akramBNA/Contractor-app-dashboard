@@ -11,6 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Swal from 'sweetalert2';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   standalone: true,
@@ -21,7 +22,8 @@ import { PageEvent } from '@angular/material/paginator';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    LoadingSpinnerComponent
   ],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
