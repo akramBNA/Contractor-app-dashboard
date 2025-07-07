@@ -37,7 +37,7 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
-      <tr *ngFor="let employee of paginatedEmployees">
+      <tr *ngFor="let employee of employeeList">
         <td class="px-4 py-2 text-sm">{{ employee.employee_matricule }}</td>
         <td class="px-4 py-2 text-sm">{{ employee.employee_name }}</td>
         <td class="px-4 py-2 text-sm">{{ employee.employee_lastname }}</td>
@@ -57,31 +57,11 @@
     </tbody>
   </table>
 
-  <div class="flex justify-between items-center mt-4 flex-wrap">
-      <div class="text-sm text-gray-700">
-        Taille des pages:
-      <select class="ml-2 border rounded px-2 py-1" [(ngModel)]="limit" (change)="setPageSize(limit)">
-       <option [value]="20">20</option>
-       <option [value]="50">50</option>
-       <option [value]="100">100</option>
-      </select>
-      </div>
+  <mat-paginator
+    [length]="total_employees_count"
+    [pageSize]="limit"
+    [pageSizeOptions]="[5, 20, 50, 100]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
 
-    <div class="space-x-2 mt-2 sm:mt-0">
-      <button
-        class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-        (click)="currentPage = currentPage - 1"
-        [disabled]="currentPage === 1"
-      >
-        Préc
-      </button>
-      <button
-        class="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-        (click)="currentPage = currentPage + 1"
-        [disabled]="currentPage >= totalPages"
-      >
-        Suiv
-      </button>
-    </div>
-  </div>
 </div>
