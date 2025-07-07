@@ -21,7 +21,7 @@ import { PageEvent } from '@angular/material/paginator';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
