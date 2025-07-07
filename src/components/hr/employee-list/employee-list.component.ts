@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { EmployeesService } from '../../../services/employees.services';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Swal from 'sweetalert2';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   standalone: true,
@@ -19,6 +21,7 @@ import Swal from 'sweetalert2';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatPaginatorModule
   ],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
@@ -31,59 +34,43 @@ export class EmployeeListComponent implements OnInit {
   offset: number = 0;
   keyword: string = '';
 
-  employees$: any;
-  loading$: any;
-  currentPage: number = 1;
-  pageSize: number = 20;
-  employeeList: any = [];
+  employeeList: any[] = [];
   total_employees_count: number = 0;
   male_employees_count: number = 0;
   female_employees_count: number = 0;
   new_employees_count: number = 0;
 
-  constructor(
-    private employeeServicee: EmployeesService,
-    private router: Router
-  ) {}
-
-  getAllEmployeesFunction(lim: number, off: number, key: string) {
-    this.isLoading = true;
-    this.employeeServicee.getAllEmployees(lim, off, key).subscribe((data: any) => {
-        if (data.success) {
-          this.isLoading = false;
-          this.employeeList = data.data;
-          this.total_employees_count = data.statistics.total;
-          this.male_employees_count = data.statistics.male;
-          this.female_employees_count = data.statistics.female;
-          this.new_employees_count = data.statistics.newEmployees;
-        }
-      });
-  }
+  constructor(private employeeServicee: EmployeesService, private router: Router) {}
 
   ngOnInit(): void {
     this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
   }
 
-  get paginatedEmployees() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.employeeList.slice(start, start + this.pageSize);
+  getAllEmployeesFunction(lim: number, off: number, key: string) {
+    this.isLoading = true;
+    this.employeeServicee.getAllEmployees(lim, off, key).subscribe((data: any) => {
+      if (data.success) {
+        this.isLoading = false;
+        this.employeeList = data.data;
+        this.total_employees_count = data.statistics.total;
+        this.male_employees_count = data.statistics.male;
+        this.female_employees_count = data.statistics.female;
+        this.new_employees_count = data.statistics.newEmployees;
+      }
+    });
   }
 
-  get totalPages() {
-    return Math.ceil(this.employeeList.length / this.pageSize);
-  }
-
-  setPageSize(size: number) {
-    // this.pageSize = size;
-    // this.currentPage = 1;
-    this.getAllEmployeesFunction(size, this.offset, this.keyword);
+  onPageChange(event: PageEvent) {
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
   }
 
   onEditEmployee(employeeId: number) {
     this.router.navigate(['/main-page/hr/edit-employee', employeeId]);
   }
 
-  onDeleteEmployee(employeeId: number) { 
+  onDeleteEmployee(employeeId: number) {
     Swal.fire({
       icon: 'warning',
       title: 'Attention !',
@@ -93,32 +80,28 @@ export class EmployeeListComponent implements OnInit {
       cancelButtonText: 'Non',
       confirmButtonColor: '#28a745',
       cancelButtonColor: '#dc3545',
-      reverseButtons: false    
+      reverseButtons: false
     }).then((result) => {
       if (result.isConfirmed) {
         this.employeeServicee.deleteEmployee(Number(employeeId)).subscribe((data: any) => {
-            if (data.success) {
-              this.isLoading = false;
-              Swal.fire({
-                icon: 'success',
-                title: 'Succès',
-                text: "L'employé a été supprimé avec succès.",
-              }).then(() => {
-                this.getAllEmployeesFunction(
-                  this.limit,
-                  this.offset,
-                  this.keyword
-                );
-              });
-            } else {
-              this.isLoading = false;
-              Swal.fire({
-                icon: 'error',
-                title: 'Erreur',
-                text: "Une erreur s'est produite lors de la suppression de l'employé.",
-              });
-            }
-          });
+          if (data.success) {
+            this.isLoading = false;
+            Swal.fire({
+              icon: 'success',
+              title: 'Succès',
+              text: "L'employé a été supprimé avec succès.",
+            }).then(() => {
+              this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
+            });
+          } else {
+            this.isLoading = false;
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: "Une erreur s'est produite lors de la suppression de l'employé.",
+            });
+          }
+        });
       }
     });
   }
