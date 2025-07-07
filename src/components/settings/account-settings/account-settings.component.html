@@ -11,9 +11,7 @@
 <div *ngIf="flag" class="bg-white/40 backdrop-blur-sm relative max-h-screen px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Utilisateurs</h1>
 
-  <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-[9999]">
-    <mat-spinner diameter="80"></mat-spinner>
-  </div>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <div class="bg-white shadow-md rounded-lg overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
