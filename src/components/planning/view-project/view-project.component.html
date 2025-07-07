@@ -1,8 +1,6 @@
 <div class="relative p-6 max-w-6xl mx-auto">
 
-  <div *ngIf="isLoading" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-70 z-[9999]">
-    <mat-spinner diameter="100"></mat-spinner>
-  </div>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Détails du Projet</h1>
 

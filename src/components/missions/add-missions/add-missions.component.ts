@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MissionsService } from '../../../services/missions.services';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-add-missions',
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './add-missions.component.html',
   styleUrl: './add-missions.component.css'
 })

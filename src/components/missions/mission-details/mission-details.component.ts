@@ -8,14 +8,14 @@ import {
 import { MissionsService } from '../../../services/missions.services';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-mission-details',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './mission-details.component.html',
   styleUrl: './mission-details.component.css',
 })

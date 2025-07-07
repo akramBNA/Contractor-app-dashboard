@@ -5,10 +5,11 @@ import { ProjectsService } from '../../../services/projects.services';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-show-projects',
-  imports: [CommonModule, MatProgressSpinner, FormsModule, MatIconModule],
+  imports: [CommonModule, LoadingSpinnerComponent, FormsModule, MatIconModule],
   templateUrl: './show-projects.component.html',
   styleUrl: './show-projects.component.css',
 })

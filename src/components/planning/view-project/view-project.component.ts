@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { ProjectsService } from '../../../services/projects.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import Swal from 'sweetalert2';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-view-project',
-  imports: [CommonModule, MatProgressSpinner],
+  imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './view-project.component.html',
   styleUrl: './view-project.component.css',
 })

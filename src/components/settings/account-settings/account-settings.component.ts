@@ -2,16 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../services/users.services';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule, ReactiveFormsModule],
+  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css',
 })

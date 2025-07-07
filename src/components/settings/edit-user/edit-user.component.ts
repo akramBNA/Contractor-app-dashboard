@@ -8,12 +8,12 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Swal from 'sweetalert2';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-edit-user',
-  imports: [ReactiveFormsModule, CommonModule, MatProgressSpinnerModule],
+  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent],
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.css',
 })
