@@ -10,10 +10,11 @@ import { AuthService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 
 
 @Component({
-  imports: [ReactiveFormsModule, CommonModule, MatProgressSpinnerModule],
+  imports: [ReactiveFormsModule, CommonModule, MatProgressSpinnerModule, LoadingSpinnerComponent],
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
