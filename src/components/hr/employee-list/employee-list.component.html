@@ -1,10 +1,12 @@
 <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Employés</h1>
 
-<div *ngIf="isLoading" class="absolute inset-0 bg-white bg-opacity-70 z-50 flex items-center justify-center">
+<!-- <div *ngIf="isLoading" class="absolute inset-0 bg-white bg-opacity-70 z-50 flex items-center justify-center">
   <div class="p-4 rounded-full bg-white shadow-lg">
     <mat-spinner diameter="60"></mat-spinner>
   </div>
-</div>
+</div> -->
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
