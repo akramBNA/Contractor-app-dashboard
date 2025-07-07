@@ -1,6 +1,6 @@
 <div class="bg-white/40 backdrop-blur-sm relative px-4 py-8 max-h-screen">
 
-<app-loading-spinner>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
   <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Modifier l'utilisateur</h1>
 
