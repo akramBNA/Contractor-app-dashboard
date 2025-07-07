@@ -70,6 +70,17 @@ export class EmployeeListComponent implements OnInit {
     this.router.navigate(['/main-page/hr/edit-employee', employeeId]);
   }
 
+  onSearch() {
+  this.offset = 0;
+  this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
+ }
+
+  clearSearch() {
+    this.keyword = '';
+    this.offset = 0;
+    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
+ }
+
   onDeleteEmployee(employeeId: number) {
     Swal.fire({
       icon: 'warning',
