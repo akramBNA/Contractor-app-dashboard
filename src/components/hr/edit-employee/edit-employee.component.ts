@@ -3,14 +3,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmployeesService } from '../../../services/employees.services';
 import Swal from 'sweetalert2';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatProgressSpinnerModule, LoadingSpinnerComponent],
+  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent],
   selector: 'app-edit-employee',
   templateUrl: './edit-employee.component.html',
   styleUrls: ['./edit-employee.component.css'],

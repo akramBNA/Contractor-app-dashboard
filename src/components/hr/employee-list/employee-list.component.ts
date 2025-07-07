@@ -7,7 +7,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { EmployeesService } from '../../../services/employees.services';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import Swal from 'sweetalert2';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
@@ -21,7 +20,6 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
     FormsModule,
     MatIconModule,
     MatButtonModule,
-    MatProgressSpinnerModule,
     MatPaginatorModule,
     LoadingSpinnerComponent
   ],

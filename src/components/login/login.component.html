@@ -2,61 +2,29 @@
 
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
   
-    <div class="absolute top-30 text-white text-4xl font-semibold text-center w-full">
-      Welcome Back!
-    </div>
+    <div class="absolute top-30 text-white text-4xl font-semibold text-center w-full">Welcome Back!</div>
   
-    <form
-      (ngSubmit)="onSubmit()"
-      [formGroup]="loginForm"
-      class="bg-white bg-opacity-20 backdrop-blur-md rounded-2xl shadow-xl p-16 w-full max-w-md mx-4"
-    >
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="bg-white bg-opacity-20 backdrop-blur-md rounded-2xl shadow-xl p-16 w-full max-w-md mx-4">
       <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Login</h2>
   
       <div class="mb-5">
         <label for="user_email" class="block text-gray-800 font-medium mb-2">Email *</label>
-        <input
-          id="user_email"
-          type="email"
-          formControlName="user_email"
-          class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-          required
-        />
+        <input id="user_email" type="email" formControlName="user_email" class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500" required />
       </div>
   
       <div class="mb-6">
         <label for="user_password" class="block text-gray-800 font-medium mb-2">Password *</label>
-        <input
-          id="user_password"
-          type="password"
-          formControlName="user_password"
-          class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-          required
-        />
+        <input id="user_password" type="password" formControlName="user_password" class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500" required />
       </div>
   
-      <button
-        type="submit"
-        [disabled]="loginForm.invalid"
-        class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer"
-      >
-        Login
-      </button>
+      <button type="submit" [disabled]="loginForm.invalid" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer">Login</button>
   
-      <div *ngIf="loginError" class="text-red-500 text-sm mt-4 text-center">
-        {{ loginError }}
-      </div>
+      <div *ngIf="loginError" class="text-red-500 text-sm mt-4 text-center">{{ loginError }}</div>
     </form>
   
     <footer class="absolute bottom-4 text-white text-sm text-center w-full px-4">
       Developed with love ❤️ by
-      <a
-        href="https://akrambna.github.io/My-Web-Resume/"
-        target="_blank"
-        class="font-semibold no-underline hover:text-yellow-300 transition"
-      >
-        Akram Benaoun
-      </a> © {{ current_year }}
+      <a href="https://akrambna.github.io/My-Web-Resume/" target="_blank" class="font-semibold no-underline hover:text-yellow-300 transition">Akram Benaoun</a> © {{ current_year }}
     </footer>
 </div>
   

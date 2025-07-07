@@ -8,13 +8,12 @@ import {
 } from '@angular/forms';
 import { EmployeesService } from '../../../services/employees.services';
 import Swal from 'sweetalert2';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-add-employee',
-  imports: [CommonModule, ReactiveFormsModule, MatProgressSpinnerModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
   templateUrl: './add-employee.component.html',
   styleUrl: './add-employee.component.css',
 })

@@ -4,12 +4,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { SalariesService } from '../../../services/salaries.services';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 
 @Component({
   selector: 'app-salaries',
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatPaginatorModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatPaginatorModule, LoadingSpinnerComponent],
   templateUrl: './salaries.component.html',
   styleUrl: './salaries.component.css',
 })
