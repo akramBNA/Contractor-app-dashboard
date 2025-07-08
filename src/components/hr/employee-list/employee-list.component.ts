@@ -13,6 +13,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   standalone: true,
@@ -24,7 +26,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
     MatButtonModule,
     MatPaginatorModule,
     LoadingSpinnerComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
