@@ -3,3 +3,24 @@ mat-form-field {
   width: 100%;
   border-radius: 8px;
 }
+
+.clear-icon-button {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  height: auto !important;
+  width: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-icon-button mat-icon {
+  color: #4b5563;
+  transition: color 0.2s ease;
+}
+
+.clear-icon-button:hover mat-icon {
+  color: #dc2626;
+}

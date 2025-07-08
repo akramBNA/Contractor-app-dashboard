@@ -24,14 +24,12 @@
 <mat-form-field class="w-full sm:w-1/3" appearance="fill">
   <mat-label>Rechercher..</mat-label>
   <input matInput type="text" [formControl]="keyword" placeholder="Tapez un nom..." />
-  @if (keyword.value) {
-    <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
-      <mat-icon>close</mat-icon>
-    </button>
-  }
+    @if (keyword.value) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()" disableRipple class="clear-icon-button">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
 </mat-form-field>
-
-
 
 <div class="bg-white shadow-md rounded-lg p-4">
   <table class="min-w-full divide-y divide-gray-200">
