@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -21,7 +23,8 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
     MatIconModule,
     MatButtonModule,
     MatPaginatorModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    ReactiveFormsModule
   ],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
@@ -32,7 +35,7 @@ export class EmployeeListComponent implements OnInit {
 
   limit: number = 20;
   offset: number = 0;
-  keyword: string = '';
+  keyword = new FormControl('');
 
   employeeList: any[] = [];
   total_employees_count: number = 0;
@@ -43,7 +46,12 @@ export class EmployeeListComponent implements OnInit {
   constructor(private employeeServicee: EmployeesService, private router: Router) {}
 
   ngOnInit(): void {
-    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
+    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword.value ?? '');
+
+    this.keyword.valueChanges.pipe(debounceTime(500),distinctUntilChanged()).subscribe((value: string | null) => {
+      this.offset = 0;
+      this.getAllEmployeesFunction(this.limit, this.offset, (value ?? '').trim());
+    });
   }
 
   getAllEmployeesFunction(lim: number, off: number, key: string) {
@@ -63,23 +71,24 @@ export class EmployeeListComponent implements OnInit {
   onPageChange(event: PageEvent) {
     this.limit = event.pageSize;
     this.offset = event.pageIndex * event.pageSize;
-    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
+    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword.value ?? '');
   }
 
   onEditEmployee(employeeId: number) {
     this.router.navigate(['/main-page/hr/edit-employee', employeeId]);
   }
 
-  onSearch() {
+onSearch() {
   this.offset = 0;
-  this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
- }
+  this.getAllEmployeesFunction(this.limit, this.offset, this.keyword.value ?? '');
+}
 
-  clearSearch() {
-    this.keyword = '';
-    this.offset = 0;
-    this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
- }
+clearSearch() {
+  this.keyword.setValue('');
+  this.offset = 0;
+  this.getAllEmployeesFunction(this.limit, this.offset, '');
+}
+
 
   onDeleteEmployee(employeeId: number) {
     Swal.fire({
@@ -102,7 +111,7 @@ export class EmployeeListComponent implements OnInit {
               title: 'Succès',
               text: "L'employé a été supprimé avec succès.",
             }).then(() => {
-              this.getAllEmployeesFunction(this.limit, this.offset, this.keyword);
+              this.getAllEmployeesFunction(this.limit, this.offset, this.keyword.value ?? '');
             });
           } else {
             this.isLoading = false;
