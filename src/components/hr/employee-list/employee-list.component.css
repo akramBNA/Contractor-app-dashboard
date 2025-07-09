@@ -1,7 +1,7 @@
 mat-form-field {
-  max-width: 355px;
+  max-width: full-width;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 8px; 
 }
 
 .clear-icon-button {
