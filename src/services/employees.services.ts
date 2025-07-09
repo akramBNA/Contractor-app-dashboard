@@ -33,4 +33,8 @@ export class EmployeesService {
   deleteEmployee(id: number): Observable<any> {
     return this.http.delete<any>(`${this.base_url}/employees/deleteEmployee/${id}`);
   }
+
+  getAllActiveEmployeesNames(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.base_url}/employees/getAllActiveEmployeesNames/`);
+  }
 }
