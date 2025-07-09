@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { MissionsService } from '../../../services/missions.services';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { EmployeesService } from '../../../services/employees.services';
 
 @Component({
   selector: 'app-add-missions',
@@ -20,7 +21,7 @@ export class AddMissionsComponent implements OnInit{
    constructor(
     private fb: FormBuilder,
     private missionService: MissionsService,
-    // private employeeService: EmployeesService,
+    private employeeService: EmployeesService,
     private router: Router
   ) {
     this.missionForm = this.fb.group({
@@ -35,6 +36,13 @@ export class AddMissionsComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.getAllActiveEmployeesNames();
+  }
+
+  getAllActiveEmployeesNames() {
+    this.employeeService.getAllActiveEmployeesNames().subscribe((data:any) => {
+      this.employeesList = data.data;
+    })
   }
 
   onSubmitMission() {}
