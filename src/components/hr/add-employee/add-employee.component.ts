@@ -10,15 +10,30 @@ import { EmployeesService } from '../../../services/employees.services';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { MatInputModule } from "@angular/material/input";
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import {
+  MatDatepicker,
+  MatDatepickerModule,
+} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-add-employee',
-  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent, MatInputModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatOptionModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    LoadingSpinnerComponent,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
   templateUrl: './add-employee.component.html',
   styleUrl: './add-employee.component.css',
 })
@@ -71,16 +86,22 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  onSubmitAll() {
-    if (
-      this.employeeForm.valid &&
-      this.contactForm.valid &&
-      this.bankDetailsForm.valid
-    ) {
+  formatDate(date: any): string | null {
+  if (!date) return null;
+  const d = new Date(date);
+  return d.toISOString().split('T')[0];
+  }
+
+  onSubmitAll() {    
+    if ( this.employeeForm.valid && this.contactForm.valid && this.bankDetailsForm.valid ) {
+
       const payload = {
         ...this.employeeForm.value,
         ...this.contactForm.value,
         ...this.bankDetailsForm.value,
+        employee_birth_date: this.formatDate(this.employeeForm.value.employee_birth_date),
+        employee_joining_date: this.formatDate(this.employeeForm.value.employee_joining_date),
+        employee_end_date: this.formatDate(this.employeeForm.value.employee_end_date),
       };
       this.employeeService.addOneEmployee(payload).subscribe((data: any) => {
         this.isLoading = true;

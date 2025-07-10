@@ -47,7 +47,9 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Date de Naissance</mat-label>
-        <input matInput formControlName="employee_birth_date" type="date" />
+        <input matInput [matDatepicker]="birthPicker" formControlName="employee_birth_date" />
+        <mat-datepicker-toggle matSuffix [for]="birthPicker"></mat-datepicker-toggle>
+        <mat-datepicker #birthPicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
@@ -67,12 +69,16 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Date de Début</mat-label>
-        <input matInput formControlName="employee_joining_date" type="date" />
+        <input matInput [matDatepicker]="joinPicker" formControlName="employee_joining_date" />
+        <mat-datepicker-toggle matSuffix [for]="joinPicker"></mat-datepicker-toggle>
+        <mat-datepicker #joinPicker></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>Date de la Fin</mat-label>
-        <input matInput formControlName="employee_end_date" type="date" />
+        <input matInput [matDatepicker]="endPicker" formControlName="employee_end_date" />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
       </mat-form-field>
     </div>
   </div>
