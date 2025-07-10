@@ -6,73 +6,74 @@
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations Générales</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="form-group">
-        <label>Prénom</label>
-        <input formControlName="employee_name" type="text" class="input" />
-      </div>
-      <div class="form-group">
-        <label>Nom</label>
-        <input formControlName="employee_lastname" type="text" class="input" />
-      </div>
-      <div class="form-group">
-        <label>N° de Téléphone</label>
-        <input
-          formControlName="employee_phone_number"
-          type="text"
-          class="input"
-        />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input formControlName="employee_email" type="email" class="input" />
-      </div>
-      <div class="form-group">
-        <label>Adresse</label>
-        <input formControlName="employee_address" type="text" class="input" />
-      </div>
-      <div class="form-group">
-        <label>CIN</label>
-        <input
-          formControlName="employee_national_id"
-          type="text"
-          class="input"
-        />
-      </div>
-      <div class="form-group">
-        <label>Sexe</label>
-        <select formControlName="employee_gender" class="input">
-          <option value="">-- Sélectionner --</option>
-          <option value="Male">Homme</option>
-          <option value="Female">Femme</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Date de Naissance</label>
-        <input
-          formControlName="employee_birth_date"
-          type="date"
-          class="input"
-        />
-      </div>
-      <div class="form-group">
-        <label>Titre d'Emploi</label>
-            <select formControlName="employee_job_title" class="input">
-              <option value="">-- Sélectionner --</option>
-              <option *ngFor="let jobs of jobs_data" [value]="jobs.job_name">{{ jobs.job_name }}</option>
-            </select>
-      </div>
-      <div class="form-group">
-        <label>Matricule</label>
-        <input formControlName="employee_matricule" type="text" class="input" />
-      </div>
-      <div class="form-group">
-        <label>Date de Début</label>
-        <input formControlName="employee_joining_date" type="date" class="input" />
-      </div>
-      <div >
-        <label>Date de la Fin: </label>
-        <input formControlName="employee_end_date" type="date" class="input" />
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Prénom</mat-label>
+        <input matInput formControlName="employee_name" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="employee_lastname" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>N° de Téléphone</mat-label>
+        <input matInput formControlName="employee_phone_number" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="employee_email" type="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Adresse</mat-label>
+        <input matInput formControlName="employee_address" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>CIN</mat-label>
+        <input matInput formControlName="employee_national_id" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Sexe</mat-label>
+        <mat-select formControlName="employee_gender">
+          <mat-option value="">-- Sélectionner --</mat-option>
+          <mat-option value="Male">Homme</mat-option>
+          <mat-option value="Female">Femme</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Naissance</mat-label>
+        <input matInput formControlName="employee_birth_date" type="date" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Titre d'Emploi</mat-label>
+        <mat-select formControlName="employee_job_title">
+          <mat-option value="">-- Sélectionner --</mat-option>
+          <mat-option *ngFor="let jobs of jobs_data" [value]="jobs.job_name">
+            {{ jobs.job_name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Matricule</mat-label>
+        <input matInput formControlName="employee_matricule" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Début</mat-label>
+        <input matInput formControlName="employee_joining_date" type="date" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date de la Fin</mat-label>
+        <input matInput formControlName="employee_end_date" type="date" />
+      </mat-form-field>
     </div>
   </div>
 </form>
@@ -81,19 +82,20 @@
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations du Contrat</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="form-group">
-        <label>Type du Contrat</label>
-        <select formControlName="contract_type_id" class="input">
-          <option value="">-- Sélectionner --</option>
-          <option *ngFor="let contract of contract_types_data" [value]="contract.contract_type_id">
+      <mat-form-field appearance="fill">
+        <mat-label>Type du Contrat</mat-label>
+        <mat-select formControlName="contract_type_id">
+          <mat-option value="">-- Sélectionner --</mat-option>
+          <mat-option *ngFor="let contract of contract_types_data" [value]="contract.contract_type_id">
             {{ contract.contract_name }}
-          </option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Salaire</label>
-        <input formControlName="salary" type="number" class="input" />
-      </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Salaire</mat-label>
+        <input matInput formControlName="salary" type="number" />
+      </mat-form-field>
     </div>
   </div>
 </form>
@@ -102,65 +104,60 @@
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations Bancaires</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="form-group">
-        <label>Nom & Prénom</label>
-        <input
-          formControlName="account_holder_name"
-          type="text"
-          class="input"
-        />
-      </div>
-      <div class="form-group">
-        <label>N° de Compte</label>
-        <input formControlName="account_number" type="text" class="input" />
-      </div>
-      <div class="form-group">
-      <label>Banque:</label>
-      <select formControlName="bank_name" class="input">
-        <option value="">-- Sélectionner --</option>
-        <option value="BNA">BNA</option>
-        <option value="BH">BH</option>
-        <option value="BIAT">BIAT</option>
-        <option value="AMEN">AMEN</option>
-        <option value="BT">BT</option>
-        <option value="ATB">ATB</option>
-        <option value="BTS">BTS</option>
-        <option value="UIB">UIB</option>
-        <option value="TSB">TSB</option>
-        <option value="ABC">ABC</option>
-        <option value="BFT">BFT</option>
-        <option value="UBCI">UBCI</option>
-        <option value="STB">STB</option>
-        <option value="ZITOUNA">ZITOUNA</option>
-        <option value="BTK">BTK</option>
-        <option value="ATTIJARI">ATTIJARI</option>
-        <option value="BTL">BTL</option>
-        <option value="ALBARAKA">ALBARAKA</option>
-        <option value="BTE">BTE</option>
-        <option value="CITI">CITI</option>
-        <option value="QNB">QNB</option>
-        <option value="BFPME">BFPME</option>
-        <option value="ALWIFAK">ALWIFAK</option>
-        <option value="La POSTE">La POSTE</option>
-      </select>
-      </div>
-      <div class="form-group">
-        <label>Branche</label>
-        <input formControlName="branch_location" type="text" class="input" />
-      </div>
-      <div class="form-group">
-        <label>Identificateur Fiscale</label>
-        <input formControlName="tax_payer_id" type="text" class="input" />
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Nom & Prénom</mat-label>
+        <input matInput formControlName="account_holder_name" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>N° de Compte</mat-label>
+        <input matInput formControlName="account_number" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Banque</mat-label>
+        <mat-select formControlName="bank_name">
+          <mat-option value="">-- Sélectionner --</mat-option>
+          <mat-option value="BNA">BNA</mat-option>
+          <mat-option value="BH">BH</mat-option>
+          <mat-option value="BIAT">BIAT</mat-option>
+          <mat-option value="AMEN">AMEN</mat-option>
+          <mat-option value="BT">BT</mat-option>
+          <mat-option value="ATB">ATB</mat-option>
+          <mat-option value="BTS">BTS</mat-option>
+          <mat-option value="UIB">UIB</mat-option>
+          <mat-option value="TSB">TSB</mat-option>
+          <mat-option value="ABC">ABC</mat-option>
+          <mat-option value="BFT">BFT</mat-option>
+          <mat-option value="UBCI">UBCI</mat-option>
+          <mat-option value="STB">STB</mat-option>
+          <mat-option value="ZITOUNA">ZITOUNA</mat-option>
+          <mat-option value="BTK">BTK</mat-option>
+          <mat-option value="ATTIJARI">ATTIJARI</mat-option>
+          <mat-option value="BTL">BTL</mat-option>
+          <mat-option value="ALBARAKA">ALBARAKA</mat-option>
+          <mat-option value="BTE">BTE</mat-option>
+          <mat-option value="CITI">CITI</mat-option>
+          <mat-option value="QNB">QNB</mat-option>
+          <mat-option value="BFPME">BFPME</mat-option>
+          <mat-option value="ALWIFAK">ALWIFAK</mat-option>
+          <mat-option value="La POSTE">La POSTE</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Branche</mat-label>
+        <input matInput formControlName="branch_location" type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Identificateur Fiscale</mat-label>
+        <input matInput formControlName="tax_payer_id" type="text" />
+      </mat-form-field>
     </div>
   </div>
 </form>
 
 <div class="text-center pt-6">
-  <button
-    type="button"
-    (click)="onSubmitAll()"
-    class="btn-add">
-    Ajouter
-  </button>
+  <button (click)="onSubmitAll()" class="btn-add">Ajouter</button>
 </div>

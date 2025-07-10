@@ -10,10 +10,15 @@ import { EmployeesService } from '../../../services/employees.services';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { MatInputModule } from "@angular/material/input";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-add-employee',
-  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent, MatInputModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatOptionModule],
   templateUrl: './add-employee.component.html',
   styleUrl: './add-employee.component.css',
 })
