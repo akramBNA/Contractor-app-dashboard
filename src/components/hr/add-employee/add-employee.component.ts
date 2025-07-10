@@ -106,8 +106,8 @@ export class AddEmployeeComponent implements OnInit {
       });
     } else {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
+        icon: 'warning',
+        title: 'Attention',
         text: 'Veuillez remplir tous les champs obligatoires',
       }).then(() => {
         this.employeeForm.markAllAsTouched();
