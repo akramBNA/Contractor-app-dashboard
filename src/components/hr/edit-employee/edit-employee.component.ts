@@ -6,10 +6,17 @@ import { CommonModule } from '@angular/common';
 import { EmployeesService } from '../../../services/employees.services';
 import Swal from 'sweetalert2';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent],
+  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent, MatFormFieldModule,MatSelectModule, MatOptionModule, MatDatepickerModule, MatInputModule, MatButtonModule, MatNativeDateModule],
   selector: 'app-edit-employee',
   templateUrl: './edit-employee.component.html',
   styleUrls: ['./edit-employee.component.css'],
@@ -116,12 +123,21 @@ form: any;
       });
   }
 
-  UpdateEmployee() {
+  formatDate(date: any): string | null {
+    if (!date) return null;
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
+  }
+
+  UpdateEmployee() {    
     this.isLoading = true;
     const updatedEmployeeData = {
       ...this.employeeForm.value,
       ...this.contactForm.value,
       ...this.bankDetailsForm.value,
+      employee_birth_date: this.formatDate(this.employeeForm.value.employee_birth_date),
+      employee_joining_date: this.formatDate(this.employeeForm.value.employee_joining_date),
+      employee_end_date: this.formatDate(this.employeeForm.value.employee_end_date),
     };
     
     if(this.employeeForm.valid || this.contactForm.valid || this.bankDetailsForm.valid) {
