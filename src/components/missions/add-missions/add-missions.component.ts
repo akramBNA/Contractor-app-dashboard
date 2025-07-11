@@ -34,7 +34,7 @@ export class AddMissionsComponent implements OnInit{
       date_fin: ['', Validators.required],
       priorite: ['', Validators.required],
       frais: ['', [Validators.required, Validators.min(0)]],
-      employe_id: ['', Validators.required],
+      employe_id: [[], Validators.required],
     });
   }
 
