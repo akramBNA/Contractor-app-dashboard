@@ -75,17 +75,12 @@ export class AddMissionsComponent implements OnInit {
   }
 
   onSubmitMission() {
-
     const formData = {
       ...this.missionForm.value,
       date_debut: this.formatDate(this.missionForm.value.date_debut),
       date_fin: this.formatDate(this.missionForm.value.date_fin),
-    }
+    };
 
-    console.log("Mission Form Value: ", formData);
-    console.log("Mission Form Valid: ", this.missionForm.valid);
-    
-    
     if (!this.missionForm.valid) {
       Swal.fire({
         title: 'Attention',
@@ -95,30 +90,28 @@ export class AddMissionsComponent implements OnInit {
       });
     }
 
-      this.missionService.addMission(formData).subscribe((data: any) => {
-        console.log("data: ", data);
-        
-          this.isLoading = true;
-          if (data.success) {
-            this.isLoading = false;
-            Swal.fire({
-              title: 'Succès',
-              text: 'Mission ajoutée avec succès',
-              icon: 'success',
-              confirmButtonText: 'OK',
-            }).then(() => {
-              this.missionForm.reset();
-              this.router.navigate(['/missions']);
-            });
-          } else {
-            this.isLoading = false;
-            Swal.fire({
-              title: 'Erreur',
-              text: "Une erreur s'est produite lors de l'ajout de la mission",
-              icon: 'error',
-              confirmButtonText: 'OK',
-            });
-          }
+    this.missionService.addMission(formData).subscribe((data: any) => {
+      this.isLoading = true;
+      if (data.success) {
+        this.isLoading = false;
+        Swal.fire({
+          title: 'Succès',
+          text: 'Mission ajoutée avec succès',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          this.missionForm.reset();
+          this.router.navigate(['/main-page/missions/missions-list']);
         });
-    }
+      } else {
+        this.isLoading = false;
+        Swal.fire({
+          title: 'Erreur',
+          text: "Une erreur s'est produite lors de l'ajout de la mission",
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      }
+    });
   }
+}
