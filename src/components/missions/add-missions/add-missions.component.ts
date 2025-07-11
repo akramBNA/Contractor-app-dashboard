@@ -6,10 +6,13 @@ import Swal from 'sweetalert2';
 import { MissionsService } from '../../../services/missions.services';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { EmployeesService } from '../../../services/employees.services';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-add-missions',
-  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent, MatFormFieldModule, MatInputModule, MatSelectModule],
   templateUrl: './add-missions.component.html',
   styleUrl: './add-missions.component.css'
 })

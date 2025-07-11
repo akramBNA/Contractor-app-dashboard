@@ -7,51 +7,51 @@
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Détails de la Mission</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="form-group">
-        <label>Nom de la Mission</label>
-        <input formControlName="mission_nom" type="text" class="input" />
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Nom de la Mission</mat-label>
+        <input matInput formControlName="mission_nom" />
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Assigné à</label>
-        <select formControlName="employe_id" class="input">
-          <option value="">-- Sélectionner un Employé --</option>
-          <option *ngFor="let emp of employeesList" [value]="emp.employee_id">
+      <mat-form-field appearance="fill">
+        <mat-label>Assigné à</mat-label>
+        <mat-select formControlName="employe_id">
+          <mat-option value="">-- Sélectionner un Employé --</mat-option>
+          <mat-option *ngFor="let emp of employeesList" [value]="emp.employee_id">
             {{ emp.employee_name }} {{ emp.employee_lastname }}
-          </option>
-        </select>
-      </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Date de Début</label>
-        <input formControlName="date_debut" type="date" class="input" />
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Début</mat-label>
+        <input matInput type="date" formControlName="date_debut" />
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Date de Fin</label>
-        <input formControlName="date_fin" type="date" class="input" />
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Fin</mat-label>
+        <input matInput type="date" formControlName="date_fin" />
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Frais</label>
-        <input formControlName="frais" type="number" class="input" />
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Frais</mat-label>
+        <input matInput type="number" formControlName="frais" />
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Priorité</label>
-        <select formControlName="priorite" class="input">
-          <option value="">-- Sélectionner --</option>
-          <option value="LOW">Faible</option>
-          <option value="MEDIUM">Moyenne</option>
-          <option value="HIGH">Élevée</option>
-        </select>
-      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Priorité</mat-label>
+        <mat-select formControlName="priorite">
+          <mat-option value="">-- Sélectionner --</mat-option>
+          <mat-option value="LOW">Faible</mat-option>
+          <mat-option value="MEDIUM">Moyenne</mat-option>
+          <mat-option value="HIGH">Élevée</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
-    <div class="form-group w-full md:w-1/2">
-        <label>Description</label>
-        <textarea formControlName="mission_description" class="input h-32 resize-none"></textarea>
-    </div>
+    <mat-form-field appearance="fill" class="w-full md:w-1/2">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="mission_description" rows="6"></textarea>
+    </mat-form-field>
   </div>
 
   <div class="text-center pt-6">
