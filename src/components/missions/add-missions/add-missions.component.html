@@ -14,8 +14,7 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Assigné à</mat-label>
-        <mat-select formControlName="employe_id">
-          <mat-option value="">-- Sélectionner un Employé --</mat-option>
+        <mat-select formControlName="employe_id" multiple>
           <mat-option *ngFor="let emp of employeesList" [value]="emp.employee_id">
             {{ emp.employee_name }} {{ emp.employee_lastname }}
           </mat-option>
