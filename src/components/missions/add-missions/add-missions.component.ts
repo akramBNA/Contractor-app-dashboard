@@ -6,12 +6,18 @@ import Swal from 'sweetalert2';
 import { MissionsService } from '../../../services/missions.services';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { EmployeesService } from '../../../services/employees.services';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
+
 
 @Component({
   selector: 'app-add-missions',
-  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent, MatFormFieldModule, MatInputModule, MatSelectModule, MatIconModule, MatChipsModule],
   templateUrl: './add-missions.component.html',
-  styleUrl: './add-missions.component.css'
+  styleUrls: ['./add-missions.component.css']
 })
 export class AddMissionsComponent implements OnInit{
   missionForm: FormGroup;
@@ -31,7 +37,7 @@ export class AddMissionsComponent implements OnInit{
       date_fin: ['', Validators.required],
       priorite: ['', Validators.required],
       frais: ['', [Validators.required, Validators.min(0)]],
-      employe_id: ['', Validators.required],
+      employe_id: [[], Validators.required],
     });
   }
 
