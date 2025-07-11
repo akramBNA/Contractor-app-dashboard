@@ -26,6 +26,6 @@ export const appConfig: ApplicationConfig = {
     // provideStore({ employees: employeesReducer }),
     // provideState('employees', employeesReducer),
     // provideEffects(EmployeesEffects),
-    importProvidersFrom(MatDatepickerModule, MatNativeDateModule),
+    importProvidersFrom(MatDatepickerModule, MatNativeDateModule ),
   ],
 };
