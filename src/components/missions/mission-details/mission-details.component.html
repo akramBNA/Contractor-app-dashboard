@@ -1,73 +1,105 @@
-<h1  class="text-3xl font-bold text-gray-800 mb-8 text-center">Détails de la Mission</h1>
+<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Détails de la Mission</h1>
 
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-<form #pdfContent id="pdfContent" *ngIf="missionForm" [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
+<form
+  #pdfContent
+  id="pdfContent"
+  *ngIf="missionForm"
+  [formGroup]="missionForm"
+  class="space-y-12 px-6 md:px-12"
+>
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations de la Mission</h2>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">
+      Informations de la Mission
+    </h2>
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <div class="form-group">
-        <label>Nom de la Mission:</label>
-        <input formControlName="mission_name" type="text" class="input" />
-      </div>
+      <!-- Nom de la Mission -->
+      <mat-form-field appearance="fill">
+        <mat-label>Nom de la Mission</mat-label>
+        <input matInput formControlName="mission_name" />
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Description:</label>
-        <input formControlName="mission_description" type="text" class="input" />
-      </div>
+      <!-- Description -->
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="mission_description" rows="3"></textarea>
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Date de Début:</label>
-        <input formControlName="start_at" type="date" class="input" />
-      </div>
+      <!-- Date de Début -->
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Début</mat-label>
+        <input
+          matInput
+          [matDatepicker]="startPicker"
+          formControlName="start_at"
+        />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Date de Fin:</label>
-        <input formControlName="end_at" type="date" class="input" />
-      </div>
+      <!-- Date de Fin -->
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Fin</mat-label>
+        <input
+          matInput
+          [matDatepicker]="endPicker"
+          formControlName="end_at"
+        />
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Priorité:</label>
-        <select formControlName="priority" class="input">
-          <option value="">-- Sélectionner --</option>
-          <option value="LOW">Faible</option>
-          <option value="MEDIUM">Moyenne</option>
-          <option value="HIGH">Élevée</option>
-        </select>
-      </div>
+      <!-- Priorité -->
+      <mat-form-field appearance="fill">
+        <mat-label>Priorité</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option value="">-- Sélectionner --</mat-option>
+          <mat-option value="LOW">Faible</mat-option>
+          <mat-option value="MEDIUM">Moyenne</mat-option>
+          <mat-option value="HIGH">Élevée</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <div class="form-group">
-        <label>Frais (TND):</label>
-        <input formControlName="expenses" type="number" class="input" />
-      </div>
+      <!-- Frais -->
+      <mat-form-field appearance="fill">
+        <mat-label>Frais (TND)</mat-label>
+        <input matInput type="number" formControlName="expenses" />
+      </mat-form-field>
+
+      <mat-card class="mt-8">
+        <mat-card-title>Employés Assignés</mat-card-title>
+        <mat-card-content>
+          <mat-chip-grid>
+            <mat-chip
+              *ngFor="let emp of missionData?.assigned_employees"
+              color="primary"
+              selected
+            >
+              {{ emp.employee_name }} {{ emp.employee_lastname }}
+            </mat-chip>
+          </mat-chip-grid>
+        </mat-card-content>
+      </mat-card>
 
     </div>
   </div>
 </form>
 
+<!-- Custom buttons (unchanged styling) -->
 <div class="text-center pt-6">
   <div class="flex flex-col md:flex-row justify-center items-center gap-4">
-    <button
-      type="button"
-      (click)="updateMission()"
-      class="btn-edit">
+    <button type="button" (click)="updateMission()" class="btn-edit">
       Modifier
     </button>
 
-    <button
-        type="button"
-        (click)="downloadPDF()"
-        class="btn-add">
-        Télécharger PDF
+    <button type="button" (click)="downloadPDF()" class="btn-add">
+      Télécharger PDF
     </button>
 
-    <button
-      type="button"
-      (click)="goBack()"
-      class="btn-cancel">
+    <button type="button" (click)="goBack()" class="btn-cancel">
       Annuler
     </button>
   </div>
 </div>
-

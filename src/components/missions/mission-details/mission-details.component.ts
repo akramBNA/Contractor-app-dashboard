@@ -11,17 +11,28 @@ import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
+
+
 
 @Component({
   selector: 'app-mission-details',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatChipsModule, MatCardModule],
   templateUrl: './mission-details.component.html',
   styleUrl: './mission-details.component.css',
 })
 export class MissionDetailsComponent implements OnInit {
   isLoading: boolean = false;
   missionForm!: FormGroup;
+  missionData:any = [];
 
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
@@ -54,12 +65,12 @@ export class MissionDetailsComponent implements OnInit {
 
   getMissionDetails(missionId: string) {
     this.isLoading = true;
-    this.missionsService
-      .getMissionById(missionId)
-      .subscribe((response: any) => {
+    this.missionsService.getMissionById(missionId).subscribe((response: any) => {
         this.isLoading = false;
         if (response.success) {
           const mission = response.data;
+          this.missionData = response.data;
+          
           this.missionForm.patchValue({
             mission_name: mission.mission_name,
             mission_description: mission.mission_description,
