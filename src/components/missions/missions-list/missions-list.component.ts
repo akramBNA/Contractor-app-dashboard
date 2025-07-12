@@ -41,7 +41,6 @@ export class MissionsListComponent {
         this.missions_data = data.data;
       } else {
         this.isLoading = false;
-        console.log('No missions found !\nInternal log: ', data.message);
       }
     });
   }

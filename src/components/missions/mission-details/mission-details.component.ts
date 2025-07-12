@@ -34,6 +34,7 @@ export class MissionDetailsComponent implements OnInit {
   isLoading: boolean = false;
   missionForm!: FormGroup;
   missionData:any = [];
+  assignedEmployees: any[] = [];
 
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
@@ -69,16 +70,18 @@ export class MissionDetailsComponent implements OnInit {
     this.missionsService.getMissionById(missionId).subscribe((response: any) => {
         this.isLoading = false;
         if (response.success) {
-          const mission = response.data;
           this.missionData = response.data;
           
+          this.assignedEmployees = Array.isArray(this.missionData?.assigned_employees) ? this.missionData.assigned_employees : [];
+          this.assignedEmployees= this.missionData?.assigned_employees;
+          
           this.missionForm.patchValue({
-            mission_name: mission.mission_name,
-            mission_description: mission.mission_description,
-            start_at: mission.start_at,
-            end_at: mission.end_at,
-            priority: mission.priority,
-            expenses: mission.expenses,
+            mission_name: this.missionData.mission_name,
+            mission_description: this.missionData.mission_description,
+            start_at: this.missionData.start_at,
+            end_at: this.missionData.end_at,
+            priority: this.missionData.priority,
+            expenses: this.missionData.expenses,
           });
         } else {
           console.error('No mission found', response.message);

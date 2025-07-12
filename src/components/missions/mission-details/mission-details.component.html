@@ -58,7 +58,10 @@
         <mat-card-title>Employés Assignés</mat-card-title>
         <mat-card-content>
           <mat-chip-grid>
-            <mat-chip *ngFor="let emp of missionData?.assigned_employees" color="primary" selected> {{ emp.employee_name }} {{ emp.employee_lastname }}</mat-chip>
+              <mat-chip-row *ngIf="assignedEmployees.length === 0">
+                Aucun employé assigné
+              </mat-chip-row>
+            <mat-chip *ngFor="let emp of assignedEmployees" color="primary" selected> {{ emp.employee_name }} {{ emp.employee_lastname }} </mat-chip>
           </mat-chip-grid>
         </mat-card-content>
       </mat-card>
