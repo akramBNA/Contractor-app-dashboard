@@ -18,4 +18,7 @@ export class MissionsService {
     addMission(missionData: any): Observable<any> {
       return this.http.post<any>(`${this.base_url}/missions/addMission/`, missionData);
     };
+    editMission(missionId: string, missionData: any): Observable<any> {
+      return this.http.put<any>(`${this.base_url}/missions/editMission/${missionId}`, missionData);
+    };
 }
