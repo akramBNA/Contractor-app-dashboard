@@ -21,6 +21,7 @@ import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -35,6 +36,8 @@ export class MissionDetailsComponent implements OnInit {
   missionForm!: FormGroup;
   missionData:any = [];
   assignedEmployees: any[] = [];
+  temp_emp_ids: any[] = [];
+  mission_id: string = '';
 
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
@@ -56,24 +59,32 @@ export class MissionDetailsComponent implements OnInit {
 
   initForm() {
     this.missionForm = this.fb.group({
+      mission_id: [''],
       mission_name: ['', Validators.required],
       mission_description: [''],
       start_at: ['', Validators.required],
       end_at: [''],
       priority: ['', Validators.required],
       expenses: [0, [Validators.required, Validators.min(0)]],
+      employee_id: []
     });
   }
 
   getMissionDetails(missionId: string) {
     this.isLoading = true;
     this.missionsService.getMissionById(missionId).subscribe((response: any) => {
-        this.isLoading = false;
-        if (response.success) {
+      if (response.success) {
+          this.isLoading = false;
           this.missionData = response.data;
           
           this.assignedEmployees = Array.isArray(this.missionData?.assigned_employees) ? this.missionData.assigned_employees : [];
           this.assignedEmployees= this.missionData?.assigned_employees;
+
+          for(let i = 0; i < this.assignedEmployees.length; i++) {
+            this.temp_emp_ids.push(this.assignedEmployees[i].employee_id);
+          }
+          
+          this.mission_id = response.data.mission_id;
           
           this.missionForm.patchValue({
             mission_name: this.missionData.mission_name,
@@ -82,14 +93,59 @@ export class MissionDetailsComponent implements OnInit {
             end_at: this.missionData.end_at,
             priority: this.missionData.priority,
             expenses: this.missionData.expenses,
-          });
+            employee_id: this.temp_emp_ids
+          });          
         } else {
-          console.error('No mission found', response.message);
+          this.isLoading = false;
+          Swal.fire({
+            title: 'Erreur',
+            text: 'Une erreur s\'est produit !.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            this.router.navigate(['/main-page/missions/missions-list']);
+          });
         }
       });
   }
 
-  updateMission() {}
+  updateMission() {
+    this.isLoading = true;
+
+    if(!this.missionForm.valid) {
+      this.isLoading = false;
+      Swal.fire({
+        title: 'Attention',
+        text: 'Veuiller controlez vos données.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      }).then(() => {
+      })
+    }
+
+    this.missionsService.editMission(this.mission_id, this.missionForm.value).subscribe((response: any) => {
+      if (response.success) {
+          this.isLoading = false;
+          Swal.fire({
+            title: 'Succès',
+            text: 'Mission mise à jour avec succès.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            this.router.navigate(['/main-page/missions/missions-list']);
+          })
+        } else {
+          this.isLoading = false;
+          Swal.fire({
+            title: 'Erreur',
+            text: 'Une erreur s\'est produite lors de la mise à jour de la mission.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      }
+    );
+  }
 
   goBack() {
     this.router.navigate(['/main-page/missions/missions-list']);
