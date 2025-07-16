@@ -46,13 +46,15 @@
         <td class="px-4 py-2 text-sm">{{ mission.start_at | date: 'dd/MM/yyyy' }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.end_at | date: 'dd/MM/yyyy' }}</td>
         <td class="px-4 py-2 text-sm">
-          <span class="px-2 py-1 rounded-full text-white text-xs font-semibold"
+          <span
+            class="px-2 py-1 rounded-full text-white text-xs font-semibold"
             [ngClass]="{
               'bg-green-500': mission.priority === 'LOW',
               'bg-yellow-500': mission.priority === 'MEDIUM',
               'bg-red-500': mission.priority === 'HIGH'
-            }">
-            {{ mission.priority }}
+            }"
+          >
+            {{ priorityMap[mission.priority] || mission.priority }}
           </span>
         </td>
         <td class="px-4 py-2 text-sm flex space-x-2">
