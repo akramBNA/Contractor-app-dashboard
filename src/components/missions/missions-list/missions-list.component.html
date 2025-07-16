@@ -5,7 +5,7 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Nombre Total des Missions</h2>
-    <p class="text-2xl font-bold text-green-600">{{ missions_data.length }}</p>
+    <p class="text-2xl font-bold text-green-600">{{ total_missions_count }}</p>
   </div>
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Missions en Cours</h2>
@@ -69,4 +69,12 @@
       </tr>
     </tbody>
   </table>
+
+  <mat-paginator
+    [length]="total_missions_count"
+    [pageSize]="limit"
+    [pageSizeOptions]="page_size_options"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+
 </div>

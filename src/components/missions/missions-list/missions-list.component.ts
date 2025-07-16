@@ -2,22 +2,27 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MissionsService } from '../../../services/missions.services';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-missions-list',
-  imports: [MatIconModule, CommonModule, LoadingSpinnerComponent],
+  imports: [MatIconModule, CommonModule, LoadingSpinnerComponent, MatPaginatorModule],
   templateUrl: './missions-list.component.html',
   styleUrl: './missions-list.component.css',
 })
 export class MissionsListComponent {
   isLoading: boolean = false;
   missions_data: any = [];
-  paginatedMissions = [];
-  limit = 20;
-  currentPage = 1;
-  totalPages = 1;
+
+  limit:number = 20;
+  offset:number = 0;
+  keyword: string = '';
+
+  total_missions: number = 0;
+
+  page_size_options: number[] = [2, 10, 20, 50, 100];
 
   total_missions_count = 0;
   active_missions_count = 0;
@@ -36,15 +41,16 @@ export class MissionsListComponent {
   ) {}
 
   ngOnInit() {
-    this.getAllMissions();
+    this.getAllMissions(this.limit, this.offset, this.keyword);
   }
 
-  getAllMissions() {
+  getAllMissions(lim:number, off:number, key:string) {
     this.isLoading = true;
-    this.missionsService.getAllActiveMissions().subscribe((data: any) => {
+    this.missionsService.getAllActiveMissions(lim, off, key).subscribe((data: any) => {
       if (data.success) {
         this.isLoading = false;
         this.missions_data = data.data;
+        this.total_missions_count = data.attributes.total;
       } else {
         this.isLoading = false;
       }
@@ -53,6 +59,12 @@ export class MissionsListComponent {
 
   onEditMission(missionId: string) {    
     this.router.navigate(['/main-page/missions/mission-details', missionId]);
+  }
+
+  onPageChange(event: any) {
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.getAllMissions(this.limit, this.offset, this.keyword);
   }
 
   onDeleteMission(missionId: string) {}
