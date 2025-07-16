@@ -52,6 +52,7 @@ export class MissionDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getAllActiveEmployeesNames()
     const missionId = window.location.pathname.split('/').pop();
     if (missionId) {
       this.initForm();
@@ -118,6 +119,8 @@ export class MissionDetailsComponent implements OnInit {
         }
       });
   }
+
+  
 
   updateMission() {
     this.isLoading = true;
