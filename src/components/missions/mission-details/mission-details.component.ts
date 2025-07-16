@@ -20,27 +20,51 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
-import {FormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import Swal from 'sweetalert2';
-
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { FormControl } from '@angular/forms';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocomplete,
+  MatAutocompleteModule,
+} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-mission-details',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, LoadingSpinnerComponent, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, MatIconModule, MatChipsModule, MatCardModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    LoadingSpinnerComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatChipsModule,
+    MatCardModule,
+    MatAutocomplete,
+    MatAutocompleteModule,
+  ],
   templateUrl: './mission-details.component.html',
   styleUrl: './mission-details.component.css',
 })
 export class MissionDetailsComponent implements OnInit {
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  employeeCtrl = new FormControl('');
+  filteredEmployees: any[] = [];
+  selectedEmployees: any[] = [];
+
   isLoading: boolean = false;
   missionForm!: FormGroup;
-  missionData:any = [];
+  missionData: any = [];
   assignedEmployees: any[] = [];
   temp_emp_ids: any[] = [];
   mission_id: string = '';
   employeesList: any[] = [];
-
 
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
@@ -52,7 +76,7 @@ export class MissionDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getAllActiveEmployeesNames()
+    this.getAllActiveEmployeesNames();
     const missionId = window.location.pathname.split('/').pop();
     if (missionId) {
       this.initForm();
@@ -60,6 +84,13 @@ export class MissionDetailsComponent implements OnInit {
     } else {
       console.error('Mission ID not found in the URL');
     }
+
+    this.employeeCtrl.valueChanges.subscribe((value: string | any) => {
+      const filterValue = ( typeof value === 'string' ? value : '').toLowerCase();
+      this.filteredEmployees = this.employeesList.filter((emp) =>
+        (emp.employee_name + ' ' + emp.employee_lastname).toLowerCase().includes(filterValue)
+      );
+    });
   }
 
   initForm() {
@@ -71,11 +102,11 @@ export class MissionDetailsComponent implements OnInit {
       end_at: [''],
       priority: ['', Validators.required],
       expenses: [0, [Validators.required, Validators.min(0)]],
-      employee_id: []
+      employee_id: [],
     });
   }
 
-    getAllActiveEmployeesNames() {
+  getAllActiveEmployeesNames() {
     this.employeeService.getAllActiveEmployeesNames().subscribe((data: any) => {
       this.employeesList = data.data;
     });
@@ -84,19 +115,24 @@ export class MissionDetailsComponent implements OnInit {
   getMissionDetails(missionId: string) {
     this.isLoading = true;
     this.missionsService.getMissionById(missionId).subscribe((response: any) => {
-      if (response.success) {
+        if (response.success) {
           this.isLoading = false;
           this.missionData = response.data;
-          
-          this.assignedEmployees = Array.isArray(this.missionData?.assigned_employees) ? this.missionData.assigned_employees : [];
-          this.assignedEmployees= this.missionData?.assigned_employees;
 
-          for(let i = 0; i < this.assignedEmployees.length; i++) {
+          this.assignedEmployees = Array.isArray(
+            this.missionData?.assigned_employees
+          )
+            ? this.missionData.assigned_employees
+            : [];
+          this.assignedEmployees = this.missionData?.assigned_employees;
+          this.selectedEmployees = this.missionData?.assigned_employees || [];
+
+          for (let i = 0; i < this.assignedEmployees.length; i++) {
             this.temp_emp_ids.push(this.assignedEmployees[i].employee_id);
           }
-          
+
           this.mission_id = response.data.mission_id;
-          
+
           this.missionForm.patchValue({
             mission_name: this.missionData.mission_name,
             mission_description: this.missionData.mission_description,
@@ -104,15 +140,15 @@ export class MissionDetailsComponent implements OnInit {
             end_at: this.missionData.end_at,
             priority: this.missionData.priority,
             expenses: this.missionData.expenses,
-            employee_id: this.temp_emp_ids
-          });          
+            employee_id: this.selectedEmployees.map((emp) => emp.employee_id),
+          });
         } else {
           this.isLoading = false;
           Swal.fire({
             title: 'Erreur',
-            text: 'Une erreur s\'est produit !.',
+            text: "Une erreur s'est produit !.",
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           }).then(() => {
             this.router.navigate(['/main-page/missions/missions-list']);
           });
@@ -120,44 +156,69 @@ export class MissionDetailsComponent implements OnInit {
       });
   }
 
-  
+  selected(event: MatAutocompleteSelectedEvent): void {
+    const selectedEmp = event.option.value;
+    if (
+      !this.selectedEmployees.some(
+        (e) => e.employee_id === selectedEmp.employee_id
+      )
+    ) {
+      this.selectedEmployees.push(selectedEmp);
+      this.updateEmployeeFormValue();
+    }
+    this.employeeCtrl.setValue('');
+  }
+
+  removeEmployee(emp: any): void {
+    this.selectedEmployees = this.selectedEmployees.filter(
+      (e) => e.employee_id !== emp.employee_id
+    );
+    this.updateEmployeeFormValue();
+  }
+
+  addEmployeeFromInput(): void {
+    this.employeeCtrl.setValue('');
+  }
+
+  updateEmployeeFormValue(): void {
+    const ids = this.selectedEmployees.map((emp) => emp.employee_id);
+    this.missionForm.get('employee_id')?.setValue(ids);
+  }
 
   updateMission() {
     this.isLoading = true;
 
-    if(!this.missionForm.valid) {
+    if (!this.missionForm.valid) {
       this.isLoading = false;
       Swal.fire({
         title: 'Attention',
         text: 'Veuiller controlez vos données.',
         icon: 'warning',
-        confirmButtonText: 'OK'
-      }).then(() => {
-      })
+        confirmButtonText: 'OK',
+      }).then(() => {});
     }
 
     this.missionsService.editMission(this.mission_id, this.missionForm.value).subscribe((response: any) => {
-      if (response.success) {
+        if (response.success) {
           this.isLoading = false;
           Swal.fire({
             title: 'Succès',
             text: 'Mission mise à jour avec succès.',
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           }).then(() => {
             this.router.navigate(['/main-page/missions/missions-list']);
-          })
+          });
         } else {
           this.isLoading = false;
           Swal.fire({
             title: 'Erreur',
-            text: 'Une erreur s\'est produite lors de la mise à jour de la mission.',
+            text: "Une erreur s'est produite lors de la mise à jour de la mission.",
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           });
         }
-      }
-    );
+      });
   }
 
   goBack() {
@@ -172,7 +233,12 @@ export class MissionDetailsComponent implements OnInit {
 
     const element = this.pdfContent.nativeElement as HTMLElement;
 
-    html2canvas(element, { scale: 2, useCORS: true, allowTaint: true, logging: false,})
+    html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      logging: false,
+    })
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/jpeg', 0.95);
 
@@ -189,7 +255,16 @@ export class MissionDetailsComponent implements OnInit {
         const pdfImgWidth = pageWidth - 40;
         const pdfImgHeight = (imgProps.height * pdfImgWidth) / imgProps.width;
 
-        pdf.addImage( imgData, 'JPEG', 20, 20, pdfImgWidth, pdfImgHeight, undefined, 'FAST');
+        pdf.addImage(
+          imgData,
+          'JPEG',
+          20,
+          20,
+          pdfImgWidth,
+          pdfImgHeight,
+          undefined,
+          'FAST'
+        );
 
         pdf.save('mission-details.pdf');
       })
