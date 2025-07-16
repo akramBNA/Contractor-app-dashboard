@@ -51,6 +51,8 @@ export class MissionsListComponent {
         this.isLoading = false;
         this.missions_data = data.data;
         this.total_missions_count = data.attributes.total;
+        this.active_missions_count = data.running_missions;
+        this.completed_missions_count = data.completed_missions;
       } else {
         this.isLoading = false;
       }
