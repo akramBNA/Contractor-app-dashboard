@@ -33,7 +33,6 @@
       <tr>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom de la Mission</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Description</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Assignée à</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Débute le</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Se termine le</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Priorité</th>
@@ -44,7 +43,6 @@
       <tr *ngFor="let mission of missions_data">
         <td class="px-4 py-2 text-sm">{{ mission.mission_name }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.mission_description }}</td>
-        <td class="px-4 py-2 text-sm">{{ mission.assigned_to }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.start_at | date: 'dd/MM/yyyy' }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.end_at | date: 'dd/MM/yyyy' }}</td>
         <td class="px-4 py-2 text-sm">
