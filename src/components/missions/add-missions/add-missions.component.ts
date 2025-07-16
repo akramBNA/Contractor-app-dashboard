@@ -18,6 +18,10 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import Swal from 'sweetalert2';
 import { MissionsService } from '../../../services/missions.services';
 import { EmployeesService } from '../../../services/employees.services';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { FormControl } from '@angular/forms';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent, MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-add-missions',
@@ -32,11 +36,20 @@ import { EmployeesService } from '../../../services/employees.services';
     MatChipsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-  ],
+    MatAutocomplete,
+    MatAutocompleteModule,
+],
   templateUrl: './add-missions.component.html',
   styleUrls: ['./add-missions.component.css'],
 })
 export class AddMissionsComponent implements OnInit {
+
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  employeeCtrl = new FormControl('');
+  selectedEmployees: any[] = [];
+  filteredEmployees: any[] = [];
+
   missionForm: FormGroup;
   isLoading = false;
   employeesList: any[] = [];
@@ -60,12 +73,43 @@ export class AddMissionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllActiveEmployeesNames();
+
+    this.employeeCtrl.valueChanges.subscribe(value => {
+      const filterValue = value?.toLowerCase?.() || '';
+      this.filteredEmployees = this.employeesList.filter(emp =>
+        (emp.employee_name + ' ' + emp.employee_lastname).toLowerCase().includes(filterValue)
+      );
+    });
   }
 
-  getAllActiveEmployeesNames() {
+ getAllActiveEmployeesNames() {
     this.employeeService.getAllActiveEmployeesNames().subscribe((data: any) => {
       this.employeesList = data.data;
+      this.filteredEmployees = [...this.employeesList];
     });
+  }
+
+selected(event: MatAutocompleteSelectedEvent): void {
+    const selectedEmp = event.option.value;
+    if (!this.selectedEmployees.some(e => e.employee_id === selectedEmp.employee_id)) {
+      this.selectedEmployees.push(selectedEmp);
+      this.updateEmployeeFormValue();
+    }
+    this.employeeCtrl.setValue('');
+  }
+
+removeEmployee(emp: any): void {
+    this.selectedEmployees = this.selectedEmployees.filter(e => e.employee_id !== emp.employee_id);
+    this.updateEmployeeFormValue();
+  }
+
+addEmployeeFromInput(event: MatChipInputEvent): void {
+    this.employeeCtrl.setValue('');
+  }
+
+updateEmployeeFormValue(): void {
+    const ids = this.selectedEmployees.map(emp => emp.employee_id);
+    this.missionForm.get('employee_id')?.setValue(ids);
   }
 
   formatDate(date: any): string | null {
