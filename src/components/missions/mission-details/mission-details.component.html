@@ -54,17 +54,39 @@
         <input matInput type="number" formControlName="expenses" />
       </mat-form-field>
 
-      <mat-card class="mt-8">
-        <mat-card-title>Employés Assignés</mat-card-title>
-        <mat-card-content>
-          <mat-chip-grid>
-              <mat-chip-row *ngIf="assignedEmployees.length === 0">
-                Aucun employé assigné
-              </mat-chip-row>
-            <mat-chip *ngFor="let emp of assignedEmployees" color="primary" selected> {{ emp.employee_name }} {{ emp.employee_lastname }} </mat-chip>
-          </mat-chip-grid>
-        </mat-card-content>
-      </mat-card>
+<mat-form-field appearance="fill" class="w-full mt-8">
+  <mat-label>Employés Assignés</mat-label>
+
+  <mat-chip-grid #chipGrid aria-label="Sélection d'employés">
+    <mat-chip-row
+      *ngFor="let emp of selectedEmployees"
+      (removed)="removeEmployee(emp)"
+      color="primary"
+      selected
+    >
+      {{ emp.employee_name }} {{ emp.employee_lastname }}
+      <button matChipRemove [attr.aria-label]="'Supprimer ' + emp.employee_name">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip-row>
+  </mat-chip-grid>
+
+  <input
+    placeholder="Rechercher un employé..."
+    [formControl]="employeeCtrl"
+    [matAutocomplete]="auto"
+    [matChipInputFor]="chipGrid"
+    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+    (matChipInputTokenEnd)="addEmployeeFromInput()"
+  />
+
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let emp of filteredEmployees" [value]="emp">
+      {{ emp.employee_name }} {{ emp.employee_lastname }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
       
     </div>
   </div>
