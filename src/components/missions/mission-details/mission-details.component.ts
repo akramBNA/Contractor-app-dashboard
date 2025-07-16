@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MissionsService } from '../../../services/missions.services';
+import { EmployeesService } from '../../../services/employees.services';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
@@ -38,11 +39,14 @@ export class MissionDetailsComponent implements OnInit {
   assignedEmployees: any[] = [];
   temp_emp_ids: any[] = [];
   mission_id: string = '';
+  employeesList: any[] = [];
+
 
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
   constructor(
     private missionsService: MissionsService,
+    private employeeService: EmployeesService,
     private router: Router,
     private fb: FormBuilder
   ) {}
@@ -67,6 +71,12 @@ export class MissionDetailsComponent implements OnInit {
       priority: ['', Validators.required],
       expenses: [0, [Validators.required, Validators.min(0)]],
       employee_id: []
+    });
+  }
+
+    getAllActiveEmployeesNames() {
+    this.employeeService.getAllActiveEmployeesNames().subscribe((data: any) => {
+      this.employeesList = data.data;
     });
   }
 
