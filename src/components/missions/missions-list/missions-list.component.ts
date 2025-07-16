@@ -24,6 +24,12 @@ export class MissionsListComponent {
   completed_missions_count = 0;
   canceled_missions_count = 0;
 
+  priorityMap: { [key: string]: string } = {
+    LOW: 'Faible',
+    MEDIUM: 'Moyenne',
+    HIGH: 'Élevée'
+  };
+
   constructor(
     private missionsService: MissionsService,
     private router: Router
