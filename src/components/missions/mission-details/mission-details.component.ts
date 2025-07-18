@@ -65,6 +65,8 @@ export class MissionDetailsComponent implements OnInit {
   temp_emp_ids: any[] = [];
   mission_id: string = '';
   employeesList: any[] = [];
+  minEndDate: Date | null = null;
+
 
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
@@ -90,6 +92,15 @@ export class MissionDetailsComponent implements OnInit {
       this.filteredEmployees = this.employeesList.filter((emp) =>
         (emp.employee_name + ' ' + emp.employee_lastname).toLowerCase().includes(filterValue)
       );
+    });
+
+    this.missionForm.get('start_at')?.valueChanges.subscribe((startDate: Date) => {
+    this.minEndDate = startDate;
+
+    const endDate = this.missionForm.get('end_at')?.value;
+    if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+        this.missionForm.get('end_at')?.setValue(null);
+      }
     });
   }
 
