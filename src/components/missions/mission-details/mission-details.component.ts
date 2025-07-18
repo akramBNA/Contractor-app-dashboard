@@ -130,11 +130,7 @@ export class MissionDetailsComponent implements OnInit {
           this.isLoading = false;
           this.missionData = response.data;
 
-          this.assignedEmployees = Array.isArray(
-            this.missionData?.assigned_employees
-          )
-            ? this.missionData.assigned_employees
-            : [];
+          this.assignedEmployees = Array.isArray( this.missionData?.assigned_employees ) ? this.missionData.assigned_employees : [];
           this.assignedEmployees = this.missionData?.assigned_employees;
           this.selectedEmployees = this.missionData?.assigned_employees || [];
 
@@ -153,6 +149,8 @@ export class MissionDetailsComponent implements OnInit {
             expenses: this.missionData.expenses,
             employee_id: this.selectedEmployees.map((emp) => emp.employee_id),
           });
+
+          
         } else {
           this.isLoading = false;
           Swal.fire({
@@ -196,8 +194,22 @@ export class MissionDetailsComponent implements OnInit {
     this.missionForm.get('employee_id')?.setValue(ids);
   }
 
+  formatDateLocal(dateInput: any): string {
+    const date = (dateInput instanceof Date) ? dateInput : new Date(dateInput);
+    if (isNaN(date.getTime())) {
+      console.error('Invalid date input:', dateInput);
+      return '';
+    }
+
+    const year = date.getFullYear();
+    const month = (`0${date.getMonth() + 1}`).slice(-2);
+    const day = (`0${date.getDate()}`).slice(-2);
+    return `${year}-${month}-${day}`;
+  }
+
+
   updateMission() {
-    this.isLoading = true;
+    this.isLoading = true;     
 
     if (!this.missionForm.valid) {
       this.isLoading = false;
@@ -209,7 +221,15 @@ export class MissionDetailsComponent implements OnInit {
       }).then(() => {});
     }
 
-    this.missionsService.editMission(this.mission_id, this.missionForm.value).subscribe((response: any) => {
+    const formValue = this.missionForm.value;
+
+    const formattedPayload = {
+      ...formValue,
+      start_at: this.formatDateLocal(formValue.start_at),
+      end_at: this.formatDateLocal(formValue.end_at),
+    };
+
+    this.missionsService.editMission(this.mission_id, formattedPayload).subscribe((response: any) => {
         if (response.success) {
           this.isLoading = false;
           Swal.fire({
