@@ -53,6 +53,8 @@ export class AddMissionsComponent implements OnInit {
   missionForm: FormGroup;
   isLoading = false;
   employeesList: any[] = [];
+  minEndDate: Date | null = null;
+
 
   constructor(
     private fb: FormBuilder,
@@ -80,6 +82,16 @@ export class AddMissionsComponent implements OnInit {
         (emp.employee_name + ' ' + emp.employee_lastname).toLowerCase().includes(filterValue)
       );
     });
+
+    this.missionForm.get('start_at')?.valueChanges.subscribe((startDate: Date) => {
+    this.minEndDate = startDate;
+
+    const endDate = this.missionForm.get('end_at')?.value;
+    if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+        this.missionForm.get('end_at')?.setValue(null);
+      }
+    });
+
   }
 
  getAllActiveEmployeesNames() {
