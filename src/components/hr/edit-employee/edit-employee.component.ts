@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EmployeesService } from '../../../services/employees.services';
-import Swal from 'sweetalert2';
+import { SwalService } from '../../../shared/Swal/swal.service';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -37,7 +37,8 @@ form: any;
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private employeeService: EmployeesService
+    private employeeService: EmployeesService,
+    private swalService: SwalService
   ) {}
 
   ngOnInit(): void {
@@ -144,28 +145,20 @@ form: any;
           this.employeeService.updateEmployee(this.employee_id, updatedEmployeeData).subscribe((data: any) => {
         if (data.success) {
           this.isLoading = false;
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "Les données de l'employé ont été mises à jour avec succès.",
-          }).then(() => {
+          this.swalService.showSuccess('Les données de l\'employé ont été mises à jour avec succès.').then(() => {
             this.router.navigate(['/main-page/hr/employees-list']);
           });
         } else {
           this.isLoading = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: "Une erreur s'est produite lors de la mise à jour des données de l'employé.",
-          });
+          this.swalService.showError('Une erreur s\'est produite lors de la mise à jour des données de l\'employé.');
         }
       });
     }else{
       this.isLoading = false;
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: "Veuillez vérifier vos données.",
+      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.').then(() => {
+        this.employeeForm.markAllAsTouched();
+        this.contactForm.markAllAsTouched();    
+        this.bankDetailsForm.markAllAsTouched();
       });
     }
   }
