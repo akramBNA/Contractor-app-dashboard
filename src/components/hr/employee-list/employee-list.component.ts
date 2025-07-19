@@ -99,9 +99,9 @@ clearSearch() {
 
 
   onDeleteEmployee(employeeId: number) {
-    this.isLoading = true;
     this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer cet employé ?').then((result) => {
       if (result.isConfirmed) {
+        this.isLoading = true;
         this.employeeServicee.deleteEmployee(Number(employeeId)).subscribe((data: any) => {
           if (data.success) {
             this.isLoading = false;
