@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { EmployeesService } from '../../../services/employees.services';
+import { MissionsService } from '../../../services/missions.services';
+import { SwalService } from '../../../shared/Swal/swal.service';
 import {
   FormBuilder,
   FormGroup,
@@ -13,11 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Router } from '@angular/router';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import Swal from 'sweetalert2';
-import { MissionsService } from '../../../services/missions.services';
-import { EmployeesService } from '../../../services/employees.services';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -60,7 +60,8 @@ export class AddMissionsComponent implements OnInit {
     private fb: FormBuilder,
     private missionService: MissionsService,
     private employeeService: EmployeesService,
-    private router: Router
+    private router: Router,
+    private swalService: SwalService
   ) {
     this.missionForm = this.fb.group({
       mission_name: ['', Validators.required],
@@ -131,6 +132,7 @@ updateEmployeeFormValue(): void {
   }
 
   onSubmitMission() {
+    this.isLoading = true;
     const formData = {
       ...this.missionForm.value,
       date_debut: this.formatDate(this.missionForm.value.date_debut),
@@ -138,34 +140,23 @@ updateEmployeeFormValue(): void {
     };
 
     if (!this.missionForm.valid) {
-      Swal.fire({
-        title: 'Attention',
-        text: 'Veuillez remplir tous les champs obligatoires',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-      });
+      this.isLoading = false;
+      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.');
+      return;
     }
 
     this.missionService.addMission(formData).subscribe((data: any) => {
-      this.isLoading = true;
       if (data.success) {
         this.isLoading = false;
-        Swal.fire({
-          title: 'Succès',
-          text: 'Mission ajoutée avec succès',
-          icon: 'success',
-          confirmButtonText: 'OK',
-        }).then(() => {
+        this.swalService.showSuccess('Mission ajoutée avec succès').then(() => {
           this.missionForm.reset();
+          this.selectedEmployees = [];
           this.router.navigate(['/main-page/missions/missions-list']);
         });
       } else {
         this.isLoading = false;
-        Swal.fire({
-          title: 'Erreur',
-          text: "Une erreur s'est produite lors de l'ajout de la mission",
-          icon: 'error',
-          confirmButtonText: 'OK',
+        this.swalService.showError('Une erreur s\'est produite lors de l\'ajout de la mission.').then(() => {
+          this.router.navigate(['/main-page/missions/missions-list']);
         });
       }
     });

@@ -16,6 +16,7 @@ import { ProjectsService } from '../../../services/projects.services';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { SwalService } from '../../../shared/Swal/swal.service';
 
 @Component({
   selector: 'app-add-project',
@@ -43,7 +44,8 @@ export class AddProjectComponent {
   constructor(
     private projectService: ProjectsService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private swalService: SwalService
   ) {
     this.projectForm = this.formBuilder.group({
       project_name: ['', Validators.required],
@@ -64,32 +66,23 @@ export class AddProjectComponent {
       this.projectService.addProject(formData).subscribe((data: any) => {
         if (data.success) {
           this.isLoading = false;
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Projet Ajouté!',
-          }).then(() => {
+          this.swalService.showSuccess('Projet ajouté avec succès').then(() => {
             this.projectForm.reset();
             this.router.navigate(['/main-page/planning/show-project']);
           });
         } else {
           this.isLoading = false;
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Il y a eu une erreur lors de l\'ajout du projet.',
-          }).then(() => {
+          this.swalService.showError('Une erreur s\'est produite lors de l\'ajout du projet.').then(() => {
             this.projectForm.reset();
+            this.router.navigate(['/main-page/planning/show-project']);
           });
         }
       });
     }else{
+      this.isLoading = false;
       this.projectForm.markAllAsTouched();
-      Swal.fire({
-        icon: 'warning',
-        title: 'warning',
-        text: 'Veuillez remplir tous les champs obligatoires.',
-      });
+      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.');
+      return;
     }
   }
 }

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ProjectsService } from '../../../services/projects.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { SwalService } from '../../../shared/Swal/swal.service';
 
 @Component({
   selector: 'app-view-project',
@@ -18,7 +18,8 @@ export class ViewProjectComponent {
   constructor(
     private projectsService: ProjectsService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private swalService: SwalService
   ) {}
   ngOnInit() {
     const project_id = Number(this.route.snapshot.paramMap.get('id'));
@@ -36,12 +37,8 @@ export class ViewProjectComponent {
         this.project_data = data.data;
       } else {
         this.isLoading = false;
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text:
-            data.message ||
-            "une erreur s'est produite lors de la récupération du projet.",
+        this.swalService.showError('Erreur lors de la récupération du projet.').then(() => {
+          this.router.navigate(['/main-page/planning/show-project']);
         });
       }
     });

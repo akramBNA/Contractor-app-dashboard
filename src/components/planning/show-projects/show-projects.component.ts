@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ProjectsService } from '../../../services/projects.services';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
@@ -40,7 +39,6 @@ export class ShowProjectsComponent {
   fetchProjects() {
     this.isLoading = true;
     this.projectService.getAllProjects().subscribe((data: any) => {
-      console.log('data ====> ', data);
 
       if (data.success) {
         this.isLoading = false;
@@ -57,7 +55,6 @@ export class ShowProjectsComponent {
     const end = start + limit;
 
     this.paginatedProjects = this.projects_data.slice(start, end);
-    console.log('paginatedProjects ====> ', this.paginatedProjects);
   }
 
   ViewProject(projectId: number) {    
