@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { EmployeesService } from '../../../services/employees.services';
-import Swal from 'sweetalert2';
+import { SwalService } from '../../../shared/Swal/swal.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
@@ -47,7 +47,11 @@ export class EmployeeListComponent implements OnInit {
   female_employees_count: number = 0;
   new_employees_count: number = 0;
 
-  constructor(private employeeServicee: EmployeesService, private router: Router) {}
+  constructor(
+    private employeeServicee: EmployeesService, 
+    private router: Router,
+    private swalService: SwalService,
+  ) {}
 
   ngOnInit(): void {
     this.getAllEmployeesFunction(this.limit, this.offset, this.keyword.value ?? '');
@@ -95,35 +99,18 @@ clearSearch() {
 
 
   onDeleteEmployee(employeeId: number) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Attention !',
-      text: 'Êtes-vous sûr de vouloir supprimer cet employé ?',
-      showCancelButton: true,
-      confirmButtonText: 'Oui',
-      cancelButtonText: 'Non',
-      confirmButtonColor: '#28a745',
-      cancelButtonColor: '#dc3545',
-      reverseButtons: false
-    }).then((result) => {
+    this.isLoading = true;
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer cet employé ?').then((result) => {
       if (result.isConfirmed) {
         this.employeeServicee.deleteEmployee(Number(employeeId)).subscribe((data: any) => {
           if (data.success) {
             this.isLoading = false;
-            Swal.fire({
-              icon: 'success',
-              title: 'Succès',
-              text: "L'employé a été supprimé avec succès.",
-            }).then(() => {
+            this.swalService.showSuccess('L\'employé a été supprimé avec succès.').then(() => {
               this.getAllEmployeesFunction(this.limit, this.offset, this.keyword.value ?? '');
             });
           } else {
             this.isLoading = false;
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur',
-              text: "Une erreur s'est produite lors de la suppression de l'employé.",
-            });
+            this.swalService.showError('Une erreur s\'est produite lors de la suppression de l\'employé.');
           }
         });
       }
