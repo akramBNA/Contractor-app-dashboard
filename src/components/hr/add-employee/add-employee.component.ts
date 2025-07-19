@@ -1,24 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EmployeesService } from '../../../services/employees.services';
+import { SwalService } from '../../../shared/Swal/swal.service';
+import { Router } from '@angular/router';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { EmployeesService } from '../../../services/employees.services';
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
-import {
-  MatDatepicker,
-  MatDatepickerModule,
-} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-add-employee',
@@ -48,7 +45,8 @@ export class AddEmployeeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeesService,
-    private router: Router
+    private router: Router,
+    private swalService: SwalService
   ) {
     this.employeeForm = this.fb.group({
       employee_name: ['', Validators.required],
@@ -107,32 +105,22 @@ export class AddEmployeeComponent implements OnInit {
         this.isLoading = true;
         if (data.success) {
           this.isLoading = false;
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "L'employé est ajouté avec succès",
-          }).then(() => {
+          this.swalService.showSuccess('L\'employé est ajouté avec succès').then(() => {
             this.employeeForm.reset();
             this.contactForm.reset();
             this.bankDetailsForm.reset();
             this.router.navigate(['/main-page/hr/employees-list']);
           });
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: "L'employé n'est pas ajouté",
-          });
+          this.isLoading = false;
+          this.swalService.showError('Une erreur s\'est produite lors de l\'ajout de l\'employé.');
         }
       });
     } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Attention',
-        text: 'Veuillez remplir tous les champs obligatoires',
-      }).then(() => {
+      this.isLoading = false;
+      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.').then(() => {
         this.employeeForm.markAllAsTouched();
-        this.contactForm.markAllAsTouched();
+        this.contactForm.markAllAsTouched();    
         this.bankDetailsForm.markAllAsTouched();
       });
     }
