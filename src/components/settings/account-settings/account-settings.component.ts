@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../services/users.services';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { SwalService } from '../../../shared/Swal/swal.service';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-account-settings',
@@ -26,7 +26,8 @@ export class AccountSettingsComponent implements OnInit {
   constructor(
     private usersService: UsersService, 
     private fb: FormBuilder,
-    private router: Router) 
+    private router: Router,
+    private swalService: SwalService) 
   {
     this.usersForm = this.fb.group({
       user_name: ['', Validators.required],
@@ -58,31 +59,24 @@ export class AccountSettingsComponent implements OnInit {
 
   onAddUser() {
     this.isLoading = true;
+    
     if (this.usersForm.valid) {
       this.usersService.addUser(this.usersForm.value).subscribe((data: any) => {
         if (data.success) {
           this.isLoading = false;
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: "L'utilisateur est ajouté avec succès",
-          }).then(() => {
+          this.swalService.showSuccess('Utilisateur ajouté avec succès').then(() => {
             this.usersForm.reset();
           });
         } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: "L'utilisateur n'est pas ajouté",
-          });
+          this.isLoading = false;
+          this.swalService.showError('Erreur lors de l\'ajout de l\'utilisateur.');
         }
       });
     } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Veuillez remplir tous les champs obligatoires',
-      }).then(() => {});
+      this.isLoading = false;
+      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.');
+      this.usersForm.markAllAsTouched();
+      return;
     }
   }
 
@@ -91,36 +85,19 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   onDeleteUser(user_id: any) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Attention !',
-      text: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
-      showCancelButton: true,
-      confirmButtonText: 'Oui',
-      cancelButtonText: 'Non',
-      confirmButtonColor: '#28a745',
-      cancelButtonColor: '#dc3545',
-      reverseButtons: false,
-    }).then((result) => {
+    this.isLoading = false;
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer cet utilisateur ?').then((result) => {
       if (result.isConfirmed) {
         this.isLoading = true;
         this.usersService.deleteUser(user_id).subscribe((data: any) => {
           if (data.success) {
             this.isLoading = false;
-            Swal.fire({
-              icon: 'success',
-              title: 'Succès',
-              text: "L'utilisateur a été supprimé avec succès.",
-            }).then(() => {
+            this.swalService.showSuccess('Utilisateur supprimé avec succès').then(() => {
               this.ngOnInit();
             });
           } else {
             this.isLoading = false;
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur',
-              text: "Une erreur s'est produite lors de la suppression de l'utilisateur.",
-            });
+            this.swalService.showError('Erreur lors de la suppression de l\'utilisateur.');
           }
         });
       }

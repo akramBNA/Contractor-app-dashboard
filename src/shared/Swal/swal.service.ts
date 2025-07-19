@@ -38,17 +38,18 @@ export class SwalService {
 
   showConfirmation(
     message: string,
-    title: string = 'Êtes-vous sûr ?',
-    confirmButtonText: string = 'Oui',
-    cancelButtonText: string = 'Annuler'
+    title: string = 'Attention !'
   ) {
     return Swal.fire({
+      icon: 'warning',
       title: title,
       text: message,
-      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: confirmButtonText,
-      cancelButtonText: cancelButtonText,
+      confirmButtonText: 'Oui',
+      cancelButtonText: 'Non',
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      reverseButtons: false,
     });
   }
 }
