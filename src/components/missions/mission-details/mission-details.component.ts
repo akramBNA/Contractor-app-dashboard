@@ -30,6 +30,7 @@ import {
   MatAutocomplete,
   MatAutocompleteModule,
 } from '@angular/material/autocomplete';
+import { SwalService } from '../../../shared/Swal/swal.service';
 
 @Component({
   selector: 'app-mission-details',
@@ -74,7 +75,8 @@ export class MissionDetailsComponent implements OnInit {
     private missionsService: MissionsService,
     private employeeService: EmployeesService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private swalService: SwalService
   ) {}
 
   ngOnInit() {
@@ -108,7 +110,7 @@ export class MissionDetailsComponent implements OnInit {
     this.missionForm = this.fb.group({
       mission_id: [''],
       mission_name: ['', Validators.required],
-      mission_description: [''],
+      mission_description: ['', Validators.required],
       start_at: ['', Validators.required],
       end_at: [''],
       priority: ['', Validators.required],
@@ -153,13 +155,10 @@ export class MissionDetailsComponent implements OnInit {
           
         } else {
           this.isLoading = false;
-          Swal.fire({
-            title: 'Erreur',
-            text: "Une erreur s'est produit !.",
-            icon: 'error',
-            confirmButtonText: 'OK',
-          }).then(() => {
-            this.router.navigate(['/main-page/missions/missions-list']);
+          this.swalService.showError('Mission non trouvée.').then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/main-page/missions/missions-list']);
+            }
           });
         }
       });
@@ -207,18 +206,13 @@ export class MissionDetailsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-
   updateMission() {
-    this.isLoading = true;     
-
+    this.isLoading = true;
+    
     if (!this.missionForm.valid) {
       this.isLoading = false;
-      Swal.fire({
-        title: 'Attention',
-        text: 'Veuiller controlez vos données.',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-      }).then(() => {});
+      this.swalService.showWarning('Veuiller controlez vos données.');
+      return;
     }
 
     const formValue = this.missionForm.value;
@@ -232,22 +226,12 @@ export class MissionDetailsComponent implements OnInit {
     this.missionsService.editMission(this.mission_id, formattedPayload).subscribe((response: any) => {
         if (response.success) {
           this.isLoading = false;
-          Swal.fire({
-            title: 'Succès',
-            text: 'Mission mise à jour avec succès.',
-            icon: 'success',
-            confirmButtonText: 'OK',
-          }).then(() => {
+          this.swalService.showSuccess('Mission mise à jour avec succès.').then(() => {
             this.router.navigate(['/main-page/missions/missions-list']);
           });
         } else {
           this.isLoading = false;
-          Swal.fire({
-            title: 'Erreur',
-            text: "Une erreur s'est produite lors de la mise à jour de la mission.",
-            icon: 'error',
-            confirmButtonText: 'OK',
-          });
+          this.swalService.showError('Une erreur s\'est produite lors de la mise à jour de la mission.');
         }
       });
   }
