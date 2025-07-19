@@ -6,10 +6,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
+import { SwalService } from '../../shared/Swal/swal.service';
 import { AuthService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 
 
 @Component({
@@ -27,7 +27,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private swalService: SwalService
   ) {
     this.loginForm = this.fb.group({
       user_email: ['', [Validators.required, Validators.email]],
@@ -47,13 +48,7 @@ export class LoginComponent {
         },
         error: (err) => {
           this.isLoading = false;
-          Swal.fire({
-            title: 'Oops!',
-            text: 'Failed to log in! Please verify your information.',
-            icon: 'error',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#d33',
-          }).then(() => {
+          this.swalService.showError('Erreur de connexion. Veuillez vérifier vos informations.').then(() => {
             this.loginForm.reset();
           });
         },
