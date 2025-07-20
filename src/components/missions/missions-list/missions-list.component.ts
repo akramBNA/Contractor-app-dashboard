@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { SwalService } from '../../../shared/Swal/swal.service';
 
 @Component({
   selector: 'app-missions-list',
@@ -37,7 +38,8 @@ export class MissionsListComponent {
 
   constructor(
     private missionsService: MissionsService,
-    private router: Router
+    private router: Router,
+    private swalService: SwalService
   ) {}
 
   ngOnInit() {
@@ -69,5 +71,21 @@ export class MissionsListComponent {
     this.getAllMissions(this.limit, this.offset, this.keyword);
   }
 
-  onDeleteMission(missionId: string) {}
+  onDeleteMission(missionId: string) {
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer cette mission ?').then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.missionsService.deleteMission(missionId).subscribe((data: any) => {
+          if (data.success) {
+            this.isLoading = false;
+            this.swalService.showSuccess('La mission a été supprimé avec succès.').then(() => {
+            });
+          } else {
+            this.isLoading = false;
+            this.swalService.showError('Une erreur s\'est produite lors de la suppression de cette mission.');
+          }
+        });
+      }
+    });
+  }
 }

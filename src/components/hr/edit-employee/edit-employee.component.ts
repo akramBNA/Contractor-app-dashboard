@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -74,7 +74,7 @@ form: any;
 
     this.bankDetailsForm = this.fb.group({
       account_holder_name: [''],
-      account_number: [''],
+      account_number: ['', Validators.required],
       bank_name: [''],
       branch_location: [''],
       tax_payer_id: [''],
@@ -104,7 +104,7 @@ form: any;
 
     this.bankDetailsForm = this.fb.group({
       account_holder_name: [data.account_holder_name || ''],
-      account_number: [data.account_number || ''],
+      account_number: [data.account_number || '', Validators.required],
       bank_name: [data.bank_name || ''],
       branch_location: [data.branch_location || ''],
       tax_payer_id: [data.tax_payer_id || ''],
@@ -141,8 +141,8 @@ form: any;
       employee_end_date: this.formatDate(this.employeeForm.value.employee_end_date),
     };
     
-    if(this.employeeForm.valid || this.contactForm.valid || this.bankDetailsForm.valid) {
-          this.employeeService.updateEmployee(this.employee_id, updatedEmployeeData).subscribe((data: any) => {
+    if(this.employeeForm.valid && this.contactForm.valid && this.bankDetailsForm.valid) {
+          this.employeeService.updateEmployee(this.employee_id, updatedEmployeeData).subscribe((data: any) => {            
         if (data.success) {
           this.isLoading = false;
           this.swalService.showSuccess('Les données de l\'employé ont été mises à jour avec succès.').then(() => {
