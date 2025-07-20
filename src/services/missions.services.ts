@@ -21,4 +21,7 @@ export class MissionsService {
     editMission(missionId: string, missionData: any): Observable<any> {
       return this.http.put<any>(`${this.base_url}/missions/editMission/${missionId}`, missionData);
     };
+    deleteMission(missionId: string): Observable<any> {
+      return this.http.delete<any>(`${this.base_url}/missions/deleteMission/${missionId}`);
+    }
 }
