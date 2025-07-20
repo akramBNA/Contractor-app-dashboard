@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -15,8 +15,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { ProjectsService } from '../../../services/projects.services';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
 import { SwalService } from '../../../shared/Swal/swal.service';
+import { EmployeesService } from '../../../services/employees.services';
 
 @Component({
   selector: 'app-add-project',
@@ -39,13 +39,15 @@ export class AddProjectComponent {
   projectForm: FormGroup;
   isLoading: boolean = false;
   formSubmitted: boolean = false;
+  employeesList: any[] = [];
 
 
   constructor(
     private projectService: ProjectsService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private employeesService: EmployeesService
   ) {
     this.projectForm = this.formBuilder.group({
       project_name: ['', Validators.required],
@@ -56,6 +58,21 @@ export class AddProjectComponent {
       priority: ['', Validators.required],
       status: ['', Validators.required],
     });
+  }
+
+
+  ngOnInit() {
+    this.getAllActiveEmployeesNames();
+  }
+
+  getAllActiveEmployeesNames() {
+    this.employeesService.getAllActiveEmployeesNames().subscribe((data: any) => {
+     if(data.success) {
+        this.employeesList = data.data
+        console.log("employeesList: ", this.employeesList);
+        
+      }
+    })
   }
 
   onSubmit() {
