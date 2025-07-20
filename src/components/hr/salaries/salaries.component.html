@@ -28,14 +28,15 @@
     </tbody>
   </table>
 
-  <mat-paginator
-    [length]="total"
-    [pageSize]="limit"
-    [pageIndex]="offset / limit"
-    [pageSizeOptions]="[5, 20, 50, 100]"
-    (page)="onPageChange($event)">
-  </mat-paginator>
 </div>
+
+<mat-paginator
+  [length]="total"
+  [pageSize]="limit"
+  [pageIndex]="offset / limit"
+  [pageSizeOptions]="[5, 20, 50, 100]"
+  (page)="onPageChange($event)">
+</mat-paginator>
 
 <div class="flex justify-end mt-4">
   <button class="btn-print" (click)="onPrint()">
