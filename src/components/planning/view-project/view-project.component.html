@@ -92,12 +92,10 @@
   </div>
 
   <div>
-  <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Détails des Taches</h1>
-    <div
-      class="w-full h-[300px] bg-gray-100 border border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-500 italic"
-    >
-      Le diagramme de Gantt sera intégré ici ultérieurement...
-    </div>
+    <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Détails des Taches</h1>
+    <div class="w-full bg-white shadow-lg rounded-lg overflow-hidden p-2">
+        <daypilot-scheduler #scheduler [config]="YearSchedulerConfig"></daypilot-scheduler>
+      </div>
   </div>
 
   <div class="text-center pt-6">
