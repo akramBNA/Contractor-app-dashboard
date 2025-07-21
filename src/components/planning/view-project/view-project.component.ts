@@ -56,27 +56,27 @@ export class ViewProjectComponent {
     onBeforeEventRender: (args) => {
       switch (args.data.resource) {
         case 'R1':
-          args.data.backColor = '#1e90ff';  // Blue
+          args.data.backColor = '#1e90ff';
           args.data.barColor = '#0f62fe';
           args.data.fontColor = '#ffffff';
           break;
         case 'R2':
-          args.data.backColor = '#28a745';  // Green
+          args.data.backColor = '#28a745';
           args.data.barColor = '#1c7c3b';
           args.data.fontColor = '#ffffff';
           break;
         case 'R3':
-          args.data.backColor = '#ffc107';  // Amber
+          args.data.backColor = '#ffc107';
           args.data.barColor = '#e0a800';
           args.data.fontColor = '#000000';
           break;
         case 'R4':
-          args.data.backColor = '#dc3545';  // Red
+          args.data.backColor = '#dc3545';
           args.data.barColor = '#a71d2a';
           args.data.fontColor = '#ffffff';
           break;
         case 'R5':
-          args.data.backColor = '#6610f2';  // Purple
+          args.data.backColor = '#6610f2';
           args.data.barColor = '#520dc2';
           args.data.fontColor = '#ffffff';
           break;
@@ -161,4 +161,45 @@ export class ViewProjectComponent {
   goBack(): void {
     this.router.navigate(['/main-page/planning/show-project']);
   }
+
+  printScheduler() {
+    const printContents = document.getElementById('print-section')?.innerHTML;
+    const printWindow = window.open('', '', 'width=1920,height=1080');
+    if (printWindow && printContents) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Planning du Projet</title>
+            <style>
+              @media print {
+                body {
+                  -webkit-print-color-adjust: exact;
+                  print-color-adjust: exact;
+                }
+                .daypilot-scheduler-main {
+                  overflow: visible !important;
+                  height: auto !important;
+                }
+              }
+
+              /* Landscape print mode */
+              @page {
+                size: landscape;
+                margin: 10mm;
+              }
+            </style>
+          </head>
+          <body>
+            ${printContents}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.print();
+        printWindow.close();
+      }, 3000);
+    }
+  }
+
 }
