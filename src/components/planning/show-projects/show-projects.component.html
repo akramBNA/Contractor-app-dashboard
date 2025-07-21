@@ -45,6 +45,9 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
+      <tr *ngIf="projects_flag">
+        <td colspan="6" class="text-center text-gray-500 py-4">Aucun projets trouvés.</td>
+      </tr>
       <tr *ngFor="let project of projects_data">
         <td class="px-4 py-2 text-sm">{{ project.project_name }}</td>
         <td class="px-4 py-2 text-sm">{{ project.description }}</td>

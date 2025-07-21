@@ -30,7 +30,8 @@ export class ShowProjectsComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   projects_data: any[] = [];
-  isLoading = false;
+  isLoading: boolean = false;
+  projects_flag: boolean = false;
 
   limit = 20;
   offset = 0;
@@ -58,10 +59,21 @@ export class ShowProjectsComponent {
   }
 
   fetchProjects(limit: number, offset: number, keyword: string) {
+    this.projects_flag = false;
     this.isLoading = true;
     this.projectService.getAllProjects(limit, offset, keyword).subscribe((data: any) => {
       this.isLoading = false;
       if (data.success) {
+        if(data.data.length === 0) {
+          this.projects_flag = true;
+          this.totalItems = 0;
+          this.projectStats = {
+            notStarted: 0,
+            inProgress: 0,
+            finished: 0,
+            canceled: 0,
+          }
+        };
         this.projects_data = data.data;
         this.totalItems = data.attributes.total;
         this.projectStats = data.stats;
