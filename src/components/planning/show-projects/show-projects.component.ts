@@ -2,15 +2,27 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProjectsService } from '../../../services/projects.services';
-import { FormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-
+import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-show-projects',
-  imports: [CommonModule, LoadingSpinnerComponent, FormsModule, MatIconModule, MatPaginatorModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    FormsModule,
+    MatIconModule,
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './show-projects.component.html',
   styleUrl: './show-projects.component.css',
 })
@@ -22,10 +34,9 @@ export class ShowProjectsComponent {
 
   limit = 20;
   offset = 0;
-  keyword = '';
+  keyword = new FormControl('');
 
   totalItems = 0;
-
   pageSizesOptions = [3, 20, 50, 100];
 
   projectStats = {
@@ -35,13 +46,15 @@ export class ShowProjectsComponent {
     canceled: 0,
   };
 
-  constructor(
-    private projectService: ProjectsService,
-    private router: Router
-  ) {}
+  constructor(private projectService: ProjectsService, private router: Router) {}
 
   ngOnInit() {
-    this.fetchProjects(this.limit, this.offset, this.keyword);
+    this.fetchProjects(this.limit, this.offset, this.keyword.value ?? '');
+
+    this.keyword.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value: string | null) => {
+        this.offset = 0;
+        this.fetchProjects(this.limit, this.offset, (value ?? '').trim());
+      });
   }
 
   fetchProjects(limit: number, offset: number, keyword: string) {
@@ -52,14 +65,29 @@ export class ShowProjectsComponent {
         this.projects_data = data.data;
         this.totalItems = data.attributes.total;
         this.projectStats = data.stats;
+      } else {
+        this.projects_data = [];
+        this.totalItems = 0;
+        this.projectStats = {
+          notStarted: 0,
+          inProgress: 0,
+          finished: 0,
+          canceled: 0,
+        };
       }
     });
   }
 
-  onPageChange(event: any) {
+  onPageChange(event: PageEvent) {
     this.limit = event.pageSize;
     this.offset = event.pageIndex * event.pageSize;
-    this.fetchProjects(this.limit, this.offset, this.keyword);
+    this.fetchProjects(this.limit, this.offset, this.keyword.value ?? '');
+  }
+
+  clearSearch() {
+    this.keyword.setValue('');
+    this.offset = 0;
+    this.fetchProjects(this.limit, this.offset, '');
   }
 
   ViewProject(projectId: number) {
@@ -67,6 +95,6 @@ export class ShowProjectsComponent {
   }
 
   DeleteProject(projectId: number) {
-    // to be implemented
+    // To be implemented
   }
 }
