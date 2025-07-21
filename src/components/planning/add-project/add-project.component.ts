@@ -1,7 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import {
   FormGroup,
-  FormControl,
   ReactiveFormsModule,
   Validators,
   FormBuilder,
@@ -18,6 +17,10 @@ import { CommonModule } from '@angular/common';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { EmployeesService } from '../../../services/employees.services';
 
+
+import { MatIconModule } from '@angular/material/icon';
+
+
 @Component({
   selector: 'app-add-project',
   standalone: true,
@@ -30,6 +33,7 @@ import { EmployeesService } from '../../../services/employees.services';
     MatDatepickerModule,
     MatButtonModule,
     MatNativeDateModule,
+    MatIconModule
   ],
   templateUrl: './add-project.component.html',
   styleUrl: './add-project.component.css',
@@ -49,15 +53,20 @@ export class AddProjectComponent {
     private swalService: SwalService,
     private employeesService: EmployeesService
   ) {
-    this.projectForm = this.formBuilder.group({
-      project_name: ['', Validators.required],
-      description: ['', Validators.required],
-      assigned_to: [''],
-      start_date: ['', Validators.required],
-      end_date: ['', Validators.required],
-      priority: ['', Validators.required],
-      status: ['', Validators.required],
-    });
+      this.projectForm = this.formBuilder.group(
+        {
+          project_name: ['', Validators.required],
+          description: ['', Validators.required],
+          assigned_to: [''],
+          start_date: ['', Validators.required],
+          end_date: ['', Validators.required],
+          priority: ['', Validators.required],
+          status: ['', Validators.required],
+        },
+        {
+          validators: [this.endDateAfterStartDateValidator()]
+        }
+      );
   }
 
 
@@ -70,9 +79,29 @@ export class AddProjectComponent {
      if(data.success) {
         this.employeesList = data.data
         console.log("employeesList: ", this.employeesList);
-        
       }
     })
+  }
+
+  endDateAfterStartDateValidator() {
+    return (formGroup: FormGroup) => {
+      const startDate = formGroup.get('start_date')?.value;
+      const endDate = formGroup.get('end_date')?.value;
+
+      if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+        formGroup.get('end_date')?.setErrors({ endBeforeStart: true });
+      } else {
+        const errors = formGroup.get('end_date')?.errors;
+        if (errors) {
+          delete errors['endBeforeStart'];
+          if (Object.keys(errors).length === 0) {
+            formGroup.get('end_date')?.setErrors(null);
+          } else {
+            formGroup.get('end_date')?.setErrors(errors);
+          }
+        }
+      }
+    };
   }
 
   onSubmit() {
