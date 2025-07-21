@@ -9,8 +9,8 @@ export class ProjectsService {
 
   readonly base_url = environment.backendURL;    
 
-    getAllProjects(): Observable<any> {
-      return this.http.get<any>(`${this.base_url}/projects/getAllProjects/`);
+    getAllProjects(limit:number, offset:number, keyword:string): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/projects/getAllProjects/${JSON.stringify({ limit: limit, offset: offset, keyword: keyword })}`);
     };
 
     addProject(project_data: any): Observable<any> {    
