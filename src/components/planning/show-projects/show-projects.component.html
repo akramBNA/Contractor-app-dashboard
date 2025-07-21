@@ -36,7 +36,6 @@
     <thead class="bg-gray-100">
       <tr>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom du Projet</th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Description</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Début</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Fin</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Durée</th>
@@ -50,7 +49,6 @@
       </tr>
       <tr *ngFor="let project of projects_data">
         <td class="px-4 py-2 text-sm">{{ project.project_name }}</td>
-        <td class="px-4 py-2 text-sm">{{ project.description }}</td>
         <td class="px-4 py-2 text-sm">{{ project.start_date }}</td>
         <td class="px-4 py-2 text-sm">{{ project.end_date }}</td>
         <td class="px-4 py-2 text-sm">{{ project.duration }} jours</td>
