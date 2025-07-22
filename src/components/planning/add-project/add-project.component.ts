@@ -1,9 +1,11 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
   FormBuilder,
+  FormControl,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -11,14 +13,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
-import { ProjectsService } from '../../../services/projects.services';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipGrid, MatChipInputEvent, MatChipRow, MatChipsModule } from '@angular/material/chips';
+import { MatAutocomplete, MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { ProjectsService } from '../../../services/projects.services';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { EmployeesService } from '../../../services/employees.services';
-
-
-import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -33,17 +34,28 @@ import { MatIconModule } from '@angular/material/icon';
     MatDatepickerModule,
     MatButtonModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    MatChipGrid,
+    MatChipRow,
+    MatAutocomplete,
+    MatAutocompleteModule,
+    MatChipsModule
   ],
   templateUrl: './add-project.component.html',
   styleUrl: './add-project.component.css',
   encapsulation: ViewEncapsulation.None,
 })
 export class AddProjectComponent {
+  
+  employeeCtrl = new FormControl('');
   projectForm: FormGroup;
   isLoading: boolean = false;
   formSubmitted: boolean = false;
   employeesList: any[] = [];
+  filteredEmployees: any[] = [];
+  separatorKeysCodes: any;
+  selectedEmployees: any[] = [];
+
 
 
   constructor(
@@ -57,7 +69,7 @@ export class AddProjectComponent {
         {
           project_name: ['', Validators.required],
           description: ['', Validators.required],
-          assigned_to: [''],
+          employee_id: [[], Validators.required],
           start_date: ['', Validators.required],
           end_date: ['', Validators.required],
           priority: ['', Validators.required],
@@ -72,15 +84,45 @@ export class AddProjectComponent {
 
   ngOnInit() {
     this.getAllActiveEmployeesNames();
+
+    this.employeeCtrl.valueChanges.subscribe(value => {
+      const search = value?.toLowerCase?.() || '';
+      this.filteredEmployees = this.employeesList.filter(emp =>
+        `${emp.employee_name} ${emp.employee_lastname}`.toLowerCase().includes(search)
+      );
+    });
   }
 
   getAllActiveEmployeesNames() {
     this.employeesService.getAllActiveEmployeesNames().subscribe((data: any) => {
      if(data.success) {
         this.employeesList = data.data
-        console.log("employeesList: ", this.employeesList);
       }
     })
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    const selectedEmp = event.option.value;
+    const alreadySelected = this.selectedEmployees.some(emp => emp.employee_id === selectedEmp.employee_id);
+    if (!alreadySelected) {
+      this.selectedEmployees.push(selectedEmp);
+      this.updateEmployeeFormValue();
+    }
+    this.employeeCtrl.setValue('');
+  }
+
+  addEmployeeFromInput(event: MatChipInputEvent): void {
+    this.employeeCtrl.setValue('');
+  }
+
+  updateEmployeeFormValue(): void {
+    const ids = this.selectedEmployees.map(emp => emp.employee_id);
+    this.projectForm.get('employee_id')?.setValue(ids);
+  }
+
+  removeEmployee(emp: any): void {
+    this.selectedEmployees = this.selectedEmployees.filter(e => e.employee_id !== emp.employee_id);
+    this.updateEmployeeFormValue();
   }
 
   endDateAfterStartDateValidator() {
@@ -107,6 +149,7 @@ export class AddProjectComponent {
   onSubmit() {
     this.formSubmitted = true;
     this.isLoading = true;
+
     if (this.projectForm.valid) {
       const formData = this.projectForm.value;
       this.projectService.addProject(formData).subscribe((data: any) => {

@@ -13,9 +13,28 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="w-full">
+      <mat-form-field class="w-full" appearance="fill">
         <mat-label>Assigné à</mat-label>
-        <input matInput formControlName="assigned_to" />
+
+        <mat-chip-grid #chipGrid aria-label="Sélection d'employés">
+          <mat-chip-row *ngFor="let emp of selectedEmployees" (removed)="removeEmployee(emp)" color="primary" selected >{{ emp.employee_name }} {{ emp.employee_lastname }}
+            <button matChipRemove [attr.aria-label]="'remove ' + emp.employee_name">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+
+        <input
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipGrid"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [formControl]="employeeCtrl"
+          (matChipInputTokenEnd)="addEmployeeFromInput($event)"
+          placeholder="Chercher un employé..."/>
+
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let emp of filteredEmployees" [value]="emp">{{ emp.employee_name }} {{ emp.employee_lastname }}</mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="w-full">
