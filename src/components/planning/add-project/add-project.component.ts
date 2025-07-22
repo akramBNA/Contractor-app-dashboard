@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroup,
@@ -46,7 +46,8 @@ import { EmployeesService } from '../../../services/employees.services';
   encapsulation: ViewEncapsulation.None,
 })
 export class AddProjectComponent {
-  
+  @ViewChild('employeeInput') employeeInput!: ElementRef<HTMLInputElement>;
+
   employeeCtrl = new FormControl('');
   projectForm: FormGroup;
   isLoading: boolean = false;
@@ -108,7 +109,9 @@ export class AddProjectComponent {
       this.selectedEmployees.push(selectedEmp);
       this.updateEmployeeFormValue();
     }
-    this.employeeCtrl.setValue('');
+
+    this.employeeInput.nativeElement.value = '';
+    this.employeeCtrl.setValue(null);  
   }
 
   addEmployeeFromInput(event: MatChipInputEvent): void {
