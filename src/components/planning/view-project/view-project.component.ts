@@ -152,7 +152,7 @@ export class ViewProjectComponent {
     this.projectsService.getProjectById(project_id).subscribe((data: any) => {
       this.isLoading = false;
       if (data.success) {
-        this.project_data = data.data;
+        this.project_data = data.data;        
       } else {
         this.swalService.showError('Erreur lors de la récupération du projet.')
           .then(() => this.router.navigate(['/main-page/planning/show-project']));
