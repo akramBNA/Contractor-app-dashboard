@@ -112,7 +112,7 @@ export class ShowProjectsComponent {
   }
 
   DeleteProject(projectId: number) {
-        this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?').then((result) => {
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?').then((result) => {
       if (result.isConfirmed) {
         this.isLoading = true;
         this.projectService.deleteProject(projectId).subscribe((data: any) => {
