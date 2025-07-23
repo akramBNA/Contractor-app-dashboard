@@ -9,6 +9,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { SwalService } from '../../../shared/Swal/swal.service';
 
 @Component({
   selector: 'app-show-projects',
@@ -47,7 +48,11 @@ export class ShowProjectsComponent {
     canceled: 0,
   };
 
-  constructor(private projectService: ProjectsService, private router: Router) {}
+  constructor(
+    private projectService: ProjectsService, 
+    private router: Router,
+    private swalService: SwalService
+  ) {}
 
   ngOnInit() {
     this.fetchProjects(this.limit, this.offset, this.keyword.value ?? '');
@@ -107,6 +112,20 @@ export class ShowProjectsComponent {
   }
 
   DeleteProject(projectId: number) {
-    // To be implemented
+        this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?').then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.projectService.deleteProject(projectId).subscribe((data: any) => {
+          if (data.success) {
+            this.isLoading = false;
+            this.swalService.showSuccess('Ce projet a été supprimé avec succès.').then(() => {
+            });
+          } else {
+            this.isLoading = false;
+            this.swalService.showError('Une erreur s\'est produite lors de la suppression de ce projet.');
+          }
+        });
+      }
+    });
   }
 }
