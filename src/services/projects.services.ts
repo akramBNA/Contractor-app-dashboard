@@ -20,4 +20,8 @@ export class ProjectsService {
     getProjectById(project_id: number): Observable<any> {
       return this.http.get<any>(`${this.base_url}/projects/getProjectById/${project_id}`);
     };
+
+    deleteProject(project_id: number): Observable<any> {
+      return this.http.delete<any>(`${this.base_url}/projects/deleteProject/${JSON.stringify({project_id: project_id })}`);
+    };
 }
