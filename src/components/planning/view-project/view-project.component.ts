@@ -104,55 +104,32 @@ export class ViewProjectComponent {
     }
   }
 
-  ngAfterViewInit(): void {
-    const events = [
-      {
-        id: '1',
-        resource: 'R1',
-        start: '2025-07-22',
-        end: '2025-07-27',
-        text: 'Project Phase A'
-      },
-      {
-        id: '2',
-        resource: 'R2',
-        start: '2025-08-01',
-        end: '2025-09-01',
-        text: 'Phase B - Development'
-      },
-      {
-        id: '3',
-        resource: 'R3',
-        start: '2025-01-05',
-        end: '2025-02-14',
-        text: 'Phase C - Design'
-      },
-      {
-        id: '4',
-        resource: 'R4',
-        start: '2025-04-02',
-        end: '2025-04-07',
-        text: 'Phase D - QA'
-      },
-      {
-        id: '5',
-        resource: 'R5',
-        start: '2025-05-06',
-        end: '2025-06-22',
-        text: 'Phase E - Deployment'
-      }
-    ];
-
-    this.scheduler.control.update({ events });
-    // this.scheduler.control.scrollTo('2025-07-19');
-  }
+  ngAfterViewInit(): void {}
 
   getProjectById(project_id: number): void {
     this.isLoading = true;
     this.projectsService.getProjectById(project_id).subscribe((data: any) => {
       this.isLoading = false;
       if (data.success) {
-        this.project_data = data.data;        
+        this.project_data = data.data;
+        const dynamicResources = this.project_data.tasks.map((task: any) => ({
+          id: String(task.task_id),
+          name: task.task_name
+        }));
+
+        const dynamicEvents = this.project_data.tasks.map((task: any) => ({
+          id: String(task.task_id),
+          resource: String(task.task_id),
+          start: task.start_date,
+          end: task.end_date,
+          text: task.description
+        }));
+
+        this.scheduler.control.update({
+          resources: dynamicResources,
+          events: dynamicEvents
+        });
+
       } else {
         this.swalService.showError('Erreur lors de la récupération du projet.')
           .then(() => this.router.navigate(['/main-page/planning/show-project']));
