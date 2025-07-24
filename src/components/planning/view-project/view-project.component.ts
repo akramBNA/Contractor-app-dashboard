@@ -21,6 +21,15 @@ export class ViewProjectComponent {
   project_data: any = null;
   isLoading = false;
 
+  private resourceColors: { [resourceId: string]: { backColor: string; barColor: string; fontColor: string; } } = {};
+  private colorPalette = [
+    { back: '#1e90ff', bar: '#0f62fe', font: '#ffffff' },
+    { back: '#28a745', bar: '#1c7c3b', font: '#ffffff' },
+    { back: '#ffc107', bar: '#e0a800', font: '#000000' },
+    { back: '#dc3545', bar: '#a71d2a', font: '#ffffff' },
+    { back: '#6610f2', bar: '#520dc2', font: '#ffffff' }
+  ];
+
   YearSchedulerConfig: DayPilot.SchedulerConfig = {
     timeHeaders: [
       { groupBy: 'Month' },
@@ -48,44 +57,19 @@ export class ViewProjectComponent {
         });
       }
     },
-    resources: [
-      { name: 'Resource 1', id: 'R1' },
-      { name: 'Resource 2', id: 'R2' },
-      { name: 'Resource 3', id: 'R3' },
-      { name: 'Resource 4', id: 'R4' },
-      { name: 'Resource 5', id: 'R5' }
-    ],
+    resources: [],
     onBeforeEventRender: (args) => {
-      switch (args.data.resource) {
-        case 'R1':
-          args.data.backColor = '#1e90ff';
-          args.data.barColor = '#0f62fe';
-          args.data.fontColor = '#ffffff';
-          break;
-        case 'R2':
-          args.data.backColor = '#28a745';
-          args.data.barColor = '#1c7c3b';
-          args.data.fontColor = '#ffffff';
-          break;
-        case 'R3':
-          args.data.backColor = '#ffc107';
-          args.data.barColor = '#e0a800';
-          args.data.fontColor = '#000000';
-          break;
-        case 'R4':
-          args.data.backColor = '#dc3545';
-          args.data.barColor = '#a71d2a';
-          args.data.fontColor = '#ffffff';
-          break;
-        case 'R5':
-          args.data.backColor = '#6610f2';
-          args.data.barColor = '#520dc2';
-          args.data.fontColor = '#ffffff';
-          break;
-        default:
-          args.data.backColor = '#cccccc';
-          args.data.barColor = '#999999';
-          args.data.fontColor = '#000000';
+      const resourceId = args.data.resource;
+
+      if (resourceId && this.resourceColors[resourceId]) {
+        const colors = this.resourceColors[resourceId];
+        args.data.backColor = colors.backColor;
+        args.data.barColor = colors.barColor;
+        args.data.fontColor = colors.fontColor;
+      } else {
+        args.data.backColor = '#cccccc';
+        args.data.barColor = '#999999';
+        args.data.fontColor = '#000000';
       }
     }
   };
@@ -112,10 +96,17 @@ export class ViewProjectComponent {
       this.isLoading = false;
       if (data.success) {
         this.project_data = data.data;
-        const dynamicResources = this.project_data.tasks.map((task: any) => ({
-          id: String(task.task_id),
-          name: task.task_name
-        }));
+
+        const dynamicResources = this.project_data.tasks.map((task: any, index: number) => {
+        const id = String(task.task_id);
+        const palette = this.colorPalette[index % this.colorPalette.length];
+        this.resourceColors[id] = {
+          backColor: palette.back,
+          barColor: palette.bar,
+          fontColor: palette.font
+        };
+        return { id, name: task.task_name };
+      });
 
         const dynamicEvents = this.project_data.tasks.map((task: any) => ({
           id: String(task.task_id),
