@@ -1,0 +1,30 @@
+ <div class="w-auto h-auto m-8">
+    <h2 mat-dialog-title>Ajouter une tâche</h2>
+    <form [formGroup]="taskForm" (ngSubmit)="submit()" class="space-y-4">
+      <mat-form-field class="w-full">
+        <mat-label>Nom de la tâche</mat-label>
+        <input matInput formControlName="task_name" required>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Description</mat-label>
+        <input matInput formControlName="description">
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Date de début</mat-label>
+        <input matInput type="date" formControlName="start_date" required>
+      </mat-form-field>
+
+      <mat-form-field class="w-full">
+        <mat-label>Date de fin</mat-label>
+        <input matInput type="date" formControlName="end_date" required>
+      </mat-form-field>
+
+      <div class="flex justify-end gap-2 pt-4">
+        <button class="btn-cancel" (click)="close()">Annuler</button>
+        <button class="btn-add" type="submit" [disabled]="taskForm.invalid">Ajouter</button>
+      </div>
+    </form>
+ </div>
+ 

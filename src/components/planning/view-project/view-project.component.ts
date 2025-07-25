@@ -2,11 +2,15 @@ import { Component, ViewChild } from '@angular/core';
 import { ProjectsService } from '../../../services/projects.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { AddTaskModalComponent } from '../add-tasks/add-tasks.component';
+import { HttpClient } from '@angular/common/http';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { DayPilot, DayPilotSchedulerComponent, DayPilotModule } from '@daypilot/daypilot-lite-angular';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+
 
 @Component({
   selector: 'app-view-project',
@@ -78,7 +82,9 @@ export class ViewProjectComponent {
     private projectsService: ProjectsService,
     private route: ActivatedRoute,
     private router: Router,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private dialog: MatDialog,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -187,6 +193,32 @@ export class ViewProjectComponent {
 
       pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
       pdf.save('planning.pdf');
+    });
+  }
+
+  openAddTaskModal(): void {
+    const project_id = this.project_data?.project_id;
+    const dialogRef = this.dialog.open(AddTaskModalComponent, {
+      data: project_id,
+      // width: '1200px',
+      // height: '500px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isLoading = true;
+        this.http.post(`/api/tasks/add/${JSON.stringify({ project_id })}`, result)
+          .subscribe((res: any) => {
+            this.isLoading = false;
+            if (res.success) {
+              this.swalService.showSuccess('Tâche ajoutée avec succès.');
+              this.getProjectById(project_id);
+            } else {
+              this.swalService.showError(res.message || 'Erreur lors de l’ajout de la tâche.');
+            }
+          });
+      }
     });
   }
 
