@@ -2,6 +2,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 
 import { TasksService } from '../../../services/tasks.service';
 import { CommonModule } from '@angular/common';
@@ -16,7 +18,8 @@ import { SwalService } from '../../../shared/Swal/swal.service';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule
   ],  templateUrl: "./add-tasks.component.html",
   styleUrl: './add-tasks.component.css'
 })
