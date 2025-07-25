@@ -3,7 +3,7 @@ import { ProjectsService } from '../../../services/projects.services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { AddTaskModalComponent } from '../add-tasks/add-tasks.component';
+import { ModalAddTaskComponent } from '../add-tasks/add-tasks.component';
 import { HttpClient } from '@angular/common/http';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
@@ -198,7 +198,7 @@ export class ViewProjectComponent {
 
   openAddTaskModal(): void {
     const project_id = this.project_data?.project_id;
-    const dialogRef = this.dialog.open(AddTaskModalComponent, {
+    const dialogRef = this.dialog.open(ModalAddTaskComponent, {
       data: project_id,
       // width: '1200px',
       // height: '500px',

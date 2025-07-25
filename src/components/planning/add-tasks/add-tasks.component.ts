@@ -1,37 +1,43 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { TasksService } from '../../../services/tasks.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { TasksService } from '../../../services/tasks.service';
+import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { SwalService } from '../../../shared/Swal/swal.service';
 @Component({
-  selector: 'app-add-task-modal',
+  selector: 'app-modal-add-task',
   standalone: true,
-  imports: [
+ imports: [
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule
-  ],
-  templateUrl: './add-tasks.component.html',
-  styleUrl:'./add-tasks.component.css'
+  ],  templateUrl: "./add-tasks.component.html",
+  styleUrl: './add-tasks.component.css'
 })
-export class AddTaskModalComponent {
+export class ModalAddTaskComponent {
   taskForm: FormGroup;
+  dateError: boolean = false;
+  projectId: number;
+  // isLoading: boolean = false
 
   constructor(
-    private dialogRef: MatDialogRef<AddTaskModalComponent>,
     private fb: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public projectId: number,
-    private taskSevice: TasksService
+    private dialogRef: MatDialogRef<ModalAddTaskComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private taskService: TasksService,
+    private swalService: SwalService
   ) {
+    this.projectId = data.projectId;
+
     this.taskForm = this.fb.group({
       task_name: ['', Validators.required],
-      description: [''],
+      description: ['', Validators.required],
       start_date: ['', Validators.required],
       end_date: ['', Validators.required],
     });
@@ -39,8 +45,33 @@ export class AddTaskModalComponent {
 
   submit() {
     if (this.taskForm.valid) {
-      
-      this.dialogRef.close({ ...this.taskForm.value, project_id: this.projectId });
+      const { start_date, end_date } = this.taskForm.value;
+      const start = new Date(start_date);
+      const end = new Date(end_date);
+
+      if (end < start) {
+        this.dateError = true;
+        return;
+      }
+
+      this.dateError = false;
+
+      const taskData = {
+        ...this.taskForm.value,
+        project_id: this.projectId
+      };
+
+      this.taskService.addTask(this.data.project_id, taskData).subscribe((data:any)=>{
+        
+        if(data.success){
+          this.swalService.showSuccess("Tâche ajoutée avec succès.")
+          this.dialogRef.close(data.data);
+        } else {
+          this.swalService.showError('Erreur lors de l’ajout de la tâche.')
+        }
+      })
+    } else {
+      this.swalService.showWarning('Verifiez vos données!')
     }
   }
 
