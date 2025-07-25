@@ -95,7 +95,11 @@
     </div>
   </div>
 
+  <div class="flex justify-end my-4">
+  </div>
+  
   <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+    <button class="btn-edit" (click)="openAddTaskModal()">+ Ajouter une tâche</button>
     <button class="btn-print" (click)="printScheduler()">Imprimer le planning</button>
     <button class="btn-cancel" (click)="goBack()">Retour</button>
     <button class="btn-print" (click)="exportToPDF()">Exporter en PDF</button>
