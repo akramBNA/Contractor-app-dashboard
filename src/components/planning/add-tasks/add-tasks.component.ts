@@ -1,15 +1,17 @@
+import { CommonModule } from '@angular/common';
+import { Component, Inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 
 import { TasksService } from '../../../services/tasks.service';
-import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SwalService } from '../../../shared/Swal/swal.service';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+
 @Component({
   selector: 'app-modal-add-task',
   standalone: true,
@@ -19,15 +21,16 @@ import { SwalService } from '../../../shared/Swal/swal.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDatepickerModule
-  ],  templateUrl: "./add-tasks.component.html",
+    MatDatepickerModule,
+    LoadingSpinnerComponent
+],  templateUrl: "./add-tasks.component.html",
   styleUrl: './add-tasks.component.css'
 })
 export class ModalAddTaskComponent {
   taskForm: FormGroup;
   dateError: boolean = false;
   projectId: number;
-  // isLoading: boolean = false
+  isLoading: boolean = false
 
   constructor(
     private fb: FormBuilder,
@@ -46,8 +49,17 @@ export class ModalAddTaskComponent {
     });
   }
 
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, '0');
+    const day = `${date.getDate()}`.padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   submit() {
+    
     if (this.taskForm.valid) {
+      this.isLoading = true
       const { start_date, end_date } = this.taskForm.value;
       const start = new Date(start_date);
       const end = new Date(end_date);
@@ -58,18 +70,23 @@ export class ModalAddTaskComponent {
       }
 
       this.dateError = false;
-
+      
       const taskData = {
         ...this.taskForm.value,
-        project_id: this.projectId
+        start_date: this.formatDate(start),
+        end_date: this.formatDate(end),
       };
 
-      this.taskService.addTask(this.data.project_id, taskData).subscribe((data:any)=>{
-        
+      
+      this.taskService.addTask(this.data.project_id, taskData).subscribe((data:any)=>{        
         if(data.success){
-          this.swalService.showSuccess("Tâche ajoutée avec succès.")
+
+          this.isLoading = false;
+          this.swalService.showSuccess("Tâche ajoutée avec succès.");
+          this.taskForm.reset();
           this.dialogRef.close(data.data);
         } else {
+          this.isLoading = false
           this.swalService.showError('Erreur lors de l’ajout de la tâche.')
         }
       })

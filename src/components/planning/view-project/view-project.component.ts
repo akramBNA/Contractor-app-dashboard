@@ -199,27 +199,27 @@ export class ViewProjectComponent {
   openAddTaskModal(): void {
     const project_id = this.project_data?.project_id;
     const dialogRef = this.dialog.open(ModalAddTaskComponent, {
-      data: project_id,
+      data: {project_id: project_id},
       // width: '1200px',
       // height: '500px',
       disableClose: true
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.isLoading = true;
-        this.http.post(`/api/tasks/add/${JSON.stringify({ project_id })}`, result)
-          .subscribe((res: any) => {
-            this.isLoading = false;
-            if (res.success) {
-              this.swalService.showSuccess('Tâche ajoutée avec succès.');
-              this.getProjectById(project_id);
-            } else {
-              this.swalService.showError(res.message || 'Erreur lors de l’ajout de la tâche.');
-            }
-          });
-      }
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.isLoading = true;
+    //     this.http.post(`/api/tasks/add/${JSON.stringify({ project_id })}`, result)
+    //       .subscribe((res: any) => {
+    //         this.isLoading = false;
+    //         if (res.success) {
+    //           this.swalService.showSuccess('Tâche ajoutée avec succès.');
+    //           this.getProjectById(project_id);
+    //         } else {
+    //           this.swalService.showError(res.message || 'Erreur lors de l’ajout de la tâche.');
+    //         }
+    //       });
+    //   }
+    // });
   }
 
 }

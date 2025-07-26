@@ -1,4 +1,6 @@
 <div class="w-auto h-auto m-8">
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+    
   <h2 mat-dialog-title>Ajouter une tâche</h2>
 
   <form [formGroup]="taskForm" (ngSubmit)="submit()" class="space-y-4">
