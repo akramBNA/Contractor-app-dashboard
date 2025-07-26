@@ -82,9 +82,10 @@ export class ModalAddTaskComponent {
         if(data.success){
 
           this.isLoading = false;
-          this.swalService.showSuccess("Tâche ajoutée avec succès.");
-          this.taskForm.reset();
-          this.dialogRef.close(data.data);
+          this.swalService.showSuccess("Tâche ajoutée avec succès.").then(() => {
+            this.taskForm.reset();
+            this.dialogRef.close(data.data);
+          });
         } else {
           this.isLoading = false
           this.swalService.showError('Erreur lors de l’ajout de la tâche.')
