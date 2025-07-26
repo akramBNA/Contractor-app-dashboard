@@ -1,13 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
-import { ProjectsService } from '../../../services/projects.services';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { ModalAddTaskComponent } from '../add-tasks/add-tasks.component';
+import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ProjectsService } from '../../../services/projects.services';
+import { ModalAddTaskComponent } from '../add-tasks/add-tasks.component';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { DayPilot, DayPilotSchedulerComponent, DayPilotModule } from '@daypilot/daypilot-lite-angular';
+import { MatDialog } from '@angular/material/dialog';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -128,8 +128,7 @@ export class ViewProjectComponent {
         });
 
       } else {
-        this.swalService.showError('Erreur lors de la récupération du projet.')
-          .then(() => this.router.navigate(['/main-page/planning/show-project']));
+        this.swalService.showError('Erreur lors de la récupération du projet.').then(() => this.router.navigate(['/main-page/planning/show-project']));
       }
     });
   }
@@ -204,10 +203,8 @@ export class ViewProjectComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("result from modal: ", result);
-      
       if (result) {
-        // window.location.reload();
+        window.location.reload();
       }
     });
   }
