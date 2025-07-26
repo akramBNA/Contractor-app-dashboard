@@ -53,17 +53,17 @@
         <td class="px-4 py-2 text-sm">{{ project.end_date }}</td>
         <td class="px-4 py-2 text-sm">{{ project.duration }} jours</td>
         <td class="px-4 py-2 text-sm">
-            <span
-            class="px-2 py-1 rounded text-white font-semibold text-xs"
-            [ngClass]="{
+          <span
+              class="px-2 py-1 rounded text-white font-semibold text-xs"
+              [ngClass]="{
                 'bg-blue-500': project.status === 'Not Started',
                 'bg-yellow-500': project.status === 'In Progress',
                 'bg-green-500': project.status === 'Finished',
                 'bg-red-500': project.status === 'Canceled'
-            }"
+              }"
             >
-            {{ project.status }}
-            </span>
+              {{ getStatusLabel(project.status) }}
+          </span>
         </td>
         <td class="px-4 py-2 text-sm flex space-x-2">
           <button mat-icon-button color="primary" style="cursor: pointer" (click)="ViewProject(project.project_id)">
