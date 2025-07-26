@@ -1,4 +1,6 @@
 <div class="w-auto h-auto m-8">
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+    
   <h2 mat-dialog-title>Ajouter une tâche</h2>
 
   <form [formGroup]="taskForm" (ngSubmit)="submit()" class="space-y-4">
@@ -13,7 +15,7 @@
 
     <mat-form-field appearance="fill" class="w-full">
       <mat-label>Description</mat-label>
-      <input matInput formControlName="description">
+      <textarea matInput formControlName="description"></textarea>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="w-full">

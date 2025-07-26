@@ -1,15 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ProjectsService } from '../../../services/projects.services';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { SwalService } from '../../../shared/Swal/swal.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { SwalService } from '../../../shared/Swal/swal.service';
 
 @Component({
   selector: 'app-show-projects',
@@ -128,4 +128,15 @@ export class ShowProjectsComponent {
       }
     });
   }
+
+  getStatusLabel(status: string): string {
+    switch (status) {
+      case 'Not Started': return 'Non Commencé';
+      case 'In Progress': return 'En Cours';
+      case 'Finished': return 'Terminé';
+      case 'Canceled': return 'Annulé';
+      default: return status;
+    }
+  }
+
 }

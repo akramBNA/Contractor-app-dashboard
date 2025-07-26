@@ -1,13 +1,13 @@
-import { Component, ViewChild } from '@angular/core';
-import { ProjectsService } from '../../../services/projects.services';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import { ModalAddTaskComponent } from '../add-tasks/add-tasks.component';
+import { Component, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ProjectsService } from '../../../services/projects.services';
+import { ModalAddTaskComponent } from '../add-tasks/add-tasks.component';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { DayPilot, DayPilotSchedulerComponent, DayPilotModule } from '@daypilot/daypilot-lite-angular';
+import { MatDialog } from '@angular/material/dialog';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -75,6 +75,11 @@ export class ViewProjectComponent {
         args.data.barColor = '#999999';
         args.data.fontColor = '#000000';
       }
+    },
+    onEventClick: (args) => {
+      const event = args.e;
+      const name = event.data.text;
+      this.swalService.showAlert(`${name}`, 'Détails du Tâche');
     }
   };
 
@@ -128,8 +133,7 @@ export class ViewProjectComponent {
         });
 
       } else {
-        this.swalService.showError('Erreur lors de la récupération du projet.')
-          .then(() => this.router.navigate(['/main-page/planning/show-project']));
+        this.swalService.showError('Erreur lors de la récupération du projet.').then(() => this.router.navigate(['/main-page/planning/show-project']));
       }
     });
   }
@@ -199,27 +203,28 @@ export class ViewProjectComponent {
   openAddTaskModal(): void {
     const project_id = this.project_data?.project_id;
     const dialogRef = this.dialog.open(ModalAddTaskComponent, {
-      data: project_id,
-      // width: '1200px',
-      // height: '500px',
+      data: {project_id: project_id},
       disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.isLoading = true;
-        this.http.post(`/api/tasks/add/${JSON.stringify({ project_id })}`, result)
-          .subscribe((res: any) => {
-            this.isLoading = false;
-            if (res.success) {
-              this.swalService.showSuccess('Tâche ajoutée avec succès.');
-              this.getProjectById(project_id);
-            } else {
-              this.swalService.showError(res.message || 'Erreur lors de l’ajout de la tâche.');
-            }
-          });
+        window.location.reload();
       }
     });
+  }
+
+  getPriorityLabel(priority: string): string {
+    switch (priority) {
+      case 'Low':
+        return 'Faible';
+      case 'Medium':
+        return 'Moyenne';
+      case 'High':
+        return 'Élevée';
+      default:
+        return 'Inconnue';
+    }
   }
 
 }
