@@ -214,4 +214,17 @@ export class ViewProjectComponent {
     });
   }
 
+  getPriorityLabel(priority: string): string {
+    switch (priority) {
+      case 'Low':
+        return 'Faible';
+      case 'Medium':
+        return 'Moyenne';
+      case 'High':
+        return 'Élevée';
+      default:
+        return 'Inconnue';
+    }
+  }
+
 }
