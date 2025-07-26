@@ -75,6 +75,11 @@ export class ViewProjectComponent {
         args.data.barColor = '#999999';
         args.data.fontColor = '#000000';
       }
+    },
+    onEventClick: (args) => {
+      const event = args.e;
+      const name = event.data.text;
+      alert("Task: " + name);
     }
   };
 
