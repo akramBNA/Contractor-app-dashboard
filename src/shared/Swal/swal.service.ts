@@ -52,4 +52,13 @@ export class SwalService {
       reverseButtons: false,
     });
   }
+
+  showAlert(message: string, title: string = 'Information') {
+    return Swal.fire({
+      icon: 'info',
+      title: title,
+      text: message,
+      confirmButtonText: 'OK',
+    });
+  }
 }
