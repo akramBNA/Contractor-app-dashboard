@@ -67,4 +67,8 @@ export class AddUserComponent implements OnInit {
       this.swalService.showWarning('Veuillez corriger les erreurs du formulaire.');
     }
   }
+
+  goBack(): void {
+    this.router.navigate(['/main-page/settings/account-settings']);
+  }
 }
