@@ -10,12 +10,13 @@ import { DayPilot, DayPilotSchedulerComponent, DayPilotModule } from '@daypilot/
 import { MatDialog } from '@angular/material/dialog';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { MatInputModule } from "@angular/material/input";
 
 
 @Component({
   selector: 'app-view-project',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent, DayPilotModule],
+  imports: [CommonModule, LoadingSpinnerComponent, DayPilotModule, MatInputModule],
   templateUrl: './view-project.component.html',
   styleUrl: './view-project.component.css',
 })
@@ -107,7 +108,8 @@ export class ViewProjectComponent {
       this.isLoading = false;
       if (data.success) {
         this.project_data = data.data;
-
+        console.log("Project Data:", this.project_data);
+        
         const dynamicResources = this.project_data.tasks.map((task: any, index: number) => {
         const id = String(task.task_id);
         const palette = this.colorPalette[index % this.colorPalette.length];
