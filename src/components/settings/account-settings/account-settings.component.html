@@ -1,18 +1,18 @@
-<div
-  *ngIf="!flag"
-  class="flex items-center justify-center bg-white/40 backdrop-blur-sm relative w-full h-full min-h-[500px]"
->
-  <div class="text-center space-y-6 px-4 py-8">
+<div *ngIf="!flag" class="flex items-center justify-center bg-white/40 backdrop-blur-sm relative w-full h-full min-h-[500px]">
+  
+  <!-- <div class="text-center space-y-6 px-4 py-8">
     <div class="text-8xl mb-4">🚧</div>
     <h1 class="text-2xl md:text-4xl font-semibold text-gray-800">Accès Refusé</h1>
     <p class="text-gray-600 text-lg md:text-xl">Vous n'êtes pas autorisé à accéder à cette page.<br />Seul l'administrateur y a accès.</p>
-  </div>
+  </div> -->
 </div>
 
 <div *ngIf="flag" class="bg-white/40 backdrop-blur-sm relative max-h-screen px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Utilisateurs</h1>
 
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <button class="btn-add"><a routerLink="/main-page/settings/add-user/">Ajouter un Utilisateur</a></button>
 
   <div class="bg-white shadow-md rounded-lg overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">
@@ -41,70 +41,5 @@
       </tbody>
     </table>
   </div>
-
-  <hr class="my-12 border-gray-300" />
-
-  <button class="btn-add"><a routerLink="/main-page/settings/add-user/">Ajouter un Utilisateur</a></button>
-
-  <div class="w-full max-w-full">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Ajouter un Nouvel Utilisateur</h2>
-
-    <form [formGroup]="usersForm" (ngSubmit)="onAddUser()" class="w-full px-4 md:px-0 mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label class="block mb-1 font-medium text-gray-700">Prénom d'utilisateur</label>
-          <input 
-          type="text" 
-          formControlName="user_name" 
-          placeholder="Prénom" 
-          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-        </div>
-
-        <div>
-          <label class="block mb-1 font-medium text-gray-700">Nom d'utilisateur</label>
-          <input
-            type="text"
-            formControlName="user_lastname"
-            placeholder="Nom"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-        </div>
-
-        <div>
-          <label class="block mb-1 font-medium text-gray-700">Email</label>
-          <input
-            type="email"
-            formControlName="user_email"
-            placeholder="Email"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-        </div>
-
-        <div>
-          <label class="block mb-1 font-medium text-gray-700">Mot de passe</label>
-          <input
-            type="password"
-            formControlName="user_password"
-            placeholder="Mot de passe"
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-        </div>
-
-        <div class="md:col-span-2 flex justify-center">
-          <div class="w-full md:w-1/2">
-            <label class="block mb-1 font-medium text-gray-700">Rôle</label>
-            <select
-              formControlName="user_role_id"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-              <option value="" disabled selected>Choisissez un rôle</option>
-              <option *ngFor="let role of roles_data" [value]="role.role_id">
-                {{ role.role_type }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8 text-center">
-        <button class="btn-add" (click)="onAddUser()">Ajouter</button>
-      </div>
-    </form>
-  </div>
 </div>
+  
