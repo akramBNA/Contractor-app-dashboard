@@ -131,6 +131,7 @@
       </div>
 
       <div class="mt-8 space-y-4">
+        <div *ngIf="showSttingsMenu" class="space-y-2">
             <button
               (click)="toggleSettingsSubmenu()"
               class="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 cursor-pointer"
@@ -169,6 +170,8 @@
                 </a>
               </li>
             </ul>
+        </div>
+
 
           <button routerLink="/"
                   class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg block w-full text-center cursor-pointer"
