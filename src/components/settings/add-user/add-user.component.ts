@@ -7,10 +7,13 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from '@angular/material/select';
+
 
 @Component({
   selector: 'app-add-user',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatAutocompleteModule, LoadingSpinnerComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatAutocompleteModule, LoadingSpinnerComponent, MatInputModule, MatSelectModule],
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css'],
 })
