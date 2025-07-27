@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../services/users.services';
+import { SwalService } from '../../../shared/Swal/swal.service';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   FormGroup,
@@ -7,13 +10,16 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-edit-user',
-  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent],
+  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent, MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatButtonModule],
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.css',
 })
@@ -26,6 +32,7 @@ export class EditUserComponent implements OnInit {
 
   constructor(
     private usersService: UsersService,
+    private swalService: SwalService,
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder
@@ -69,11 +76,7 @@ export class EditUserComponent implements OnInit {
     this.isLoading = true;
     if (this.userForm.invalid) {
       this.isLoading = false;
-      Swal.fire({
-        title: 'Erreur',
-        text: 'Veuillez remplir tous les champs obligatoires',
-        icon: 'error',
-      }).then(() => {
+      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires').then(() => {
         this.isLoading = false;
       });
     };
@@ -81,20 +84,12 @@ export class EditUserComponent implements OnInit {
     this.usersService.updateUser(this.user_id, this.userForm.value).subscribe((data: any) => {
       if( data.success) {
         this.isLoading = false;     
-        Swal.fire({
-          title: 'Succès',
-          text: 'Utilisateur mis à jour avec succès',
-          icon: 'success',
-        }).then(() => {
+        this.swalService.showSuccess('Utilisateur mis à jour avec succès').then(() => {
           this.router.navigate(['/main-page/settings/account-settings']);
         });
       } else {
         this.isLoading = false;
-        Swal.fire({
-          title: 'Erreur',
-          text: 'Failed to update user',
-          icon: 'error',
-        });
+        this.swalService.showError('Erreur lors de la mise à jour de l\'utilisateur');
       }
     })
   }
