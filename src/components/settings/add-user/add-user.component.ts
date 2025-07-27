@@ -56,7 +56,7 @@ export class AddUserComponent implements OnInit {
         this.isLoading = false;
         if (res.success) {
           this.swalService.showSuccess('Utilisateur ajouté avec succès').then(() => {
-            this.router.navigate(['/main-page/settings/users']);
+            this.router.navigate(['/main-page/settings/account-settings']);
           });
         } else {
           this.swalService.showError('Erreur lors de l\'ajout');
