@@ -56,6 +56,7 @@ export class AddProjectComponent {
   filteredEmployees: any[] = [];
   separatorKeysCodes: any;
   selectedEmployees: any[] = [];
+  minEndDate: Date | null = null;
 
 
 
@@ -91,6 +92,15 @@ export class AddProjectComponent {
       this.filteredEmployees = this.employeesList.filter(emp =>
         `${emp.employee_name} ${emp.employee_lastname}`.toLowerCase().includes(search)
       );
+    });
+
+    this.projectForm.get('start_date')?.valueChanges.subscribe((startDate: Date) => {
+      this.minEndDate = startDate;
+
+      const endDate = this.projectForm.get('end_date')?.value;
+      if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+        this.projectForm.get('end_date')?.setValue(null);
+      }
     });
   }
 
