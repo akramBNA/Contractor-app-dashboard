@@ -20,6 +20,7 @@ import { EditUserComponent } from '../components/settings/edit-user/edit-user.co
 import { AddMissionsComponent } from '../components/missions/add-missions/add-missions.component';
 import { MissionDetailsComponent } from '../components/missions/mission-details/mission-details.component';
 import { SalariesComponent } from '../components/hr/salaries/salaries.component';
+import { AddUserComponent } from '../components/settings/add-user/add-user.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -71,6 +72,7 @@ export const routes: Routes = [
           { path: 'contracts-settings', component: ContractsSettingsComponent },
           { path: 'hr-settings', component: HrSettingsComponent },
           { path: 'edit-user/:id', component: EditUserComponent },
+          { path: 'add-user', component: AddUserComponent },
         ],
       },
     ],

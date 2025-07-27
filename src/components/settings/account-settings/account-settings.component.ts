@@ -4,14 +4,14 @@ import { UsersService } from '../../../services/users.services';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule],
+  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css',
 })
