@@ -18,7 +18,16 @@ export class MainComponentComponent {
   showSettingsSubmenu: boolean = false;
   showMissionsSubmenu: boolean = false;
 
+  showSttingsMenu: boolean = false;
+
   constructor(private authService: AuthService) {}
+
+  ngOnInit() {
+    const userRole = sessionStorage.getItem('user_role');
+    if (userRole === 'super_admin') {
+      this.showSttingsMenu = true;
+    }
+  }
 
   toggleRHSubmenu() {
     this.showRHSubmenu = !this.showRHSubmenu;
