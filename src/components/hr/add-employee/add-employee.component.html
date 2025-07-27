@@ -74,12 +74,19 @@
         <mat-datepicker #joinPicker></mat-datepicker>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Date de la Fin</mat-label>
-        <input matInput [matDatepicker]="endPicker" formControlName="employee_end_date" />
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Date de Fin</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="employee_end_date" [min]="minEndDate"/>
         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
         <mat-datepicker #endPicker></mat-datepicker>
+        <mat-error *ngIf="employeeForm.get('employee_end_date')?.errors?.['required'] && (employeeForm.get('employee_end_date')?.touched || formSubmitted)">
+          Ce champ est requis
+        </mat-error>
+        <mat-error *ngIf="employeeForm.get('employee_end_date')?.errors?.['endBeforeStart']">
+          La date de fin ne peut pas être antérieure à la date de début
+        </mat-error>
       </mat-form-field>
+
     </div>
   </div>
 </form>

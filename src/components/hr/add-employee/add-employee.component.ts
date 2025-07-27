@@ -41,6 +41,8 @@ export class AddEmployeeComponent implements OnInit {
   isLoading: boolean = false;
   contract_types_data: any = [];
   jobs_data: any = [];
+  minEndDate: Date | null = null;
+  formSubmitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -82,6 +84,15 @@ export class AddEmployeeComponent implements OnInit {
       this.contract_types_data = data.data_contract_types;
       this.jobs_data = data.data_jobs;
     });
+
+    this.employeeForm.get('employee_joining_date')?.valueChanges.subscribe((startDate: Date) => {
+    this.minEndDate = startDate;
+
+    const endDate = this.employeeForm.get('employee_end_date')?.value;
+    if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+      this.employeeForm.get('employee_end_date')?.setValue(null);
+    }
+  });
   }
 
   formatDate(date: any): string | null {
@@ -91,6 +102,8 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   onSubmitAll() {    
+    this.formSubmitted = true;
+
     if ( this.employeeForm.valid && this.contactForm.valid && this.bankDetailsForm.valid ) {
 
       const payload = {
