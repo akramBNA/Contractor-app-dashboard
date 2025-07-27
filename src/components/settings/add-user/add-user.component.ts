@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UsersService } from '../../../services/users.services';
 import { SwalService } from '../../../shared/Swal/swal.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,7 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-add-user',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatAutocompleteModule, LoadingSpinnerComponent, MatInputModule, MatSelectModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatAutocompleteModule, LoadingSpinnerComponent, MatInputModule, MatSelectModule],
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css'],
 })
