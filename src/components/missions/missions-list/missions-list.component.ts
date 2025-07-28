@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 export class MissionsListComponent {
   isLoading: boolean = false;
   missions_data: any = [];
+  isEmpty: boolean = false;
 
   limit:number = 20;
   offset:number = 0;
@@ -64,6 +65,7 @@ export class MissionsListComponent {
   }
 
   getAllMissions(lim:number, off:number, key:string) {
+    this.isEmpty = false;
     this.isLoading = true;
     this.missionsService.getAllActiveMissions(lim, off, key).subscribe((data: any) => {
       console.log("data: ", data);
@@ -77,6 +79,8 @@ export class MissionsListComponent {
         this.completed_missions_count = data.completed_missions;
       } else {
         this.isLoading = false;
+        this.isEmpty = true;
+        this.missions_data = [];
       }
     });
   }

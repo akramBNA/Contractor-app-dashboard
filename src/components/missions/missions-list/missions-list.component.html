@@ -50,6 +50,9 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
+      <tr *ngIf="isEmpty">
+        <td colspan="6" class="text-center text-gray-500 py-4">Aucune mission trouvée.</td>
+      </tr>
       <tr *ngFor="let mission of missions_data">
         <td class="px-4 py-2 text-sm">{{ mission.mission_name }}</td>
         <td class="px-4 py-2 text-sm">{{ mission.mission_description }}</td>
