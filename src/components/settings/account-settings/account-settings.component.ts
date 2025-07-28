@@ -19,6 +19,9 @@ import { MatInputModule } from "@angular/material/input";
   styleUrl: './account-settings.component.css',
 })
 export class AccountSettingsComponent implements OnInit {
+  limit: number = 20;
+  offset: number = 0;
+  keyword: string = '';
   usersForm: FormGroup;
   roles_data: any[] = [];
   users_data: any[] = [];
@@ -60,7 +63,9 @@ export class AccountSettingsComponent implements OnInit {
 
     if (this.user_role === 'super_admin') {
       this.flag = true;
-      this.usersService.getAllUsers().subscribe((data: any) => {
+      this.usersService.getAllUsers(this.limit, this.offset, this.keyword).subscribe((data: any) => {
+        console.log("data: ", data);
+        
         if (data.success) {
           this.isLoading = false;
           this.users_data = data.data;

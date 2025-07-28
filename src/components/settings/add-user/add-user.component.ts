@@ -42,7 +42,7 @@ export class AddUserComponent implements OnInit {
   }
 
   fetchRoles() {
-    this.usersService.getAllUsers().subscribe((data: any) => {
+    this.usersService.getAllUsers(20,0,'').subscribe((data: any) => {
       if (data.success) {
         this.roles_data = data.roles;
       }
