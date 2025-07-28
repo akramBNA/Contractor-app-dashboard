@@ -7,12 +7,44 @@
   
 </div>
 
-<div *ngIf="flag" class="bg-white/40 backdrop-blur-sm relative max-h-screen px-4 py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Utilisateurs</h1>
+  <div *ngIf="flag" class="bg-white/40 backdrop-blur-sm relative max-h-screen px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Utilisateurs</h1>
 
-  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-  <button class="btn-add"><a routerLink="/main-page/settings/add-user/">Ajouter un Utilisateur</a></button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+      <h2 class="text-gray-900 text-sm">Nombre Total des Utilisateurs</h2>
+      <p class="text-2xl font-bold text-green-600">{{ 0 }}</p>
+    </div>
+    <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+      <h2 class="text-gray-900 text-sm">Utilisateurs actifs</h2>
+      <p class="text-2xl font-bold text-blue-600">
+        {{ 0 }}
+      </p>
+    </div>
+    <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+      <h2 class="text-gray-900 text-sm">Utilisateurs inactifs</h2>
+      <p class="text-2xl font-bold text-green-700">
+        {{ 0 }}
+      </p>
+    </div>
+    <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+      <h2 class="text-gray-900 text-sm">Utilisateurs suspendus</h2>
+      <p class="text-2xl font-bold text-red-600">
+        {{ 0 }}
+      </p>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center mb-4">
+    <mat-form-field class="w-full sm:w-1/3" appearance="fill">
+      <mat-label>Rechercher..</mat-label>
+      <input matInput type="text" placeholder="Tapez un nom..." />
+    </mat-form-field>
+  
+    <button class="btn-add"><a routerLink="/main-page/settings/add-user/">Ajouter un Utilisateur</a></button>
+  </div>
 
   <div class="bg-white shadow-md rounded-lg overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200">

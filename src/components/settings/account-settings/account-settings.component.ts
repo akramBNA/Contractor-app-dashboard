@@ -7,13 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from "@angular/material/input";
 
 
 
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink, MatInputModule],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css',
 })
