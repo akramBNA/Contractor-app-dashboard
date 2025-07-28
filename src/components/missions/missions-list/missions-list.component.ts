@@ -7,9 +7,14 @@ import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
 
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import { MatInputModule } from "@angular/material/input";
+
+
 @Component({
   selector: 'app-missions-list',
-  imports: [MatIconModule, CommonModule, LoadingSpinnerComponent, MatPaginatorModule],
+  imports: [MatIconModule, CommonModule, LoadingSpinnerComponent, MatPaginatorModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './missions-list.component.html',
   styleUrl: './missions-list.component.css',
 })
@@ -20,6 +25,8 @@ export class MissionsListComponent {
   limit:number = 20;
   offset:number = 0;
   keyword: string = '';
+  keywordControl: FormControl = new FormControl('');
+
 
   total_missions: number = 0;
 
@@ -43,12 +50,23 @@ export class MissionsListComponent {
   ) {}
 
   ngOnInit() {
-    this.getAllMissions(this.limit, this.offset, this.keyword);
+    this.getAllMissions(this.limit, this.offset, this.keyword ?? '');
+
+    this.keywordControl.valueChanges.pipe(debounceTime(500)).subscribe((value: string | null) => {
+       this.offset = 0;
+      this.getAllMissions(this.limit, this.offset, (value ?? '').trim());
+    });
+  }
+
+  clearSearch() {
+    this.keywordControl.setValue('');
   }
 
   getAllMissions(lim:number, off:number, key:string) {
     this.isLoading = true;
     this.missionsService.getAllActiveMissions(lim, off, key).subscribe((data: any) => {
+      console.log("data: ", data);
+      
       if (data.success) {
         this.isLoading = false;
         this.missions_data = data.data;
