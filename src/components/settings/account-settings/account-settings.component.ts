@@ -5,25 +5,35 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from "@angular/material/input";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { MatPaginatorModule } from "@angular/material/paginator";
 
 
 
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink, MatInputModule, MatPaginatorModule],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css',
 })
 export class AccountSettingsComponent implements OnInit {
+  limit: number = 20;
+  offset: number = 0;
+  keyword: string = '';
+
   usersForm: FormGroup;
   roles_data: any[] = [];
   users_data: any[] = [];
   isLoading: boolean = false;
   user_role: string = '';
   flag: boolean = false;
+  searchControl = new FormControl('');
+  isEmpty: boolean = false;
+
 
   filteredUsers: any[] = [];
   paginatedUsers: any[] = [];
@@ -59,18 +69,44 @@ export class AccountSettingsComponent implements OnInit {
 
     if (this.user_role === 'super_admin') {
       this.flag = true;
-      this.usersService.getAllUsers().subscribe((data: any) => {
-        if (data.success) {
-          this.isLoading = false;
-          this.users_data = data.data;
-          this.roles_data = data.roles;
-        }
-      });
+      this.fetchUsers(this.limit, this.offset, this.keyword);
+
+      this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value: string | null) => {
+          this.keyword = value?.trim() || '';
+          this.offset = 0;
+          this.fetchUsers(this.limit, this.offset, this.keyword);
+        });
     } else {
       this.isLoading = false;
       this.flag = false;
     }
   }
+
+  fetchUsers(lim: number, off: number, key: string) {
+    this.isEmpty = false;
+    this.isLoading = true;
+    this.usersService.getAllUsers(lim, off, key).subscribe((data: any) => {
+      this.isLoading = false;
+      if (data.success) {
+        if(data.data.length === 0) {
+          this.isEmpty = true;
+          this.users_data = [];
+        };
+        this.users_data = data.data;
+        this.roles_data = data.roles;
+        this.stats.total = data.total;
+      } else {
+        this.users_data = [];
+      }
+    });
+  }
+
+  onPageChange(event: any) {
+    this.limit = event.pageSize;
+    this.offset = event.pageIndex * event.pageSize;
+    this.fetchUsers(this.limit, this.offset, this.keyword);
+  }
+
 
   onAddUser() {
     this.isLoading = true;

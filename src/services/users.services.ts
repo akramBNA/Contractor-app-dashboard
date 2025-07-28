@@ -9,8 +9,8 @@ export class UsersService {
 
   readonly base_url = environment.backendURL;    
 
-    getAllUsers(): Observable<any> {
-      return this.http.get<any>(`${this.base_url}/users/getAllUsers/`);
+    getAllUsers(limit: number, offset: number, keyword: string): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/users/getAllUsers/${JSON.stringify({ limit: limit, offset: offset, keyword: keyword })}`);
     };
     addUser( userData:any): Observable<any> {
       return this.http.post<any>(`${this.base_url}/users/addUser/`, userData)
