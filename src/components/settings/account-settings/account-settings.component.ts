@@ -8,6 +8,8 @@ import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
+
+
 @Component({
   selector: 'app-account-settings',
   standalone: true,
@@ -22,6 +24,19 @@ export class AccountSettingsComponent implements OnInit {
   isLoading: boolean = false;
   user_role: string = '';
   flag: boolean = false;
+
+  filteredUsers: any[] = [];
+  paginatedUsers: any[] = [];
+  pageSize = 5;
+  currentPage = 0;
+  searchText = '';
+
+  stats = {
+    total: 0,
+    users: 0,
+    admins: 0,
+    super_admins: 0
+  };
 
   constructor(
     private usersService: UsersService, 
