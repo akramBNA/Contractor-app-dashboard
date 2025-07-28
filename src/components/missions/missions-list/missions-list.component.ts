@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MissionsService } from '../../../services/missions.services';
-import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { Router } from '@angular/router';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { SwalService } from '../../../shared/Swal/swal.service';
-
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
+import { MissionsService } from '../../../services/missions.services';
+import { MatIconModule } from '@angular/material/icon';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { SwalService } from '../../../shared/Swal/swal.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from "@angular/material/input";
+import { Router } from '@angular/router';
+
 
 
 @Component({
@@ -36,6 +36,7 @@ export class MissionsListComponent {
   active_missions_count = 0;
   completed_missions_count = 0;
   canceled_missions_count = 0;
+  overall_count: number = 0;
 
   priorityMap: { [key: string]: string } = {
     LOW: 'Faible',
@@ -71,6 +72,7 @@ export class MissionsListComponent {
         this.isLoading = false;
         this.missions_data = data.data;
         this.total_missions_count = data.attributes.total;
+        this.overall_count = data.attributes.overall_count;
         this.active_missions_count = data.running_missions;
         this.completed_missions_count = data.completed_missions;
       } else {
