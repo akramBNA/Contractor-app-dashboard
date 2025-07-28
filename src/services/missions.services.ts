@@ -9,8 +9,8 @@ export class MissionsService {
 
   readonly base_url = environment.backendURL;    
 
-    getAllActiveMissions(limit: number, offset: number, keyword: string): Observable<any> {
-      return this.http.get<any>(`${this.base_url}/missions/getAllMissions/${JSON.stringify({ limit:limit, offset:offset, keyword:keyword })}`);
+    getAllActiveMissions(limit: number, offset: number, keyWord: string): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/missions/getAllMissions/${JSON.stringify({ limit:limit, offset:offset, keyWord:keyWord })}`);
     };
     getMissionById(missionId: string): Observable<any> {
       return this.http.get<any>(`${this.base_url}/missions/getMissionById/${missionId}`);

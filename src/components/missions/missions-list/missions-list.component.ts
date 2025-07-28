@@ -1,25 +1,33 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 import { MissionsService } from '../../../services/missions.services';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from "@angular/material/input";
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-missions-list',
-  imports: [MatIconModule, CommonModule, LoadingSpinnerComponent, MatPaginatorModule],
+  imports: [MatIconModule, CommonModule, LoadingSpinnerComponent, MatPaginatorModule, ReactiveFormsModule, MatInputModule],
   templateUrl: './missions-list.component.html',
   styleUrl: './missions-list.component.css',
 })
 export class MissionsListComponent {
   isLoading: boolean = false;
   missions_data: any = [];
+  isEmpty: boolean = false;
 
   limit:number = 20;
   offset:number = 0;
   keyword: string = '';
+  keywordControl: FormControl = new FormControl('');
+
 
   total_missions: number = 0;
 
@@ -29,6 +37,7 @@ export class MissionsListComponent {
   active_missions_count = 0;
   completed_missions_count = 0;
   canceled_missions_count = 0;
+  overall_count: number = 0;
 
   priorityMap: { [key: string]: string } = {
     LOW: 'Faible',
@@ -43,20 +52,35 @@ export class MissionsListComponent {
   ) {}
 
   ngOnInit() {
-    this.getAllMissions(this.limit, this.offset, this.keyword);
+    this.getAllMissions(this.limit, this.offset, this.keyword ?? '');
+
+    this.keywordControl.valueChanges.pipe(debounceTime(500)).subscribe((value: string | null) => {
+       this.offset = 0;
+      this.getAllMissions(this.limit, this.offset, (value ?? '').trim());
+    });
+  }
+
+  clearSearch() {
+    this.keywordControl.setValue('');
   }
 
   getAllMissions(lim:number, off:number, key:string) {
+    this.isEmpty = false;
     this.isLoading = true;
     this.missionsService.getAllActiveMissions(lim, off, key).subscribe((data: any) => {
+      console.log("data: ", data);
+      
       if (data.success) {
         this.isLoading = false;
         this.missions_data = data.data;
         this.total_missions_count = data.attributes.total;
+        this.overall_count = data.attributes.overall_count;
         this.active_missions_count = data.running_missions;
         this.completed_missions_count = data.completed_missions;
       } else {
         this.isLoading = false;
+        this.isEmpty = true;
+        this.missions_data = [];
       }
     });
   }
