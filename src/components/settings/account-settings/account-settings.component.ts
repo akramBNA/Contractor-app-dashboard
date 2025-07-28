@@ -24,13 +24,15 @@ export class AccountSettingsComponent implements OnInit {
   limit: number = 20;
   offset: number = 0;
   keyword: string = '';
+
   usersForm: FormGroup;
   roles_data: any[] = [];
   users_data: any[] = [];
   isLoading: boolean = false;
   user_role: string = '';
   flag: boolean = false;
-    searchControl = new FormControl('');
+  searchControl = new FormControl('');
+  isEmpty: boolean = false;
 
 
   filteredUsers: any[] = [];
@@ -81,10 +83,15 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   fetchUsers(lim: number, off: number, key: string) {
+    this.isEmpty = false;
     this.isLoading = true;
     this.usersService.getAllUsers(lim, off, key).subscribe((data: any) => {
       this.isLoading = false;
       if (data.success) {
+        if(data.data.length === 0) {
+          this.isEmpty = true;
+          this.users_data = [];
+        };
         this.users_data = data.data;
         this.roles_data = data.roles;
         this.stats.total = data.total;

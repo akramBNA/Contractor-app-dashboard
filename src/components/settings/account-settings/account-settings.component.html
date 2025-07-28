@@ -58,6 +58,8 @@
         </tr>
       </thead>
       <tbody class="divide-y divide-gray-200">
+        <tr *ngIf="isEmpty">
+          <td colspan="5" class="text-center text-gray-500 py-4">Aucun utilisateur trouvé.</td>
         <tr *ngFor="let user of users_data">
           <td class="px-4 py-2 text-sm text-gray-700">{{ user.user_name }}</td>
           <td class="px-4 py-2 text-sm text-gray-700">{{ user.user_lastname }}</td>
