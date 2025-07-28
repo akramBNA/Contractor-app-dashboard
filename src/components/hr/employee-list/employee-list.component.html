@@ -45,6 +45,9 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
+      <tr *ngIf="isEmpty">
+        <td colspan="7" class="text-center text-gray-500 py-4">Aucun employé trouvé.</td>
+      </tr>
       <tr *ngFor="let employee of employeeList">
         <td class="px-4 py-2 text-sm">{{ employee.employee_matricule }}</td>
         <td class="px-4 py-2 text-sm">{{ employee.employee_name }}</td>
