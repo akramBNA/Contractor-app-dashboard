@@ -187,7 +187,7 @@ export class MissionDetailsComponent implements OnInit {
   addEmployeeFromInput(): void {
     this.employeeCtrl.setValue('');
   }
-
+  
   updateEmployeeFormValue(): void {
     const ids = this.selectedEmployees.map((emp) => emp.employee_id);
     this.missionForm.get('employee_id')?.setValue(ids);
