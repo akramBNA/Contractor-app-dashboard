@@ -12,11 +12,16 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { MatInputModule } from "@angular/material/input";
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+
+
 
 @Component({
   selector: 'app-view-project',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent, DayPilotModule, MatInputModule],
+  imports: [CommonModule, LoadingSpinnerComponent, DayPilotModule, MatInputModule, MatFormFieldModule, MatChipsModule, MatIconModule],
   templateUrl: './view-project.component.html',
   styleUrl: './view-project.component.css',
 })
