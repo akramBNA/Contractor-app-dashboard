@@ -2,7 +2,7 @@
 
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-<form #pdfContent id="pdfContent" *ngIf="missionForm" [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
+<form *ngIf="missionForm" [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Informations de la Mission</h2>
 
@@ -69,17 +69,15 @@
     [matAutocomplete]="auto"
     [matChipInputFor]="chipGrid"
     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-    (matChipInputTokenEnd)="addEmployeeFromInput()"
-  />
+    (matChipInputTokenEnd)="addEmployeeFromInput()" />
 
-  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    <mat-option *ngFor="let emp of filteredEmployees" [value]="emp">
-      {{ emp.employee_name }} {{ emp.employee_lastname }}
-    </mat-option>
-  </mat-autocomplete>
-</mat-form-field>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let emp of filteredEmployees" [value]="emp">
+        {{ emp.employee_name }} {{ emp.employee_lastname }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 
-      
     </div>
   </div>
 </form>
@@ -87,7 +85,6 @@
 <div class="text-center pt-6">
   <div class="flex flex-col md:flex-row justify-center items-center gap-4">
     <button type="button" (click)="updateMission()" class="btn-edit">Modifier</button>
-    <button type="button" (click)="downloadPDF()" class="btn-add">Télécharger PDF</button>
     <button type="button" (click)="goBack()" class="btn-cancel">Annuler</button>
   </div>
 </div>
