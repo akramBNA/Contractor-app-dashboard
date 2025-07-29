@@ -102,13 +102,21 @@ export class ViewProjectComponent {
 
   ngAfterViewInit(): void {}
 
+  addOneDay(dateStr: string): string {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split('T')[0];
+  };
+
   getProjectById(project_id: number): void {
     this.isLoading = true;
     this.projectsService.getProjectById(project_id).subscribe((data: any) => {
       this.isLoading = false;
       if (data.success) {
         this.project_data = data.data;
-        console.log("Project Data:", this.project_data);
+        this.scheduler.control.update({
+          startDate: DayPilot.Date.parse(this.project_data.start_date, 'yyyy-MM-dd'),
+        });
         
         const dynamicResources = this.project_data.tasks.map((task: any, index: number) => {
         const id = String(task.task_id);
@@ -125,7 +133,7 @@ export class ViewProjectComponent {
           id: String(task.task_id),
           resource: String(task.task_id),
           start: task.start_date,
-          end: task.end_date,
+          end: this.addOneDay( task.end_date),
           text: task.description
         }));
 
