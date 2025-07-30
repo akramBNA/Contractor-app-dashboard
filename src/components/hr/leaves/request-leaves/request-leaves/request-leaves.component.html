@@ -45,8 +45,49 @@
         <button type="button" (click)="requestLeave()" class="btn-add">Demander un congé</button>
     </div>
 </form>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-<h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Mes Congés</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Mes Congés</h2>
+    <div class="bg-white shadow-md rounded-lg p-4">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100">
+        <tr>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Raison</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Début</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de la Fin</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Durée</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Type</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Status</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+        <tr *ngIf="isEmpty">
+            <td colspan="7" class="text-center text-gray-500 py-4">Aucun employé trouvé.</td>
+        </tr>
+        <tr *ngFor="let leave of leaves_data">
+            <td class="px-4 py-2 text-sm">{{ leave.description }}</td>
+            <td class="px-4 py-2 text-sm">{{ leave.start_date }}</td>
+            <td class="px-4 py-2 text-sm">{{ leave.end_date }}</td>
+            <td class="px-4 py-2 text-sm">{{ leave.duration }}</td>
+            <td class="px-4 py-2 text-sm">{{ translateLeaveType(leave.leave_type_name) }}</td>
+            <td class="px-4 py-2 text-sm">{{ translateStatus(leave.status) }}</td>
+                <td class="px-4 py-2 text-sm flex space-x-2">
+                <button mat-icon-button color="warn" (click)="deleteLeave()">
+                    <mat-icon style="color: #ef4444;">delete</mat-icon>
+                </button>
+                </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <mat-paginator
+        [length]="total_count"
+        [pageSize]="limit"
+        [pageSizeOptions]="[2, 20, 50, 100]"
+        (page)="onPageChange($event)">
+    </mat-paginator>
+
+    </div>
 </div>
 
 
