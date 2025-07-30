@@ -21,7 +21,7 @@ import { AddMissionsComponent } from '../components/missions/add-missions/add-mi
 import { MissionDetailsComponent } from '../components/missions/mission-details/mission-details.component';
 import { SalariesComponent } from '../components/hr/salaries/salaries.component';
 import { AddUserComponent } from '../components/settings/add-user/add-user.component';
-import { RequestLeavesComponent } from '../components/leaves/request-leaves/request-leaves/request-leaves.component';
+import { RequestLeavesComponent } from '../components/hr/leaves/request-leaves/request-leaves/request-leaves.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
