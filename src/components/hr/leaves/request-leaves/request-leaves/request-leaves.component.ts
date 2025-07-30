@@ -61,11 +61,11 @@ export class RequestLeavesComponent {
       Rejected: 'Rejeté',
     };
 
-    statusColorClass: { [key: string]: string } = {
-      Pending: 'text-yellow-600 font-semibold',
-      Approved: 'text-green-600 font-semibold',
-      Rejected: 'text-red-600 font-semibold',
-    };
+    // statusColorClass: { [key: string]: string } = {
+    //   Pending: 'text-yellow-600 font-semibold',
+    //   Approved: 'text-green-600 font-semibold',
+    //   Rejected: 'text-red-600 font-semibold',
+    // };
 
     leaveTypeTranslations: { [key: string]: string } = {
       'Annual Leave': 'Congé Annuel',
@@ -82,9 +82,9 @@ export class RequestLeavesComponent {
       return this.leaveTypeTranslations[type] || type;
     }
 
-    getStatusClass(status: string): string {
-      return this.statusColorClass[status] || '';
-    }
+    // getStatusClass(status: string): string {
+    //   return this.statusColorClass[status] || '';
+    // }
 
   constructor(
     private leaveServices: LeavesService,
