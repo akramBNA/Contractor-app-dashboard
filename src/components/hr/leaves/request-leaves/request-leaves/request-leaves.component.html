@@ -1,1 +1,78 @@
-<p>request-leaves works!</p>
+<!-- <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Ajouter une Mission</h1>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<form [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
+  <div>
+    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Détails de la Mission</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <mat-form-field appearance="fill">
+        <mat-label>Nom de la Mission</mat-label>
+        <input matInput formControlName="mission_name" />
+      </mat-form-field>
+
+      <mat-form-field class="w-full" appearance="fill">
+        <mat-label>Assigné à</mat-label>
+
+        <mat-chip-grid #chipGrid aria-label="Sélection d'employés">
+          <mat-chip-row *ngFor="let emp of selectedEmployees" (removed)="removeEmployee(emp)" color="primary" selected >{{ emp.employee_name }} {{ emp.employee_lastname }}
+            <button matChipRemove [attr.aria-label]="'remove ' + emp.employee_name">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+
+        <input
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipGrid"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [formControl]="employeeCtrl"
+          (matChipInputTokenEnd)="addEmployeeFromInput($event)"
+          placeholder="Rechercher un employé..."/>
+
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let emp of filteredEmployees" [value]="emp">{{ emp.employee_name }} {{ emp.employee_lastname }}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Début</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="start_at" />
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Date de Fin</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="end_at" [min]="minEndDate"/>
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Frais</mat-label>
+        <input matInput type="number" formControlName="expenses" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Priorité</mat-label>
+        <mat-select formControlName="priority">
+          <mat-option value="">-- Sélectionner --</mat-option>
+          <mat-option value="LOW">Faible</mat-option>
+          <mat-option value="MEDIUM">Moyenne</mat-option>
+          <mat-option value="HIGH">Élevée</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill" class="w-full md:w-1/2">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="mission_description" rows="6"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="text-center pt-6">
+    <button type="button" (click)="onSubmitMission()" class="btn-add">Demander un congé</button>
+  </div>
+</form> -->
