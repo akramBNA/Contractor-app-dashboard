@@ -15,4 +15,7 @@ export class LeavesService {
     requestLeave(leaveData: any): Observable<any> {
       return this.http.post<any>(`${this.base_url}/leaves/requestLeave/`, leaveData);
     };
+    getLeavesByEmployeeId(limit:number, offset:number, employeeId: number): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/leaves/getAllLeavesById/${JSON.stringify({limit: limit, offset: offset, employee_id: employeeId})}`);
+    };
 }
