@@ -42,6 +42,7 @@ export class RequestLeavesComponent {
   requestLeavesForm: FormGroup;
   leave_types_data: any[] = [];
   leaves_data: any[] = [];
+  employeeID: number = 1; // Temporary value, replace with actual employee ID logic
 
   minStartDate = new Date();
   minEndDate: Date | null = null;
@@ -94,10 +95,12 @@ export class RequestLeavesComponent {
 
     const payload = {
     ...this.requestLeavesForm.value,
+    employee_id: this.employeeID,
     start_date: this.requestLeavesForm.value.start_date.toISOString().split('T')[0],
     end_date: this.requestLeavesForm.value.end_date.toISOString().split('T')[0],
   };
-
+    console.log("--- payload: ", payload);
+    
     this.isLoading = true;
     this.leaveServices.requestLeave(payload).subscribe((data:any) => {
       if(data.success) {
