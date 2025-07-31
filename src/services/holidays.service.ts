@@ -13,6 +13,6 @@ export class HolidaysService {
       return this.http.get<any>(`${this.base_url}/holidays/getAllHolidays/`);
     };
     addHoliday(holiday_data: any): Observable<any> {
-      return this.http.post<any>(`${this.base_url}/holiday_datas/addHoliday/`, holiday_data);
+      return this.http.post<any>(`${this.base_url}/holidays/addHoliday/`, holiday_data);
     }
 }
