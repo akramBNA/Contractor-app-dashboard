@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AddHolidaysComponent } from '../add-holidays/add-holidays.component'; // adjust path
+import { AddHolidaysComponent } from '../add-holidays/add-holidays.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { HolidaysService } from '../../../services/holidays.service';
 
 @Component({
   selector: 'app-holidays-list',
@@ -16,13 +18,13 @@ export class HolidaysListComponent {
 
   openAddHolidayModal() {
     const dialogRef = this.dialog.open(AddHolidaysComponent, {
-      width: '500px',
+      width: 'auto',
       disableClose: true
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {
-        console.log('New holiday added, refresh the list');
+        //
       }
     });
   }

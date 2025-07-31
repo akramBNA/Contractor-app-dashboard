@@ -9,8 +9,8 @@ export class HolidaysService {
 
   readonly base_url = environment.backendURL;    
 
-    getAllHolidays(): Observable<any> {
-      return this.http.get<any>(`${this.base_url}/holidays/getAllHolidays/`);
+    getAllHolidays(year: number): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/holidays/getAllHolidaysByYear/${JSON.stringify({year:year})}`);
     };
     addHoliday(holiday_data: any): Observable<any> {
       return this.http.post<any>(`${this.base_url}/holidays/addHoliday/`, holiday_data);
