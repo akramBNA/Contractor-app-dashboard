@@ -22,6 +22,7 @@ import { MissionDetailsComponent } from '../components/missions/mission-details/
 import { SalariesComponent } from '../components/hr/salaries/salaries.component';
 import { AddUserComponent } from '../components/settings/add-user/add-user.component';
 import { RequestLeavesComponent } from '../components/hr/leaves/request-leaves/request-leaves/request-leaves.component';
+import { AddShowHolidaysComponent } from '../components/settings/add-show-holidays/add-show-holidays.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -74,6 +75,7 @@ export const routes: Routes = [
           { path: 'hr-settings', component: HrSettingsComponent },
           { path: 'edit-user/:id', component: EditUserComponent },
           { path: 'add-user', component: AddUserComponent },
+          { path: 'add-show-holidays', component: AddShowHolidaysComponent}
         ],
       },
     ],
