@@ -1,5 +1,49 @@
-<h1 class="text-2xl font-bold mb-6">Liste des jours fériés</h1>
+<h1 class="text-3xl font-bold text-gray-800 mb-4 text-center">Liste des jours fériés</h1>
 
-<button mat-flat-button color="primary" (click)="openAddHolidayModal()">
-  Ajouter un jour férié
-</button>
+<div class="flex justify-center mb-6">
+  <button class="btn-add" (click)="openAddHolidayModal()">Ajouter un jour férié</button>
+</div>
+
+<div class="flex flex-col md:flex-row gap-6">
+  <div class="w-full md:w-1/2">
+    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+    <div class="bg-white shadow-md rounded-lg p-4 h-full">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Jour Férié</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date</th>
+            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <tr *ngIf="isEmpty">
+            <td colspan="6" class="text-center text-gray-500 py-4">Aucune jour férié trouvé.</td>
+          </tr>
+          <tr *ngFor="let holiday of holidays_data">
+            <td class="px-4 py-2 text-sm">{{ holiday.holiday_name }}</td>
+            <td class="px-4 py-2 text-sm">{{ holiday.holiday_date | date:'yyyy-MM-dd' }}</td>
+            <td class="px-4 py-2 text-sm flex space-x-2">
+              <button mat-icon-button color="primary" (click)="holidayEdit(holiday.holiday_id)">
+                <mat-icon style="color: #3b82f6;">edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="holidayDelete(holiday.holiday_id)">
+                <mat-icon style="color: #ef4444;">delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="w-full md:w-1/2">
+    <div class="bg-white shadow-md rounded-lg p-4 h-full">
+      <h2 class="text-xl font-semibold mb-4 text-center">Calendrier {{ selected_year }}</h2>
+        <div class="scale-[0.80] origin-top">
+            <mat-calendar [selected]="today" [dateClass]="highlightHolidays"></mat-calendar>
+        </div>    
+    </div>
+  </div>
+</div>
