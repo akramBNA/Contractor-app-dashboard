@@ -1,0 +1,5 @@
+::ng-deep .mat-calendar-body-cell.holiday-highlight .mat-calendar-body-cell-content {
+  background-color: #34d399; /* Tailwind emerald-400 */
+  color: white;
+  border-radius: 9999px; /* full round */
+}
