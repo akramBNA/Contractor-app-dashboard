@@ -23,6 +23,7 @@ import { SalariesComponent } from '../components/hr/salaries/salaries.component'
 import { AddUserComponent } from '../components/settings/add-user/add-user.component';
 import { RequestLeavesComponent } from '../components/hr/leaves/request-leaves/request-leaves/request-leaves.component';
 import { HolidaysListComponent } from '../components/settings/holidays-list/holidays-list.component';
+import { LeavesListComponent } from '../components/hr/leaves/leaves-list/leaves-list.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -40,6 +41,7 @@ export const routes: Routes = [
           { path: 'hr-stats', component: HrStatsComponent },
           { path: 'edit-employee/:id', component: EditEmployeeComponent },
           { path: 'request-leaves', component: RequestLeavesComponent },
+          { path: 'leaves-list', component: LeavesListComponent },
           { path: 'salaries', component: SalariesComponent },
         ],
       },
