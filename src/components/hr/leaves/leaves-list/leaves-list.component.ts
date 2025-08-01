@@ -19,6 +19,26 @@ export class LeavesListComponent {
   total_count: number = 0;
   limit: number = 20;
   offset: number = 0;
+
+  translateStatus(status: string): string {
+    switch (status) {
+      case 'Pending': return 'En attente';
+      case 'Approved': return 'Approuvé';
+      case 'Rejected': return 'Rejeté';
+      default: return status;
+    }
+  }
+
+  translateLeaveType(type: string): string {
+    switch (type) {
+      case 'Annual Leave': return 'Congé annuel';
+      case 'Sick Leave': return 'Congé maladie';
+      case 'Maternity Leave': return 'Congé maternité';
+      case 'Unpaid Leave': return 'Congé sans solde';
+      default: return type;
+    }
+  }
+
   constructor(
     private leavesService: LeavesService
   ) {}
@@ -31,15 +51,17 @@ export class LeavesListComponent {
     this.isLoading = true;
     this.isEmpty = false;
     this.leavesService.getAllLeaves(lim, off).subscribe((data: any) => {
+      console.log("dara ?? ===> ", data);
+      
       if(data.success){
+        this.isLoading = false;
+        this.isEmpty = data.data.length === 0;
         this.leaves_data = data.data;
         this.total_count = data.attributes.total;
-        this.isEmpty = this.leaves_data.length === 0;
       } else {
         this.isLoading = false;
         this.leaves_data = [];
         this.total_count = 0;
-        // this.isEmpty = true;
       }
     })
   }
@@ -49,9 +71,13 @@ export class LeavesListComponent {
     this.offset = event.pageIndex * event.pageSize;
     this.fetchLeaves( this.limit, this.offset);
   };
-  
+
   acceptLeave(employeeId: number, leaveId: number) {
+    console.log("ids ?? ", employeeId," - ", leaveId);
+    
   };
 
-  rejectLeave(employeeId: number, leaveId: number) {};
+  rejectLeave(employeeId: number, leaveId: number) {
+        console.log("ids ?? ", employeeId," - ", leaveId);
+  };
 }

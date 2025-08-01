@@ -5,11 +5,11 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Nombre des Congés</h2>
-    <p class="text-2xl font-bold text-green-600">0</p>
+    <p class="text-2xl font-bold text-blue-600">{{total_count}}</p>
   </div>
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Congés Acceptés</h2>
-    <p class="text-2xl font-bold text-blue-600">0</p>
+    <p class="text-2xl font-bold text-green-600">0</p>
   </div>
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Congés refusés</h2>
@@ -21,26 +21,17 @@
   </div>
 </div>
 
-<!-- <mat-form-field class="w-full sm:w-1/3" appearance="fill">
-  <mat-label>Rechercher..</mat-label>
-  <input matInput type="text" [formControl]="keyword" placeholder="Tapez un nom..." />
-    @if (keyword.value) {
-      <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()" disableRipple class="clear-icon-button">
-        <mat-icon>close</mat-icon>
-      </button>
-    }
-</mat-form-field> -->
-
 <div class="bg-white shadow-md rounded-lg p-4">
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-100">
       <tr>
-          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Prénom</th>
-          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Prénom</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Nom</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Type du congé</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de début</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de la fin</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Durée</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Status</th>
         <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
       </tr>
     </thead>
@@ -55,16 +46,26 @@
         <td class="px-4 py-2 text-sm">{{ leave.start_date }}</td>
         <td class="px-4 py-2 text-sm">{{ leave.end_date }}</td>
         <td class="px-4 py-2 text-sm">{{ leave.duration }}</td>
-        <td class="px-4 py-2 text-sm">{{ leave.status }}</td>
-            <td class="px-4 py-2 text-sm flex space-x-2">
+        <td class="px-4 py-2 text-sm">
+          <span
+            class="px-2 py-1 rounded-full text-white text-xs font-semibold"
+            [ngClass]="{
+              'bg-yellow-500': leave.status === 'Pending',
+              'bg-green-600': leave.status === 'Approved',
+              'bg-red-600': leave.status === 'Rejected'
+            }">
+            {{ translateStatus(leave.status) }}
+          </span>
+        </td>            
+        <td class="px-4 py-2 text-sm flex space-x-2">
               <button mat-icon-button color="primary" (click)="acceptLeave(leave.employee_id, leave.leave_id)">
-                <mat-icon style="color: #3b82f6;">accept</mat-icon>
+                <mat-icon style="color: #045221;">check</mat-icon>
               </button>
 
               <button mat-icon-button color="warn" (click)="rejectLeave(leave.employee_id, leave.leave_id)">
-                <mat-icon style="color: #ef4444;">reject</mat-icon>
+                <mat-icon style="color: #ef4444;">cancel</mat-icon>
               </button>
-            </td>
+        </td>
       </tr>
     </tbody>
   </table>
