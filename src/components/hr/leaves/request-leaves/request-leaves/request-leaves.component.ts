@@ -49,7 +49,7 @@ export class RequestLeavesComponent {
   requestLeavesForm: FormGroup;
   leave_types_data: any[] = [];
   leaves_data: any[] = [];
-  employeeID: number = 1; // Temporary value, replace with actual employee ID logic
+  employeeID: number = 1; // TEMP
   total_count: number = 0;
 
   minStartDate = new Date();
@@ -60,12 +60,6 @@ export class RequestLeavesComponent {
       Approved: 'Approuvé',
       Rejected: 'Rejeté',
     };
-
-    // statusColorClass: { [key: string]: string } = {
-    //   Pending: 'text-yellow-600 font-semibold',
-    //   Approved: 'text-green-600 font-semibold',
-    //   Rejected: 'text-red-600 font-semibold',
-    // };
 
     leaveTypeTranslations: { [key: string]: string } = {
       'Annual Leave': 'Congé Annuel',
@@ -81,10 +75,6 @@ export class RequestLeavesComponent {
     translateLeaveType(type: string): string {
       return this.leaveTypeTranslations[type] || type;
     }
-
-    // getStatusClass(status: string): string {
-    //   return this.statusColorClass[status] || '';
-    // }
 
   constructor(
     private leaveServices: LeavesService,
@@ -139,12 +129,10 @@ export class RequestLeavesComponent {
   }
 
   formatDateToLocal(date: Date): string {
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
-    return `${year}-${month}-${day}`;
+    const localDate = new Date(date);
+    localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
+    return localDate.toISOString().split('T')[0];
   }
-
 
   requestLeave() {
     if(!this.requestLeavesForm.valid) {
