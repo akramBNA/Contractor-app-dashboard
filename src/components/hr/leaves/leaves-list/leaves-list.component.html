@@ -70,7 +70,7 @@
   </table>
 
   <mat-paginator
-    [length]="0"
+    [length]="total_count"
     [pageSize]="limit"
     [pageSizeOptions]="[5, 20, 50, 100]"
     (page)="onPageChange($event)">
