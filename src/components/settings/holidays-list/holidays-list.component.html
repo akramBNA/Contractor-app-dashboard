@@ -19,7 +19,7 @@
   
   <div class="w-full md:w-1/2 flex flex-col space-y-6">
     
-    <div class="bg-white shadow-md rounded-lg p-4 h-full flex-grow">
+    <div class="bg-white border border-gray-200 shadow-lg rounded-xl p-6 h-full flex-grow transition hover:shadow-2xl">      
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-100">
           <tr>
@@ -52,8 +52,8 @@
   </div>
 
   <div class="w-full md:w-1/2 flex flex-col">
-    <div class="bg-white shadow-md rounded-lg p-4 h-full flex flex-col min-h-[500px]">
-      <h2 class="text-xl font-semibold mb-4 text-center">Calendrier {{ selected_year }}</h2>
+    <div class="bg-white border border-gray-200 shadow-lg rounded-xl p-6 h-full flex-grow min-h-[500px] transition hover:shadow-2xl">      
+    <h2 class="text-xl font-semibold mb-4 text-center">Calendrier {{ selected_year }}</h2>
       <div class="flex justify-center items-center h-full">
         <mat-calendar [selected]="today" [dateClass]="highlightHolidays" class="w-[340px] h-[360px]"></mat-calendar>
       </div>
