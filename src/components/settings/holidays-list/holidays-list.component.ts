@@ -84,6 +84,7 @@ export class HolidaysListComponent {
         this.isEmpty = data.data.length === 0;
         this.isLoading = false;
         this.holidays_data = data.data;
+        this.years = data.years;
         this.holidayDates = this.holidays_data.map((h: any) => new Date(h.holiday_date));
         this.refreshCalendar();
 
