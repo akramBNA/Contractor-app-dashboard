@@ -18,4 +18,10 @@ export class LeavesService {
     getLeavesByEmployeeId(limit:number, offset:number, employeeId: number): Observable<any> {
       return this.http.get<any>(`${this.base_url}/leaves/getAllLeavesById/${JSON.stringify({limit: limit, offset: offset, employee_id: employeeId})}`);
     };
+    acceptLeaves(employeeId: number, leaveId: number, data:any): Observable<any> {
+      return this.http.put<any>(`${this.base_url}/leaves/acceptLeaves/${JSON.stringify({ employee_id: employeeId, leave_id: leaveId })}`, data);
+    };
+    rejectLeaves(employeeId: number, leaveId: number, data:any): Observable<any> {
+      return this.http.put<any>(`${this.base_url}/leaves/rejectLeaves/${JSON.stringify({ employee_id: employeeId, leave_id: leaveId })}`, data);
+    }
 }

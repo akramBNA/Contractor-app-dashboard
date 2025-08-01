@@ -5,6 +5,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
+import { SwalService } from '../../../../shared/Swal/swal.service';
 
 @Component({
   selector: 'app-leaves-list',
@@ -40,7 +41,8 @@ export class LeavesListComponent {
   }
 
   constructor(
-    private leavesService: LeavesService
+    private leavesService: LeavesService,
+    private swalService: SwalService
   ) {}
 
   ngOnInit() {
@@ -51,7 +53,6 @@ export class LeavesListComponent {
     this.isLoading = true;
     this.isEmpty = false;
     this.leavesService.getAllLeaves(lim, off).subscribe((data: any) => {
-      console.log("dara ?? ===> ", data);
       
       if(data.success){
         this.isLoading = false;
@@ -73,11 +74,38 @@ export class LeavesListComponent {
   };
 
   acceptLeave(employeeId: number, leaveId: number) {
-    console.log("ids ?? ", employeeId," - ", leaveId);
-    
+    this.isLoading = true;
+    this.leavesService.acceptLeaves(employeeId, leaveId, {}).subscribe((data: any) => {
+      if(data.success) {
+        this.isLoading = false;
+        this.swalService.showSuccess("Congé accepté avec succès").then(() => {
+          this.fetchLeaves(this.limit, this.offset);
+        })
+      } else {
+        this.isLoading = false;
+        this.swalService.showError("Échec de l'acceptation du congé").then(() => {
+          this.fetchLeaves(this.limit, this.offset);
+        });
+      }
+    }
+    )
   };
+    
 
   rejectLeave(employeeId: number, leaveId: number) {
-        console.log("ids ?? ", employeeId," - ", leaveId);
+    this.isLoading = true;
+    this.leavesService.rejectLeaves(employeeId, leaveId, {}).subscribe((data: any) => {
+      if(data.success) {
+        this.isLoading = false;
+        this.swalService.showSuccess("Congé rejeté avec succès").then(() => {
+          this.fetchLeaves(this.limit, this.offset);
+        })
+      } else {
+        this.isLoading = false;
+        this.swalService.showError("Échec du rejet du congé").then(() => {
+          this.fetchLeaves(this.limit, this.offset);
+        });
+      }
+    })
   };
 }
