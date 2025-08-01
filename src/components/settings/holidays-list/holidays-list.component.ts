@@ -60,7 +60,14 @@ export class HolidaysListComponent {
   selectYear(year: number) {
     this.selected_year = year;
     this.fetchHolidays(year);
-  };
+
+    const newDate = new Date(year, 0, 1);
+    if (this.calendar) {
+      this.calendar.activeDate = newDate;
+      this.today = newDate;
+    }
+  }
+
 
   refreshCalendar() {
     if (this.calendar) {
