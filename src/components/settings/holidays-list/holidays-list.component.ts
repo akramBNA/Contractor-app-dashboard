@@ -10,6 +10,8 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { HolidaysService } from '../../../services/holidays.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCalendar } from '@angular/material/datepicker';
+import { MatSelectModule } from "@angular/material/select";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-holidays-list',
@@ -21,7 +23,10 @@ import { MatCalendar } from '@angular/material/datepicker';
     LoadingSpinnerComponent,
     MatIconModule,
     MatCalendar,
-  ],
+    MatSelectModule,
+    FormsModule, 
+    ReactiveFormsModule
+],
   templateUrl: './holidays-list.component.html',
   styleUrl: './holidays-list.component.css',
 })
@@ -35,6 +40,7 @@ export class HolidaysListComponent {
 
   today = new Date();
   holidayDates: Date[] = [];
+  years: number[] = [2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030];
 
   constructor(
     private holidaysService: HolidaysService,
@@ -43,34 +49,25 @@ export class HolidaysListComponent {
 
   ngOnInit() {
     this.fetchHolidays(this.selected_year);
-  }
+  };
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.calendar.updateTodaysDate();
     });
-  }
+  };
+
+  selectYear(year: number) {
+    this.selected_year = year;
+    this.fetchHolidays(year);
+  };
 
   refreshCalendar() {
     if (this.calendar) {
       const currentActiveDate = this.calendar.activeDate;
       this.calendar.activeDate = new Date(currentActiveDate);
     }
-  }
-  
-
-  openAddHolidayModal() {
-    const dialogRef = this.dialog.open(AddHolidaysComponent, {
-      width: 'auto',
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {
-        //
-      }
-    });
-  }
+  };
 
   fetchHolidays(year: number) {
     this.isLoading = true;
@@ -78,8 +75,6 @@ export class HolidaysListComponent {
     this.holidaysService.getAllHolidays(year).subscribe((data: any) => {
       if (data.success) {
         this.isEmpty = data.data.length === 0;
-        // this.holidays_data = [];
-        
         this.isLoading = false;
         this.holidays_data = data.data;
         this.holidayDates = this.holidays_data.map((h: any) => new Date(h.holiday_date));
@@ -89,7 +84,7 @@ export class HolidaysListComponent {
         console.log('Holidays data: ', this.holidays_data);
       }
     });
-  }
+  };
 
   highlightHolidays = (date: Date): string => {
     const dateStr = this.formatDateLocal(date);
@@ -99,10 +94,20 @@ export class HolidaysListComponent {
 
   private formatDateLocal(date: Date): string {
     return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
-  }
+  };
 
+    openAddHolidayModal() {
+    const dialogRef = this.dialog.open(AddHolidaysComponent, {
+      width: 'auto',
+      disableClose: true,
+    });
 
-  holidayEdit(holidayId: number) {}
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {};
+    });
+  };
 
-  holidayDelete(holidayId: number) {}
+  holidayEdit(holidayId: number) {};
+
+  holidayDelete(holidayId: number) {};
 }
