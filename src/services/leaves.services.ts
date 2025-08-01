@@ -9,8 +9,8 @@ export class LeavesService {
 
   readonly base_url = environment.backendURL;    
 
-    getAllLeaves(): Observable<any> {
-      return this.http.get<any>(`${this.base_url}/leaves/getAllLeaves/`);
+    getAllLeaves(limit: number, offset: number): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/leaves/getAllLeaves/${JSON.stringify({limit: limit, offset: offset})}`);
     };
     requestLeave(leaveData: any): Observable<any> {
       return this.http.post<any>(`${this.base_url}/leaves/requestLeave/`, leaveData);

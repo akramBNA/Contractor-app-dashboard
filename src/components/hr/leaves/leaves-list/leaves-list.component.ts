@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { LeavesService } from '../../../../services/leaves.services';
 import { MatInputModule } from "@angular/material/input";
 import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from '@angular/common';
@@ -21,6 +22,10 @@ export class LeavesListComponent {
   constructor() {}
 
   ngOnInit() {}
+
+  fetchLeaves() {
+    this.isLoading = true;
+  }
 
   onPageChange(event:any){}
 
