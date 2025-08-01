@@ -1,9 +1,4 @@
 <div *ngIf="!flag" class="flex items-center justify-center bg-white/40 backdrop-blur-sm relative w-full h-full min-h-[500px]">
-  <!-- <div class="text-center space-y-6 px-4 py-8">
-    <div class="text-8xl mb-4">🚧</div>
-    <h1 class="text-2xl md:text-4xl font-semibold text-gray-800">Accès Refusé</h1>
-    <p class="text-gray-600 text-lg md:text-xl">Vous n'êtes pas autorisé à accéder à cette page.<br />Seul l'administrateur y a accès.</p>
-  </div> -->
   
 </div>
 
@@ -37,13 +32,13 @@
     </div>
   </div>
 
-  <div class="flex justify-between items-center mb-4">
-   <mat-form-field class="w-full sm:w-1/3" appearance="fill">
-      <mat-label>Rechercher..</mat-label>
-      <input matInput type="text" [formControl]="searchControl" placeholder="Tapez un nom..." />
-    </mat-form-field>
+  <div class="flex flex-col sm:flex-row gap-8 items-center justify-between">
+    <mat-form-field class="w-full sm:w-2/3">
+      <mat-label>Chercher un utilisateur..</mat-label>
+        <input matInput type="text" [formControl]="searchControl" placeholder="Tapez un nom..." />
+      </mat-form-field>
 
-    <button class="btn-add mb-3 "><a routerLink="/main-page/settings/add-user/">Ajouter un Utilisateur</a></button>
+    <button class="btn-add-rectangular w-full sm:w-1/3"><a routerLink="/main-page/settings/add-user/">Ajouter un Utilisateur</a></button>
   </div>
 
   <div class="bg-white shadow-md rounded-lg overflow-x-auto">
