@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import {
-  Form,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
@@ -33,8 +32,8 @@ export class SignupComponent {
     private router: Router
   ) {
     this.signupForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      user_email: ['', [Validators.required, Validators.email]],
+      user_password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
     });
   }
@@ -43,8 +42,8 @@ export class SignupComponent {
   hideConfirmPassword = true;
 
   get passwordMismatch(): boolean {
-    const { password, confirmPassword } = this.signupForm.value;
-    return password !== confirmPassword && this.signupForm.touched;
+    const { user_password, confirmPassword } = this.signupForm.value;
+    return user_password !== confirmPassword && this.signupForm.touched;
   }
 
   onSubmit(): void {
@@ -53,9 +52,8 @@ export class SignupComponent {
       this.isLoading = false;
       this.swalService.showWarning('Votre formulaire est invalide ou les mots de passe ne correspondent pas.');
     }
-
+    
     this.userService.signupWithEmployeeEmail(this.signupForm.value).subscribe((data: any) => {
-      console.log("Signup response: ", data);
         if (data.success) {
           this.isLoading = false;
           this.swalService.showSuccess('Votre compte a été créé avec succès!').then(() => {
@@ -64,7 +62,16 @@ export class SignupComponent {
           });
         } else {
           this.isLoading = false;
-          this.swalService.showError("Echec lors de l'inscription. Veuillez réessayer.");
+
+          if (data.message === 'Email not found in employee records.') {
+            this.swalService.showError("L'email n'est pas enregistré dans les données des employés.");
+          } else {
+            if(data.message === 'A user with this email already exists.') {
+              this.swalService.showError("Un utilisateur avec cet email existe déjà.");
+            }else{
+              this.swalService.showError("Échec lors de l'inscription. Veuillez réessayer.");
+            }
+          }
         }
       });
   }
