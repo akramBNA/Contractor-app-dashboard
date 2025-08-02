@@ -92,6 +92,7 @@ export class RequestLeavesComponent {
   }
 
   ngOnInit(){
+    this.employeeID = parseInt(sessionStorage.getItem('user_id') || '1', 10);
     this.getAllLeaveTypes();
     this.getAllLeavesById(this.limit, this.offset, this.employeeID);
     this.requestLeavesForm.get('start_date')?.valueChanges.subscribe((startDate: Date) => {
