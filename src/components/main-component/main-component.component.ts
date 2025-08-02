@@ -19,13 +19,46 @@ export class MainComponentComponent {
   showMissionsSubmenu: boolean = false;
 
   showSttingsMenu: boolean = false;
+  showPlanningMenu: boolean = false;
+  showMissionsMenu: boolean = false;
+  showMaterialMenu: boolean = false;
+
+  showEmployeeListMenu: boolean = true;
+  showAddEmployeeMenu: boolean = true;
+  showRequestLeavesMenu: boolean = true;
+  showLeavesListMenu: boolean = true;
+  showSalariesMenu: boolean = true;
+  showStatsMenu: boolean = true;
+
+  user_name: string = '';
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     const userRole = sessionStorage.getItem('user_role');
-    if (userRole === 'super_admin') {
+    this.user_name = sessionStorage.getItem('user_name') ?? '';
+
+    if (userRole === 'super_admin' || userRole === 'admin') {
       this.showSttingsMenu = true;
+      this.showPlanningMenu = true;
+      this.showMissionsMenu = true;
+      this.showMaterialMenu = true;
+
+      this.showEmployeeListMenu = true;
+      this.showAddEmployeeMenu = true;
+      this.showRequestLeavesMenu = true;
+      this.showLeavesListMenu = true;
+      this.showSalariesMenu = true;
+      this.showStatsMenu = true;
+    }
+
+    if (userRole === 'user') {
+      this.showEmployeeListMenu = false;
+      this.showAddEmployeeMenu = false;
+      this.showRequestLeavesMenu = true;
+      this.showLeavesListMenu = false;
+      this.showSalariesMenu = false;
+      this.showStatsMenu = false;
     }
   }
 

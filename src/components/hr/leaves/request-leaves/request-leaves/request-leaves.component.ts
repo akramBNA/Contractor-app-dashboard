@@ -65,7 +65,7 @@ export class RequestLeavesComponent {
       'Annual Leave': 'Congé Annuel',
       'Sick Leave': 'Congé Maladie',
       'Maternity Leave': 'Congé Maternité',
-      'Unpaid Leave': 'Congé non rémunéré',
+      'Unpaid Leave': 'Congé sans solde',
     };
 
     translateStatus(status: string): string {
@@ -92,6 +92,7 @@ export class RequestLeavesComponent {
   }
 
   ngOnInit(){
+    this.employeeID = parseInt(sessionStorage.getItem('user_id') || '1', 10);
     this.getAllLeaveTypes();
     this.getAllLeavesById(this.limit, this.offset, this.employeeID);
     this.requestLeavesForm.get('start_date')?.valueChanges.subscribe((startDate: Date) => {
@@ -103,9 +104,7 @@ export class RequestLeavesComponent {
   getAllLeaveTypes() {
     this.leaveTypesService.getAllLeaveTypes().subscribe((data:any) => {
       if(data.success){
-        this.leave_types_data = data.data;
-        console.log("leave types data: ", this.leave_types_data);
-        
+        this.leave_types_data = data.data;        
       } else {
         this.leave_types_data = [];
       }
@@ -121,7 +120,6 @@ export class RequestLeavesComponent {
         };
         this.leaves_data = data.data;
         this.total_count = data.attributes.total;
-        console.log("leaves data: ", data);
       } else {
         this.leaves_data = [];
       }   
@@ -145,20 +143,15 @@ export class RequestLeavesComponent {
     start_date: this.formatDateToLocal(this.requestLeavesForm.value.start_date),
     end_date: this.formatDateToLocal(this.requestLeavesForm.value.end_date),
   };
-    console.log("--- payload: ", payload);
-    
+
     this.isLoading = true;
-    this.leaveServices.requestLeave(payload).subscribe((data:any) => {
-      console.log("data: ", data);
-      
+    this.leaveServices.requestLeave(payload).subscribe((data:any) => {      
       if(data.success) {
         this.isLoading = false;
         this.swalService.showSuccess('Demande de congé envoyée avec succès.').then(() => {
           this.requestLeavesForm.reset();
         })
-      }else {
-        console.log("here ?");
-        
+      }else {        
         this.isLoading = false;
         this.swalService.showError('Erreur lors de l\'envoi de la demande de congé. Veuillez réessayer plus tard.').then(() => {
         });
