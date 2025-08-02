@@ -3,6 +3,7 @@
     <aside class="w-full md:w-64 bg-[#0a2540] text-white p-4 rounded-lg mb-4 md:mb-0 md:mr-4 flex flex-col justify-between overflow-auto max-h-full">
       <div>
         <h2 class="text-xl font-bold mb-8 text-center">MANAGEMENT</h2>
+        <h3 class="ttext-xl font-bold mb-8 text-center">Bonjour {{user_name}}</h3>
         <ul class="space-y-4">
 
           <li>
@@ -25,37 +26,37 @@
             </button>
 
             <ul *ngIf="showRHSubmenu" class="ml-4 mt-2 space-y-2">
-              <li>
+              <li *ngIf="showEmployeeListMenu">
                 <a routerLink="/main-page/hr/employees-list" routerLinkActive="text-yellow-400"
                    class="block text-white bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg text-sm">
                   Liste des employés
                 </a>
               </li>
-              <li>
+              <li *ngIf="showAddEmployeeMenu">
                 <a routerLink="/main-page/hr/add-employee" routerLinkActive="text-yellow-400"
                    class="block text-white bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg text-sm">
                   Ajouter un employé
                 </a>
               </li>
-              <li>
+              <li *ngIf="showRequestLeavesMenu">
                 <a routerLink="/main-page/hr/request-leaves" routerLinkActive="text-yellow-400"
                    class="block text-white bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg text-sm">
                   Demande congé
                 </a>
               </li>
-              <li>
+              <li *ngIf="showLeavesListMenu">
                 <a routerLink="/main-page/hr/leaves-list" routerLinkActive="text-yellow-400"
                    class="block text-white bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg text-sm">
                   Liste des congés
                 </a>
               </li>
-              <li>
+              <li *ngIf="showSalariesMenu">
                 <a routerLink="/main-page/hr/salaries" routerLinkActive="text-yellow-400"
                    class="block text-white bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg text-sm">
                   Salaires
               </a>
               </li>
-              <li>
+              <li *ngIf="showStatsMenu">
                 <a routerLink="/main-page/hr/hr-stats" routerLinkActive="text-yellow-400"
                    class="block text-white bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg text-sm">
                   Statistiques
@@ -64,7 +65,7 @@
             </ul>
           </li>
 
-          <li>
+          <li *ngIf="showMaterialMenu">
             <a routerLink="/main-page/material"
                class="bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center gap-2 justify-center cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -75,7 +76,7 @@
             </a>
           </li>
 
-          <li>
+          <li *ngIf="showMissionsMenu">
             <button (click)="toggleMissionsSubmenu()" class="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 cursor-pointer">
               <span class="flex items-center gap-2">
              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -107,7 +108,7 @@
             </ul>
           </li>
 
-          <li>
+          <li *ngIf="showPlanningMenu">
             <button (click)="togglePlanningSubmenu()" class="w-full bg-white/10 hover:bg-white/20 text-white py-2 px-4 rounded-lg flex items-center justify-center gap-2 cursor-pointer">
               <span class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
