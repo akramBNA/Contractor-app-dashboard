@@ -65,7 +65,7 @@ export class RequestLeavesComponent {
       'Annual Leave': 'Congé Annuel',
       'Sick Leave': 'Congé Maladie',
       'Maternity Leave': 'Congé Maternité',
-      'Unpaid Leave': 'Congé non rémunéré',
+      'Unpaid Leave': 'Congé sans solde',
     };
 
     translateStatus(status: string): string {

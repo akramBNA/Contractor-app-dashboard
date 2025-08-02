@@ -18,7 +18,7 @@
         <mat-label>Type du congé</mat-label>
         <mat-select formControlName="leave_type_id">
           <mat-option value="">-- Sélectionner --</mat-option>
-          <mat-option *ngFor ="let lt of leave_types_data" [value]="lt.leave_type_id">{{lt.leave_type_name}}</mat-option>
+          <mat-option *ngFor="let lt of leave_types_data" [value]="lt.leave_type_id">{{ translateLeaveType(lt.leave_type_name) }}</mat-option>
         </mat-select>
       </mat-form-field>
 
