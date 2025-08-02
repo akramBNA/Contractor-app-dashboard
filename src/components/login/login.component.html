@@ -18,6 +18,7 @@
       </div>
   
       <button type="submit" [disabled]="loginForm.invalid" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer">Login</button>
+      <button type="button" (click)="goToSignUp()" class="w-full mt-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer">Create an Account</button>
   
       <div *ngIf="loginError" class="text-red-500 text-sm mt-4 text-center">{{ loginError }}</div>
     </form>

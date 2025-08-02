@@ -23,5 +23,8 @@ export class UsersService {
     };
     deleteUser(userId: number): Observable<any> {
       return this.http.delete<any>(`${this.base_url}/users/deleteUser/${userId}`);
-    }
+    };
+    signupWithEmployeeEmail(data: any): Observable<any> {
+      return this.http.post<any>(`${this.base_url}/users/signupWithEmployeeEmail/`, data);
+    };
 }

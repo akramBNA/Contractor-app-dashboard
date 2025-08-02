@@ -24,9 +24,11 @@ import { AddUserComponent } from '../components/settings/add-user/add-user.compo
 import { RequestLeavesComponent } from '../components/hr/leaves/request-leaves/request-leaves/request-leaves.component';
 import { HolidaysListComponent } from '../components/settings/holidays-list/holidays-list.component';
 import { LeavesListComponent } from '../components/hr/leaves/leaves-list/leaves-list.component';
+import { SignupComponent } from '../components/signup/signup.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
+  { path: 'sign-up', component: SignupComponent },
   {
     path: 'main-page',
     component: MainComponentComponent,

@@ -1,1 +1,37 @@
-<p>signup works!</p>
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="w-full max-w-md bg-white p-6 rounded-2xl shadow-xl space-y-6">
+    <h2 class="text-2xl font-semibold text-center text-gray-800">Créer un compte</h2>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="user_email" type="email" required />
+      <mat-error *ngIf="signupForm.get('user_email')?.hasError('email')">Adresse email invalide</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Mot de passe</mat-label>
+      <input matInput [type]="hidePassword ? 'user_password' : 'text'" formControlName="user_password" required />
+      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="signupForm.get('user_password')?.hasError('minlength')">Au moins 6 caractères</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Confirmer le mot de passe</mat-label>
+      <input matInput [type]="hideConfirmPassword ? 'user_password' : 'text'" formControlName="confirmPassword" required />
+      <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
+        <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <p *ngIf="passwordMismatch" class="text-red-600 text-sm -mt-4">Les mots de passe ne correspondent pas</p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+        <button class="btn-cancel" type="button" (click)="goBack()">Retour</button>
+        <button class="btn-add" type="submit" (click)="onSubmit()">S'inscrire</button>
+    </div>
+  </form>
+</div>
