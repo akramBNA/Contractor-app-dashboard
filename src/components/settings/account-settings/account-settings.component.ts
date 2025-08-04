@@ -10,13 +10,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from "@angular/material/input";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 
 
 
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink, MatInputModule, MatPaginatorModule],
+  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink, MatInputModule, MatPaginatorModule, MatSlideToggleModule],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css',
 })
@@ -26,6 +27,7 @@ export class AccountSettingsComponent implements OnInit {
   keyword: string = '';
 
   usersForm: FormGroup;
+  roleForm: FormGroup;
   roles_data: any[] = [];
   users_data: any[] = [];
   isLoading: boolean = false;
@@ -61,6 +63,11 @@ export class AccountSettingsComponent implements OnInit {
       user_password: ['', [Validators.required]],
       user_role_id: ['', Validators.required],
     });
+
+    this.roleForm = this.fb.group({
+      user_role_id: [3]
+    })
+
   }
 
   ngOnInit() {
@@ -151,6 +158,34 @@ export class AccountSettingsComponent implements OnInit {
             this.swalService.showError('Erreur lors de la suppression de l\'utilisateur.');
           }
         });
+      }
+    });
+  }
+
+  updateUserRole(user_id: number, role_id: number) {
+    this.isLoading = true;
+    
+    this.usersService.updateUserRole(user_id, role_id).subscribe((response: any) => {
+      this.isLoading = false;
+      if (response.success) {
+        this.swalService.showSuccess('Rôle de l\'utilisateur mis à jour avec succès').then(() => {
+          this.ngOnInit();
+        });
+      } else {
+        this.swalService.showError('Erreur lors de la mise à jour du rôle de l\'utilisateur.');
+      }
+    }, error => {
+      this.isLoading = false;
+      this.swalService.showError('Erreur lors de la mise à jour du rôle de l\'utilisateur.');
+    });
+  }
+
+  onToggleUserRole(userId: Number, user: any): void {
+    const newRoleId = user.user_role_id === 3 ? 2 : 3;
+
+    this.swalService.showConfirmation(`Êtes-vous sûr de vouloir changer le rôle en ${newRoleId === 2 ? 'Admin' : 'Utilisateur'} ?`).then(result => {
+      if (result.isConfirmed) {
+        this.updateUserRole(Number(userId), newRoleId);
       }
     });
   }
