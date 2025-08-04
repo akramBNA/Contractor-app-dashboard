@@ -28,6 +28,6 @@ export class UsersService {
       return this.http.post<any>(`${this.base_url}/users/signupWithEmployeeEmail/`, data);
     };
     updateUserRole(user_id: number, user_role_id: number): Observable<any> {
-      return this.http.put<any>(`${this.base_url}/users/updateUserRole/${JSON.stringify({user_id: user_id})}`, user_role_id);
+      return this.http.put<any>(`${this.base_url}/users/updateUserRole/${JSON.stringify({user_id: user_id})}`, {user_role_id: user_role_id});
     }
 }
