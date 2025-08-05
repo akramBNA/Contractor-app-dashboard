@@ -17,7 +17,7 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, RouterLink, MatInputModule, MatPaginatorModule, MatSlideToggleModule],
+  imports: [CommonModule, MatIconModule, LoadingSpinnerComponent, ReactiveFormsModule, MatInputModule, MatPaginatorModule, MatSlideToggleModule],
   templateUrl: './account-settings.component.html',
   styleUrl: './account-settings.component.css',
 })
