@@ -162,6 +162,8 @@ export class AccountSettingsComponent implements OnInit {
   onEditUser(userId: any) {
     // this.router.navigate(['/main-page/settings/edit-user', userId]);
     const user = this.users_data.find((u) => u.user_id === userId);
+    console.log("user: ", user);
+    
     const dialogRef = this.dialog.open(RoleDialogComponent, {
       width: '500x',
       data: {
@@ -171,6 +173,8 @@ export class AccountSettingsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((newRoleId: number | undefined) => {
+      console.log("userId: ", userId, " -- RID: ", newRoleId);
+      
       if (newRoleId && newRoleId !== user.user_role_id) {
         this.updateUserRole(userId, newRoleId);
       }

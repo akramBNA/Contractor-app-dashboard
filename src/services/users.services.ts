@@ -27,7 +27,9 @@ export class UsersService {
     signupWithEmployeeEmail(data: any): Observable<any> {
       return this.http.post<any>(`${this.base_url}/users/signupWithEmployeeEmail/`, data);
     };
-    updateUserRole(user_id: number, user_role_id: number): Observable<any> {
+    updateUserRole(user_id: any, user_role_id: number): Observable<any> {
+      console.log("service params ?? ", user_id, " // ",user_role_id );
+      
       return this.http.put<any>(`${this.base_url}/users/updateUserRole/${JSON.stringify({user_id: user_id})}`, {user_role_id: user_role_id});
     }
 }

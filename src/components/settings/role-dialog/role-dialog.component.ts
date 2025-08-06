@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { UsersService } from '../../../services/users.services';
 
 @Component({
   selector: 'app-role-dialog',
@@ -22,7 +23,8 @@ export class RoleDialogComponent {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<RoleDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { user_id: number; current_role: number }
+    @Inject(MAT_DIALOG_DATA) public data: { user_id: number; current_role: number },
+    private userService: UsersService
   ) {
     this.roleForm = this.fb.group({
       user_role_id: [data.current_role, Validators.required],
