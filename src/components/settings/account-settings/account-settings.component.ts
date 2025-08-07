@@ -54,6 +54,7 @@ export class AccountSettingsComponent implements OnInit {
   pageSize = 5;
   currentPage = 0;
   searchText = '';
+  stats_data: any = {}
 
   stats = {
     total: 0,
@@ -118,6 +119,7 @@ export class AccountSettingsComponent implements OnInit {
         this.users_data = data.data;
         this.roles_data = data.roles;
         this.stats.total = data.total;
+        this.stats_data = data.stats;
       } else {
         this.users_data = [];
       }
