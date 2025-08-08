@@ -117,7 +117,7 @@ export class RequestLeavesComponent {
 
   getAllLeavesById(lim:number, off:number, id:number) {
    this.leaveServices.getLeavesByEmployeeId(lim, off, id).subscribe((data:any) => {
-      if(data.success){
+      if(data.success){        
         if(data.data.length === 0) {
           this.isEmpty = true;
           this.leaves_data = [];
@@ -166,7 +166,22 @@ export class RequestLeavesComponent {
     });
   }
 
-  deleteLeave(){}
+  deleteLeave(leave_id: number){    
+    this.isLoading = true;
+    this.leaveServices.deleteLeaves(leave_id, {}).subscribe((data:any) => {
+      if(data.success){
+        this.isLoading = false;
+        this.swalService.showConfirmation("Etes-vous sur de vouloir supprimé ce congé ?").then(()=>{
+          this.swalService.showSuccess('Le congé a été supprimé avec succès !').then(() => {
+            this.getAllLeavesById(this.limit, this.offset, this.employeeID);
+          })
+        })
+      } else {
+        this.isLoading = false;
+        this.swalService.showError("Le congé n\'est pas suprimé");
+      }
+    })
+  }
 
   onPageChange(event: PageEvent) {
     this.limit = event.pageSize;
