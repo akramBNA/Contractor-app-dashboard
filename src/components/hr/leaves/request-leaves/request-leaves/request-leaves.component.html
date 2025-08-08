@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div class="space-y-12 px-6 md:px-12">
+<div>
     <form [formGroup]="requestLeavesForm">
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Demande Congé</h2>
@@ -81,7 +81,7 @@
         </thead>
         <tbody class="divide-y divide-gray-200">
         <tr *ngIf="isEmpty">
-            <td colspan="7" class="text-center text-gray-500 py-4">Aucun employé trouvé.</td>
+            <td colspan="7" class="text-center text-gray-500 py-4">Aucun congé trouvé.</td>
         </tr>
         <tr *ngFor="let leave of leaves_data">
             <td class="px-4 py-2 text-sm">{{ leave.description }}</td>
@@ -102,7 +102,7 @@
                 </span>
             </td>
                 <td class="px-4 py-2 text-sm flex space-x-2">
-                <button mat-icon-button color="warn" (click)="deleteLeave()">
+                <button mat-icon-button color="warn" (click)="deleteLeave(leave.leave_id)">
                     <mat-icon style="color: #ef4444;">delete</mat-icon>
                 </button>
                 </td>
