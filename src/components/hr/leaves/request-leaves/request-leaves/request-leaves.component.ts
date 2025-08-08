@@ -50,7 +50,11 @@ export class RequestLeavesComponent {
   leave_types_data: any[] = [];
   leaves_data: any[] = [];
   employeeID: number = 1; // TEMP
+
   total_count: number = 0;
+  approved_count: number = 0;
+  rejected_count: number = 0;
+  pending_count: number = 0;
 
   minStartDate = new Date();
   minEndDate: Date | null = null;
@@ -120,6 +124,9 @@ export class RequestLeavesComponent {
         };
         this.leaves_data = data.data;
         this.total_count = data.attributes.total;
+        this.approved_count = data.stats.approved;
+        this.pending_count = data.stats.pending;
+        this.rejected_count = data.stats.rejected;
       } else {
         this.leaves_data = [];
       }   
