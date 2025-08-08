@@ -115,22 +115,32 @@ export class RequestLeavesComponent {
     })
   }
 
-  getAllLeavesById(lim:number, off:number, id:number) {
-   this.leaveServices.getLeavesByEmployeeId(lim, off, id).subscribe((data:any) => {
-      if(data.success){        
-        if(data.data.length === 0) {
-          this.isEmpty = true;
+  getAllLeavesById(limit: number, offset: number, employeeId: number) {
+    this.isLoading = true;
+    this.leaveServices.getLeavesByEmployeeId(limit, offset, employeeId).subscribe({
+      next: (response: any) => {
+        this.isLoading = false;
+
+        if (!response.success || !response.data) {
           this.leaves_data = [];
-        };
-        this.leaves_data = data.data;
-        this.total_count = data.attributes.total;
-        this.approved_count = data.stats.approved;
-        this.pending_count = data.stats.pending;
-        this.rejected_count = data.stats.rejected;
-      } else {
+          this.isEmpty = true;
+          return;
+        }
+
+        this.leaves_data = response.data;
+        this.total_count = response.attributes?.total || 0;
+        this.approved_count = response.stats?.approved || 0;
+        this.pending_count = response.stats?.pending || 0;
+        this.rejected_count = response.stats?.rejected || 0;
+        this.isEmpty = response.data.length === 0;
+      },
+      error: (err) => {
+        this.isLoading = false;
+        console.error('Error fetching leaves:', err);
         this.leaves_data = [];
-      }   
-    })
+        this.isEmpty = true;
+      }
+    });
   }
 
   formatDateToLocal(date: Date): string {
