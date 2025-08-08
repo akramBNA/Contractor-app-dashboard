@@ -112,15 +112,12 @@ export class AccountSettingsComponent implements OnInit {
       console.log("data: ", data);
       
       if (data.success) {
-        if (data.data.length === 0) {
-          this.isEmpty = true;
-          this.users_data = [];
-        }
         this.users_data = data.data;
         this.roles_data = data.roles;
         this.stats.total = data.total;
         this.stats_data = data.stats;
       } else {
+        this.isEmpty = true;
         this.users_data = [];
       }
     });
