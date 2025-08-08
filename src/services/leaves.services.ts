@@ -23,5 +23,8 @@ export class LeavesService {
     };
     rejectLeaves(employeeId: number, leaveId: number, data:any): Observable<any> {
       return this.http.put<any>(`${this.base_url}/leaves/rejectLeaves/${JSON.stringify({ employee_id: employeeId, leave_id: leaveId })}`, data);
-    }
+    };
+    deleteLeaves(leave_id:number, data:any): Observable<any> {
+      return this.http.put<any>(`${this.base_url}/leaves/deleteLeaves/${JSON.stringify({ leave_id: leave_id })}`, data);
+    };
 }
