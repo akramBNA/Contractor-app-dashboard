@@ -107,29 +107,68 @@ export class EmployeeListComponent implements OnInit {
     this.getAllEmployeesFunction(this.limit, this.offset, '');
   }
 
+  // onDeleteEmployee(employeeId: number) {
+  //   this.swalService
+  //     .showConfirmation('Êtes-vous sûr de vouloir supprimer cet employé ?').then((result) => {
+  //       if (result.isConfirmed) {
+  //         this.isLoading = true;
+  //         this.employeeServicee.deleteEmployee(Number(employeeId)).subscribe((data: any) => {
+  //             if (data.success) {
+  //               this.isLoading = false;
+  //               this.swalService.showSuccess("L'employé a été supprimé avec succès.").then(() => {
+  //                   this.getAllEmployeesFunction(
+  //                     this.limit,
+  //                     this.offset,
+  //                     this.keyword.value ?? ''
+  //                   );
+  //                 });
+  //             } else {
+  //               this.isLoading = false;
+  //               this.swalService.showError(
+  //                 "Une erreur s'est produite lors de la suppression de l'employé."
+  //               );
+  //             }
+  //           });
+  //       }
+  //     });
+  // }
+
   onDeleteEmployee(employeeId: number) {
-    this.swalService
-      .showConfirmation('Êtes-vous sûr de vouloir supprimer cet employé ?').then((result) => {
+    const deletedEmployee = this.employeeList.find(emp => emp.employee_id === employeeId);
+
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer cet employé ?').then((result) => {
         if (result.isConfirmed) {
           this.isLoading = true;
           this.employeeServicee.deleteEmployee(Number(employeeId)).subscribe((data: any) => {
-              if (data.success) {
-                this.isLoading = false;
-                this.swalService.showSuccess("L'employé a été supprimé avec succès.").then(() => {
-                    this.getAllEmployeesFunction(
-                      this.limit,
-                      this.offset,
-                      this.keyword.value ?? ''
-                    );
-                  });
-              } else {
-                this.isLoading = false;
-                this.swalService.showError(
-                  "Une erreur s'est produite lors de la suppression de l'employé."
-                );
+            this.isLoading = false;
+            if (data.success) {
+              this.swalService.showSuccess("L'employé a été supprimé avec succès.");
+
+              this.employeeList = this.employeeList.filter(emp => emp.employee_id !== employeeId);
+
+              this.total_employees_count--;
+
+              if (deletedEmployee) {
+                if (deletedEmployee.employee_gender === 'Male') {
+                  this.male_employees_count--;
+                } else if (deletedEmployee.employee_gender === 'Female') {
+                  this.female_employees_count--;
+                }
+
+                if (deletedEmployee.is_new) { 
+                  this.new_employees_count--;
+                }
               }
-            });
+
+              if (this.employeeList.length === 0) {
+                this.isEmpty = true;
+              }
+            } else {
+              this.swalService.showError("Une erreur s'est produite lors de la suppression de l'employé.");
+            }
+          });
         }
       });
   }
+
 }
