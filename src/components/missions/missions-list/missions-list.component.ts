@@ -101,9 +101,10 @@ export class MissionsListComponent {
         this.isLoading = true;
         this.missionsService.deleteMission(missionId).subscribe((data: any) => {
           if (data.success) {
-            this.isLoading = false;
-            this.swalService.showSuccess('La mission a été supprimé avec succès.').then(() => {
-            });
+            this.missions_data = this.missions_data.filter((m: any) => m.mission_id !== missionId);
+            this.total_missions_count--;
+            this.overall_count--;
+            this.swalService.showSuccess('La mission a été supprimée avec succès.');
           } else {
             this.isLoading = false;
             this.swalService.showError('Une erreur s\'est produite lors de la suppression de cette mission.');
