@@ -111,17 +111,47 @@ export class ShowProjectsComponent {
     this.router.navigate(['/main-page/planning/view-project', projectId]);
   }
 
+  // DeleteProject(projectId: number) {
+  //   this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?').then((result) => {
+  //     if (result.isConfirmed) {
+  //       this.isLoading = true;
+  //       this.projectService.deleteProject(projectId).subscribe((data: any) => {
+  //         if (data.success) {
+  //           this.isLoading = false;
+  //           this.swalService.showSuccess('Ce projet a été supprimé avec succès.').then(() => {
+  //           });
+  //         } else {
+  //           this.isLoading = false;
+  //           this.swalService.showError('Une erreur s\'est produite lors de la suppression de ce projet.');
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+
   DeleteProject(projectId: number) {
     this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?').then((result) => {
       if (result.isConfirmed) {
         this.isLoading = true;
         this.projectService.deleteProject(projectId).subscribe((data: any) => {
+          this.isLoading = false;
           if (data.success) {
-            this.isLoading = false;
-            this.swalService.showSuccess('Ce projet a été supprimé avec succès.').then(() => {
-            });
+            this.projects_data = this.projects_data.filter(p => p.project_id !== projectId);
+
+            this.totalItems--;
+
+            const deletedProject = this.projects_data.find(p => p.project_id === projectId);
+            if (deletedProject) {
+              switch (deletedProject.status) {
+                case 'Not Started': this.projectStats.notStarted--; break;
+                case 'In Progress': this.projectStats.inProgress--; break;
+                case 'Finished': this.projectStats.finished--; break;
+                case 'Canceled': this.projectStats.canceled--; break;
+              }
+            }
+
+            this.swalService.showSuccess('Ce projet a été supprimé avec succès.');
           } else {
-            this.isLoading = false;
             this.swalService.showError('Une erreur s\'est produite lors de la suppression de ce projet.');
           }
         });
