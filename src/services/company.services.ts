@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class ContractTypesService {
+export class CompanyService {
   constructor(private http: HttpClient) {}
 
   readonly base_url = environment.backendURL;    
