@@ -3,18 +3,26 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { CompanyService } from '../../../services/company.services';
 
 @Component({
   selector: 'app-company-settings',
   templateUrl: './company-settings.component.html',
   styleUrls: ['./company-settings.component.css'],
-  imports: [CommonModule ,MatInputModule, MatSelectModule, ReactiveFormsModule]
+  imports: [CommonModule, MatInputModule, MatSelectModule, ReactiveFormsModule, LoadingSpinnerComponent]
 })
 export class CompanySettingsComponent implements OnInit {
   companyForm!: FormGroup;
   formSubmitted = false;
+  isLoading: boolean = false;
+  isEmpty: boolean =false;
+  company_data:any[] =[];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private companyService: CompanyService
+  ) {}
 
   ngOnInit(): void {
     this.companyForm = this.fb.group({
@@ -26,14 +34,25 @@ export class CompanySettingsComponent implements OnInit {
       company_establishment_year: ['', Validators.required],
       active: ['Y', Validators.required],
     });
+
+    this.getCompanyInformations();
   }
 
-  onSubmit(): void {
-    this.formSubmitted = true;
+  getCompanyInformations(): void {    
+    this.isLoading = true
 
-    if (this.companyForm.valid) {
-      console.log('Form values:', this.companyForm.value);
-      // 🔥 Here call your API (e.g. CompanyService.updateCompany(...))
-    }
+      this.companyService.getCompanyInformations().subscribe((data)=>{        
+        if(data.success){
+          this.isLoading = false;
+          this.isEmpty = false;
+          this.company_data = data.data;
+        } else {
+          this.isLoading = false;
+          this.isEmpty = true;
+          this.company_data = []
+        }
+      })
   }
+
+  onSubmit(): void {}
 }
