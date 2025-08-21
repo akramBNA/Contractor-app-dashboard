@@ -29,6 +29,23 @@ import {
 } from '@angular/material/autocomplete';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import * as html2pdf from 'html2pdf.js';
+// import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle } from "docx";
+import {
+  AlignmentType,
+  BorderStyle,
+  Document,
+  HeadingLevel,
+  HeightRule,
+  Packer,
+  Paragraph,
+  Table,
+  TableCell,
+  TableRow,
+  TextRun,
+  WidthType,
+  ShadingType,
+} from "docx";
+import { saveAs } from "file-saver";
 
 @Component({
   selector: 'app-mission-details',
@@ -46,7 +63,7 @@ import * as html2pdf from 'html2pdf.js';
     MatChipsModule,
     MatCardModule,
     MatAutocomplete,
-    MatAutocompleteModule,
+    MatAutocompleteModule
   ],
   templateUrl: './mission-details.component.html',
   styleUrl: './mission-details.component.css',
@@ -236,6 +253,150 @@ export class MissionDetailsComponent implements OnInit {
 
   goBack() {
     this.router.navigate(['/main-page/missions/missions-list']);
+  }
+
+  exportToDocx() {
+    if (!this.missionForm) return;
+    const priorityMap: Record<string, string> = {
+      LOW: "Faible",
+      MEDIUM: "Moyenne",
+      HIGH: "Élevée",
+      "": "—",
+    };
+
+    const fv = this.missionForm.value;
+
+    const missionId = this.mission_id;
+    const missionName = fv.mission_name || "—";
+    const missionDesc = fv.mission_description || "—";
+    const startDate   = this.formatDateLocal(fv.start_at) || "—";
+    const endDate     = this.formatDateLocal(fv.end_at) || "—";
+    const priority = priorityMap[fv.priority] || "—";    
+    const expenses    = `${fv?.expenses ?? 0} TND`;
+    const employees = (this.selectedEmployees || []).map(
+      (e: any) => `${e.employee_name} ${e.employee_lastname}`
+    );
+
+    const headerCell = (label: string) =>
+      new TableCell({
+        width: { size: 35, type: WidthType.PERCENTAGE },
+        shading: { type: ShadingType.CLEAR, color: "auto", fill: "D9D9D9" },
+        margins: { top: 200, bottom: 200, left: 200, right: 200 },
+        children: [
+          new Paragraph({
+            children: [new TextRun({ text: label, bold: true })],
+          }),
+        ],
+      });
+
+    const valueCell = (paragraphs: Paragraph[]) =>
+      new TableCell({
+        width: { size: 65, type: WidthType.PERCENTAGE },
+        margins: { top: 200, bottom: 200, left: 200, right: 200 },
+        children: paragraphs,
+      });
+
+    const row = (label: string, valueParagraphs: Paragraph[]) =>
+      new TableRow({
+        height: { value: 900, rule: HeightRule.ATLEAST },
+        children: [headerCell(label), valueCell(valueParagraphs)],
+      });
+
+    const bulletParagraphs = (items: string[]) =>
+      (items.length
+        ? items.map(
+            (t) =>
+              new Paragraph({
+                text: t,
+                bullet: { level: 0 },
+              })
+          )
+        : [new Paragraph("—")]);
+
+    const rows: TableRow[] = [
+      row("Nom de la Mission", [new Paragraph(missionName)]),
+      row("Description", [new Paragraph(missionDesc)]),
+      row("Date de Début", [new Paragraph(startDate)]),
+      row("Date de Fin", [new Paragraph(endDate)]),
+      row("Priorité", [new Paragraph(priority)]),
+      row("Frais (TND)", [new Paragraph(expenses)]),
+      row("Employés Assignés", bulletParagraphs(employees)),
+    ];
+
+    const detailsTable = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      borders: {
+        top: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+        bottom: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+        left: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+        right: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+        insideHorizontal: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+        insideVertical: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+      },
+      rows,
+    });
+
+    const signatureTable = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      borders: {
+        top: { style: BorderStyle.NONE },
+        bottom: { style: BorderStyle.NONE },
+        left: { style: BorderStyle.NONE },
+        right: { style: BorderStyle.NONE },
+        insideHorizontal: { style: BorderStyle.NONE },
+        insideVertical: { style: BorderStyle.NONE },
+      },
+      rows: [
+        new TableRow({
+          height: { value: 1800, rule: HeightRule.ATLEAST },
+          children: [
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: "Manager", size: 18 })],
+                  alignment: AlignmentType.LEFT,
+                }),
+                new Paragraph({ text: "", spacing: { before: 1000 } }),
+              ],
+              margins: { top: 100, bottom: 100, left: 200, right: 200 },
+            }),
+
+            new TableCell({
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: "Employé(s) affecté(s)", size: 18 })],
+                  alignment: AlignmentType.LEFT,
+                }),
+                new Paragraph({ text: "", spacing: { before: 1000 } }),
+              ],
+              margins: { top: 100, bottom: 100, left: 200, right: 200 },
+            }),
+          ],
+        }),
+      ],
+    });
+
+    const doc = new Document({
+      sections: [
+        {
+          children: [
+            new Paragraph({
+              text: `Détails de la Mission N° ${missionId}`,
+              heading: HeadingLevel.HEADING_1,
+              alignment: AlignmentType.CENTER,
+            }),
+            new Paragraph({ text: "", spacing: { after: 300 } }),
+            detailsTable,
+            new Paragraph({ text: "", spacing: { after: 800 } }),
+            signatureTable,
+          ],
+        },
+      ],
+    });
+
+    Packer.toBlob(doc).then((blob) => {
+      saveAs(blob, `Mission_${missionName}.docx`);
+    });
   }
 
 }
