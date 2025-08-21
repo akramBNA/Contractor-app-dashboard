@@ -257,12 +257,18 @@ export class MissionDetailsComponent implements OnInit {
 
   exportToDocx() {
     if (!this.missionForm) return;
+
     const priorityMap: Record<string, string> = {
       LOW: "Faible",
       MEDIUM: "Moyenne",
       HIGH: "Élevée",
       "": "—",
     };
+
+    const today = new Date();
+    const todayFormatted = `${String(today.getDate()).padStart(2, "0")} - ${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")} - ${today.getFullYear()}`;
 
     const fv = this.missionForm.value;
 
@@ -298,7 +304,7 @@ export class MissionDetailsComponent implements OnInit {
 
     const row = (label: string, valueParagraphs: Paragraph[]) =>
       new TableRow({
-        height: { value: 900, rule: HeightRule.ATLEAST },
+        height: { value: 700, rule: HeightRule.ATLEAST },
         children: [headerCell(label), valueCell(valueParagraphs)],
       });
 
@@ -381,7 +387,12 @@ export class MissionDetailsComponent implements OnInit {
         {
           children: [
             new Paragraph({
-              text: `Détails de la Mission N° ${missionId}`,
+              text: todayFormatted,
+              alignment: AlignmentType.LEFT,
+            }),
+
+            new Paragraph({
+              text: `Ordre de Mission N° ${missionId}`,
               heading: HeadingLevel.HEADING_1,
               alignment: AlignmentType.CENTER,
             }),
