@@ -22,7 +22,7 @@ import { MissionDetailsComponent } from '../components/missions/mission-details/
 import { SalariesComponent } from '../components/hr/salaries/salaries.component';
 import { AddUserComponent } from '../components/settings/add-user/add-user.component';
 import { RequestLeavesComponent } from '../components/hr/leaves/request-leaves/request-leaves/request-leaves.component';
-import { HolidaysListComponent } from '../components/settings/holidays-list/holidays-list.component';
+import { HolidaysListComponent } from '../components/hr/holidays-list/holidays-list.component';
 import { LeavesListComponent } from '../components/hr/leaves/leaves-list/leaves-list.component';
 import { SignupComponent } from '../components/signup/signup.component';
 
@@ -45,6 +45,7 @@ export const routes: Routes = [
           { path: 'request-leaves', component: RequestLeavesComponent },
           { path: 'leaves-list', component: LeavesListComponent },
           { path: 'salaries', component: SalariesComponent },
+          { path: 'holidays-list', component: HolidaysListComponent}
         ],
       },
       {
@@ -78,8 +79,7 @@ export const routes: Routes = [
           { path: 'contracts-settings', component: ContractsSettingsComponent },
           { path: 'hr-settings', component: HrSettingsComponent },
           { path: 'edit-user/:id', component: EditUserComponent },
-          { path: 'add-user', component: AddUserComponent },
-          { path: 'holidays-list', component: HolidaysListComponent}
+          { path: 'add-user', component: AddUserComponent }
         ],
       },
     ],
