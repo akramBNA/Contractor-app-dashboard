@@ -29,6 +29,7 @@ export class MainComponentComponent {
   showLeavesListMenu: boolean = true;
   showSalariesMenu: boolean = true;
   showStatsMenu: boolean = true;
+  showHolidaysMenu: boolean = true;
 
   user_name: string = '';
 
@@ -50,6 +51,7 @@ export class MainComponentComponent {
       this.showLeavesListMenu = true;
       this.showSalariesMenu = true;
       this.showStatsMenu = true;
+      this.showHolidaysMenu = true;
     }
 
     if (userRole === 'user') {
@@ -59,6 +61,7 @@ export class MainComponentComponent {
       this.showLeavesListMenu = false;
       this.showSalariesMenu = false;
       this.showStatsMenu = false;
+      this.showHolidaysMenu = true;
     }
   }
 
