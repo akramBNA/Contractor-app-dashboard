@@ -144,9 +144,10 @@ export class RequestLeavesComponent {
   }
 
   formatDateToLocal(date: Date): string {
-    const localDate = new Date(date);
-    localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
-    return localDate.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   requestLeave() {
