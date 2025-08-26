@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { LoadingSpinnerComponent } from '../../../../../shared/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
-import { LeavesService } from '../../../../../services/leaves.services';
-import { SwalService } from '../../../../../shared/Swal/swal.service';
-import { LeavesTypesService } from '../../../../../services/leave_types.services';
+import { LeavesService } from '../../../../services/leaves.services';
+import { SwalService } from '../../../../shared/Swal/swal.service';
+import { LeavesTypesService } from '../../../../services/leave_types.services';
 import {
   FormBuilder,
   FormGroup,
