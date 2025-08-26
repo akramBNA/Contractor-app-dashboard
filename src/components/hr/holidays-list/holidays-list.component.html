@@ -52,10 +52,12 @@
   </div>
 
   <div class="w-full md:w-1/2 flex flex-col">
-    <div class="bg-white border border-gray-200 shadow-lg rounded-xl p-6 h-full flex-grow min-h-[500px] transition hover:shadow-2xl">      
-    <h2 class="text-xl font-semibold mb-4 text-center">Calendrier {{ selected_year }}</h2>
+    <div
+      class="bg-white border border-gray-200 shadow-lg rounded-xl p-6 h-full flex-grow min-h-[500px] transition hover:shadow-2xl">
+      <h2 class="text-xl font-semibold mb-4 text-center">Calendrier {{ selected_year }}</h2>
       <div class="flex justify-center items-center h-full">
-        <mat-calendar [selected]="today" [dateClass]="highlightHolidays" class="w-full max-w-[480px] h-auto scale-[1.05]"></mat-calendar>
+        <mat-calendar [selected]="today" [dateClass]="highlightHolidays" (selectedChange)="onCalendarYearChange($event)"
+          class="w-full max-w-[480px] h-auto scale-[1.05]"></mat-calendar>
       </div>
     </div>
   </div>

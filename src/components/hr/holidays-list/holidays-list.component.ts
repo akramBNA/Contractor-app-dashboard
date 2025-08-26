@@ -113,6 +113,15 @@ export class HolidaysListComponent {
     });
   };
 
+  onCalendarYearChange(date: Date | null) {
+    if (!date) return;
+    const year = date.getFullYear();
+    if (year !== this.selected_year) {
+      this.selected_year = year;
+      this.fetchHolidays(year);
+    }
+  };
+
   holidayEdit(holidayId: number) {};
 
   holidayDelete(holidayId: number) {};
