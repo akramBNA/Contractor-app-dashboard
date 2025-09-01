@@ -86,10 +86,8 @@ export class HolidaysListComponent {
         this.holidays_data = data.data;
         this.years = data.years;
         this.holidayDates = this.holidays_data.map((h: any) => new Date(h.holiday_date));
-        this.refreshCalendar();
-
-        console.log(" holidayDates: ", this.holidayDates);
-        console.log('Holidays data: ', this.holidays_data);
+        
+        this.calendar.updateTodaysDate();  
       }
     });
   };
@@ -113,6 +111,15 @@ export class HolidaysListComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === true) {};
     });
+  };
+
+  onCalendarYearChange(date: Date | null) {
+    if (!date) return;
+    const year = date.getFullYear();
+    if (year !== this.selected_year) {
+      this.selected_year = year;
+      this.fetchHolidays(year);
+    }
   };
 
   holidayEdit(holidayId: number) {};
