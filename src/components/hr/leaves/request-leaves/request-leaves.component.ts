@@ -19,6 +19,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { MatIconModule } from "@angular/material/icon";
+import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
+
+Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+
 
 @Component({
   selector: 'app-request-leaves',
@@ -49,7 +53,8 @@ export class RequestLeavesComponent {
   requestLeavesForm: FormGroup;
   leave_types_data: any[] = [];
   leaves_data: any[] = [];
-  employeeID: number = 1; // TEMP
+  employeeID: number = 1;
+  leave_balance: number = 0;
 
   total_count: number = 0;
   approved_count: number = 0;
@@ -128,17 +133,57 @@ export class RequestLeavesComponent {
         }
 
         this.leaves_data = response.data;
+        this.leave_balance = response.stats?.leave_credit;
         this.total_count = response.attributes?.total || 0;
         this.approved_count = response.stats?.approved || 0;
         this.pending_count = response.stats?.pending || 0;
         this.rejected_count = response.stats?.rejected || 0;
         this.isEmpty = response.data.length === 0;
+        this.renderLeaveDonut();
       },
       error: (err) => {
         this.isLoading = false;
         console.error('Error fetching leaves:', err);
         this.leaves_data = [];
         this.isEmpty = true;
+      }
+    });
+  }
+
+  renderLeaveDonut() {
+    const totalLeaves = 30;
+    const usedLeaves = this.leave_balance;
+    const remaining = totalLeaves - usedLeaves;
+
+    const ctx = document.getElementById('leaveDonutChart') as HTMLCanvasElement;
+
+    if (ctx && Chart.getChart(ctx)) {
+      Chart.getChart(ctx)?.destroy();
+    }
+
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Utilisés', 'Restants'],
+        datasets: [{
+          data: [usedLeaves, remaining],
+          backgroundColor: ['#f87171', '#34d399'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '70%',
+        plugins: {
+          legend: {
+            position: 'bottom'
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.label}: ${context.raw} jours`
+            }
+          }
+        }
       }
     });
   }
