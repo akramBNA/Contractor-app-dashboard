@@ -27,6 +27,7 @@ export class MainComponentComponent {
   showAddEmployeeMenu: boolean = true;
   showRequestLeavesMenu: boolean = true;
   showLeavesListMenu: boolean = true;
+  showMyLeavesMenu: boolean = true;
   showSalariesMenu: boolean = true;
   showStatsMenu: boolean = true;
   showHolidaysMenu: boolean = true;
@@ -49,6 +50,7 @@ export class MainComponentComponent {
       this.showAddEmployeeMenu = true;
       this.showRequestLeavesMenu = true;
       this.showLeavesListMenu = true;
+      this.showMyLeavesMenu = true;
       this.showSalariesMenu = true;
       this.showStatsMenu = true;
       this.showHolidaysMenu = true;
@@ -58,6 +60,7 @@ export class MainComponentComponent {
       this.showEmployeeListMenu = false;
       this.showAddEmployeeMenu = false;
       this.showRequestLeavesMenu = true;
+      this.showMyLeavesMenu=true;
       this.showLeavesListMenu = false;
       this.showSalariesMenu = false;
       this.showStatsMenu = false;
