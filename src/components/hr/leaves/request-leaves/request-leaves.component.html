@@ -2,123 +2,126 @@
 
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
+<!-- Stats Row -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-  <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+  <div class="bg-gray-200 rounded-lg p-4">
     <h2 class="text-gray-900 text-sm">Nombre des Congés</h2>
-    <p class="text-2xl font-bold text-blue-600">{{total_count}}</p>
+    <p class="text-2xl font-bold text-blue-600">{{ total_count }}</p>
   </div>
-  <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+  <div class="bg-gray-200 rounded-lg p-4">
     <h2 class="text-gray-900 text-sm">Congés Accepté</h2>
-    <p class="text-2xl font-bold text-green-600">{{approved_count}}</p>
+    <p class="text-2xl font-bold text-green-600">{{ approved_count }}</p>
   </div>
-  <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+  <div class="bg-gray-200 rounded-lg p-4">
     <h2 class="text-gray-900 text-sm">Congés En Attente</h2>
-    <p class="text-2xl font-bold text-yellow-600">{{pending_count}}</p>
+    <p class="text-2xl font-bold text-yellow-600">{{ pending_count }}</p>
   </div>
-  <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+  <div class="bg-gray-200 rounded-lg p-4">
     <h2 class="text-gray-900 text-sm">Congé Rejeté</h2>
-    <p class="text-2xl font-bold text-red-600">{{rejected_count}}</p>
+    <p class="text-2xl font-bold text-red-600">{{ rejected_count }}</p>
   </div>
 </div>
 
-<div>
+<h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Demande Congé</h2>
+
+<div class="flex flex-col md:flex-row gap-6">
+  <div class="flex-1">
     <form [formGroup]="requestLeavesForm">
-  <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Demande Congé</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="space-y-6">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Raison du congé</mat-label>
+          <input matInput formControlName="description" />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Raison du congé</mat-label>
-        <input matInput formControlName="description" />
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Type du congé</mat-label>
+          <mat-select formControlName="leave_type_id">
+            <mat-option value="">-- Sélectionner --</mat-option>
+            <mat-option *ngFor="let lt of leave_types_data" [value]="lt.leave_type_id">
+              {{ translateLeaveType(lt.leave_type_name) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <mat-form-field appearance="fill">
-        <mat-label>Type du congé</mat-label>
-        <mat-select formControlName="leave_type_id">
-          <mat-option value="">-- Sélectionner --</mat-option>
-          <mat-option *ngFor="let lt of leave_types_data" [value]="lt.leave_type_id">{{ translateLeaveType(lt.leave_type_name) }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Date de Début</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="start_date" />
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Date de Début</mat-label>
-        <input matInput [matDatepicker]="startPicker" formControlName="start_date">
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-      </mat-form-field>
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Date de Fin</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="end_date" [min]="minEndDate" />
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Date de Fin</mat-label>
-        <input matInput [matDatepicker]="endPicker" formControlName="end_date" [min]="minEndDate"/>
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
-      </mat-form-field>
-
-    </div>
-
-
+      <div class="text-center pt-6">
+        <button type="button" (click)="requestLeave()" class="btn-add">Demander un congé</button>
+      </div>
+    </form>
   </div>
 
-    <div class="text-center pt-6">
-        <button type="button" (click)="requestLeave()" class="btn-add">Demander un congé</button>
-    </div>
-</form>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Mes Congés</h2>
-    <div class="bg-white shadow-md rounded-lg p-4">
-    <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-100">
-        <tr>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Raison</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Début</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de la Fin</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Durée</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Type</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Status</th>
-            <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
-        </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-        <tr *ngIf="isEmpty">
-            <td colspan="7" class="text-center text-gray-500 py-4">Aucun congé trouvé.</td>
-        </tr>
-        <tr *ngFor="let leave of leaves_data">
-            <td class="px-4 py-2 text-sm">{{ leave.description }}</td>
-            <td class="px-4 py-2 text-sm">{{ leave.start_date }}</td>
-            <td class="px-4 py-2 text-sm">{{ leave.end_date }}</td>
-            <td class="px-4 py-2 text-sm">{{ leave.duration }}</td>
-            <td class="px-4 py-2 text-sm">{{ translateLeaveType(leave.leave_type_name) }}</td>
-            <td class="px-4 py-2 text-sm">
-                <span
-                    class="px-2 py-1 rounded text-white font-semibold text-xs"
-                    [ngClass]="{
-                        'bg-yellow-500': leave.status === 'Pending',
-                        'bg-green-500': leave.status === 'Approved',
-                        'bg-red-500': leave.status === 'Rejected'
-                    }"
-                    >
-                {{ translateStatus(leave.status) }}
-                </span>
-            </td>
-                <td class="px-4 py-2 text-sm flex space-x-2">
-                <button mat-icon-button color="warn" (click)="deleteLeave(leave.leave_id)">
-                    <mat-icon style="color: #ef4444;">delete</mat-icon>
-                </button>
-                </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <mat-paginator
-        [length]="total_count"
-        [pageSize]="limit"
-        [pageSizeOptions]="[2, 20, 50, 100]"
-        (page)="onPageChange($event)">
-    </mat-paginator>
-
-    </div>
+  <div class="w-full md:w-1/3 flex flex-col items-center justify-center">
+    <canvas id="leaveDonutChart" class="w-60 h-60"></canvas>
+    <p class="mt-4 text-gray-600 font-medium">
+      {{ leave_balance }} / 30 jours utilisés
+    </p>
+  </div>
 </div>
 
+<h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2 mt-10">Mes Congés</h2>
+<div class="bg-white shadow-md rounded-lg p-4">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Raison</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de Début</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Date de la Fin</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Durée</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Type</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Status</th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200">
+      <tr *ngIf="isEmpty">
+        <td colspan="7" class="text-center text-gray-500 py-4">Aucun congé trouvé.</td>
+      </tr>
+      <tr *ngFor="let leave of leaves_data">
+        <td class="px-4 py-2 text-sm">{{ leave.description }}</td>
+        <td class="px-4 py-2 text-sm">{{ leave.start_date }}</td>
+        <td class="px-4 py-2 text-sm">{{ leave.end_date }}</td>
+        <td class="px-4 py-2 text-sm">{{ leave.duration }}</td>
+        <td class="px-4 py-2 text-sm">{{ translateLeaveType(leave.leave_type_name) }}</td>
+        <td class="px-4 py-2 text-sm">
+          <span
+            class="px-2 py-1 rounded text-white font-semibold text-xs"
+            [ngClass]="{
+              'bg-yellow-500': leave.status === 'Pending',
+              'bg-green-500': leave.status === 'Approved',
+              'bg-red-500': leave.status === 'Rejected'
+            }"
+          >
+            {{ translateStatus(leave.status) }}
+          </span>
+        </td>
+        <td class="px-4 py-2 text-sm flex space-x-2">
+          <button mat-icon-button color="warn" (click)="deleteLeave(leave.leave_id)">
+            <mat-icon style="color: #ef4444;">delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-
+  <mat-paginator
+    [length]="total_count"
+    [pageSize]="limit"
+    [pageSizeOptions]="[2, 20, 50, 100]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
