@@ -5,10 +5,11 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from "@angular/material/icon";
 import { SwalService } from '../../../../shared/Swal/swal.service';
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
+import { LoadingSpinnerComponent } from "../../../../shared/loading-spinner/loading-spinner.component";
 
 @Component({
   selector: 'app-my-leaves',
-  imports: [CommonModule, MatIconModule, MatPaginatorModule],
+  imports: [CommonModule, MatIconModule, MatPaginatorModule, LoadingSpinnerComponent],
   templateUrl: './my-leaves.component.html',
   styleUrl: './my-leaves.component.css'
 })
