@@ -25,6 +25,7 @@ import { RequestLeavesComponent } from '../components/hr/leaves/request-leaves/r
 import { HolidaysListComponent } from '../components/hr/holidays-list/holidays-list.component';
 import { LeavesListComponent } from '../components/hr/leaves/leaves-list/leaves-list.component';
 import { SignupComponent } from '../components/signup/signup.component';
+import { MyLeavesComponent } from '../components/hr/leaves/my-leaves/my-leaves.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -44,6 +45,7 @@ export const routes: Routes = [
           { path: 'edit-employee/:id', component: EditEmployeeComponent },
           { path: 'request-leaves', component: RequestLeavesComponent },
           { path: 'leaves-list', component: LeavesListComponent },
+          { path: 'my-leaves', component: MyLeavesComponent},
           { path: 'salaries', component: SalariesComponent },
           { path: 'holidays-list', component: HolidaysListComponent}
         ],
