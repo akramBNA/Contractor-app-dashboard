@@ -125,7 +125,6 @@ export class RequestLeavesComponent {
     this.leaveServices.getLeavesByEmployeeId(limit, offset, employeeId).subscribe({
       next: (response: any) => {
         this.isLoading = false;
-        console.log("data ==> ", response);
         if (!response.success || !response.data) {
           this.leaves_data = [];
           this.isEmpty = true;
