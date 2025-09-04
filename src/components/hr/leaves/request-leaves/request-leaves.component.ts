@@ -102,13 +102,24 @@ export class RequestLeavesComponent {
 
   ngOnInit(){
     this.employeeID = parseInt(sessionStorage.getItem('user_id') || '1', 10);
+    this.getLeavesBalance(this.employeeID);
     this.getAllLeaveTypes();
-    this.getAllLeavesById(this.limit, this.offset, this.employeeID);
     this.requestLeavesForm.get('start_date')?.valueChanges.subscribe((startDate: Date) => {
       this.minEndDate = startDate;
     });
 
   }
+
+  getLeavesBalance(id:number) {
+    this.leaveServices.getLeaveBalanceByEmployeeId(id).subscribe((data:any) => {      
+      if(data.success){
+        this.leave_balance = data.data;    
+        this.renderLeaveDonut()
+      } else {
+        this.leave_balance = 0;
+      }
+    })
+  };
 
   getAllLeaveTypes() {
     this.leaveTypesService.getAllLeaveTypes().subscribe((data:any) => {
@@ -118,35 +129,6 @@ export class RequestLeavesComponent {
         this.leave_types_data = [];
       }
     })
-  }
-
-  getAllLeavesById(limit: number, offset: number, employeeId: number) {
-    this.isLoading = true;
-    this.leaveServices.getLeavesByEmployeeId(limit, offset, employeeId).subscribe({
-      next: (response: any) => {
-        this.isLoading = false;
-        if (!response.success || !response.data) {
-          this.leaves_data = [];
-          this.isEmpty = true;
-          return;
-        }
-
-        this.leaves_data = response.data;
-        this.leave_balance = response.stats?.leave_credit;
-        this.total_count = response.attributes?.total || 0;
-        this.approved_count = response.stats?.approved || 0;
-        this.pending_count = response.stats?.pending || 0;
-        this.rejected_count = response.stats?.rejected || 0;
-        this.isEmpty = response.data.length === 0;
-        this.renderLeaveDonut();
-      },
-      error: (err) => {
-        this.isLoading = false;
-        console.error('Error fetching leaves:', err);
-        this.leaves_data = [];
-        this.isEmpty = true;
-      }
-    });
   }
 
   renderLeaveDonut() {
@@ -219,28 +201,5 @@ export class RequestLeavesComponent {
         });
       }
     });
-  }
-
-  deleteLeave(leave_id: number){    
-    this.isLoading = true;
-    this.leaveServices.deleteLeaves(leave_id, {}).subscribe((data:any) => {
-      if(data.success){
-        this.isLoading = false;
-        this.swalService.showConfirmation("Etes-vous sur de vouloir supprimé ce congé ?").then(()=>{
-          this.swalService.showSuccess('Le congé a été supprimé avec succès !').then(() => {
-            this.getAllLeavesById(this.limit, this.offset, this.employeeID);
-          })
-        })
-      } else {
-        this.isLoading = false;
-        this.swalService.showError("Le congé n\'est pas suprimé");
-      }
-    })
-  }
-
-  onPageChange(event: PageEvent) {
-    this.limit = event.pageSize;
-    this.offset = event.pageIndex * event.pageSize;
-    this.getAllLeavesById( this.limit, this.offset, this.employeeID);
   }
 }
