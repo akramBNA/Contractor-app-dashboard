@@ -27,4 +27,7 @@ export class LeavesService {
     deleteLeaves(leave_id:number, data:any): Observable<any> {
       return this.http.put<any>(`${this.base_url}/leaves/deleteLeaves/${JSON.stringify({ leave_id: leave_id })}`, data);
     };
+    getLeaveBalanceByEmployeeId(employee_id: number): Observable<any> {
+      return this.http.get<any>(`${this.base_url}/leaves/getLeaveBalanceByEmployeeId/${JSON.stringify({ employee_id: employee_id })}`);
+    };
 }
