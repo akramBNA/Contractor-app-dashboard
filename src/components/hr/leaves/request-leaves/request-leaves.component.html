@@ -1,8 +1,8 @@
-<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Congés</h1>
+<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Demande Congés</h1>
 
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+<!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-gray-200 rounded-lg p-4">
     <h2 class="text-gray-900 text-sm">Nombre des Congés</h2>
     <p class="text-2xl font-bold text-blue-600">{{ total_count }}</p>
@@ -19,7 +19,7 @@
     <h2 class="text-gray-900 text-sm">Congé Rejeté</h2>
     <p class="text-2xl font-bold text-red-600">{{ rejected_count }}</p>
   </div>
-</div>
+</div> -->
 
 <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Demande Congé</h2>
 
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2 mt-10">Mes Congés</h2>
+<!-- <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2 mt-10">Mes Congés</h2>
 <div class="bg-white shadow-md rounded-lg p-4">
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-100">
@@ -123,4 +123,4 @@
     [pageSizeOptions]="[2, 20, 50, 100]"
     (page)="onPageChange($event)">
   </mat-paginator>
-</div>
+</div> -->
