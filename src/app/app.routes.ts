@@ -7,7 +7,6 @@ import { AddEmployeeComponent } from '../components/hr/add-employee/add-employee
 import { EmployeeListComponent } from '../components/hr/employee-list/employee-list.component';
 import { HrStatsComponent } from '../components/hr/hr-stats/hr-stats.component';
 import { EditEmployeeComponent } from '../components/hr/edit-employee/edit-employee.component';
-import { MaterialsComponent } from '../components/materials/materials/materials.component';
 import { MissionsListComponent } from '../components/missions/missions-list/missions-list.component';
 import { AddProjectComponent } from '../components/planning/add-project/add-project.component';
 import { ShowProjectsComponent } from '../components/planning/show-projects/show-projects.component';
