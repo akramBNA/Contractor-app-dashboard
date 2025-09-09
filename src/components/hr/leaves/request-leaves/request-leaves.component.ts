@@ -40,8 +40,8 @@ Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
     MatButtonModule,
     MatNativeDateModule,
     MatPaginatorModule,
-    MatIconModule
-],
+    MatIconModule,
+  ],
   templateUrl: './request-leaves.component.html',
   styleUrl: './request-leaves.component.css',
 })
@@ -64,26 +64,26 @@ export class RequestLeavesComponent {
   minStartDate = new Date();
   minEndDate: Date | null = null;
 
-    statusTranslations: { [key: string]: string } = {
-      Pending: 'En attente',
-      Approved: 'Approuvé',
-      Rejected: 'Rejeté',
-    };
+  statusTranslations: { [key: string]: string } = {
+    Pending: 'En attente',
+    Approved: 'Approuvé',
+    Rejected: 'Rejeté',
+  };
 
-    leaveTypeTranslations: { [key: string]: string } = {
-      'Annual Leave': 'Congé Annuel',
-      'Sick Leave': 'Congé Maladie',
-      'Maternity Leave': 'Congé Maternité',
-      'Unpaid Leave': 'Congé sans solde',
-    };
+  leaveTypeTranslations: { [key: string]: string } = {
+    'Annual Leave': 'Congé Annuel',
+    'Sick Leave': 'Congé Maladie',
+    'Maternity Leave': 'Congé Maternité',
+    'Unpaid Leave': 'Congé sans solde',
+  };
 
-    translateStatus(status: string): string {
-      return this.statusTranslations[status] || status;
-    }
+  translateStatus(status: string): string {
+    return this.statusTranslations[status] || status;
+  }
 
-    translateLeaveType(type: string): string {
-      return this.leaveTypeTranslations[type] || type;
-    }
+  translateLeaveType(type: string): string {
+    return this.leaveTypeTranslations[type] || type;
+  }
 
   constructor(
     private leaveServices: LeavesService,
@@ -100,35 +100,38 @@ export class RequestLeavesComponent {
     });
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.employeeID = parseInt(sessionStorage.getItem('user_id') || '1', 10);
     this.getLeavesBalance(this.employeeID);
     this.getAllLeaveTypes();
-    this.requestLeavesForm.get('start_date')?.valueChanges.subscribe((startDate: Date) => {
-      this.minEndDate = startDate;
-    });
-
+    this.requestLeavesForm
+      .get('start_date')
+      ?.valueChanges.subscribe((startDate: Date) => {
+        this.minEndDate = startDate;
+      });
   }
 
-  getLeavesBalance(id:number) {
-    this.leaveServices.getLeaveBalanceByEmployeeId(id).subscribe((data:any) => {      
-      if(data.success){
-        this.leave_balance = data.data;    
-        this.renderLeaveDonut()
-      } else {
-        this.leave_balance = 0;
-      }
-    })
-  };
+  getLeavesBalance(id: number) {
+    this.leaveServices
+      .getLeaveBalanceByEmployeeId(id)
+      .subscribe((data: any) => {
+        if (data.success) {
+          this.leave_balance = data.data;
+          this.renderLeaveDonut();
+        } else {
+          this.leave_balance = 0;
+        }
+      });
+  }
 
   getAllLeaveTypes() {
-    this.leaveTypesService.getAllLeaveTypes().subscribe((data:any) => {
-      if(data.success){
-        this.leave_types_data = data.data;        
+    this.leaveTypesService.getAllLeaveTypes().subscribe((data: any) => {
+      if (data.success) {
+        this.leave_types_data = data.data;
       } else {
         this.leave_types_data = [];
       }
-    })
+    });
   }
 
   renderLeaveDonut() {
@@ -146,26 +149,28 @@ export class RequestLeavesComponent {
       type: 'doughnut',
       data: {
         labels: ['Utilisés', 'Restants'],
-        datasets: [{
-          data: [usedLeaves, remaining],
-          backgroundColor: ['#f87171', '#34d399'],
-          borderWidth: 1
-        }]
+        datasets: [
+          {
+            data: [usedLeaves, remaining],
+            backgroundColor: ['#f87171', '#34d399'],
+            borderWidth: 1,
+          },
+        ],
       },
       options: {
         responsive: true,
         cutout: '70%',
         plugins: {
           legend: {
-            position: 'bottom'
+            position: 'bottom',
           },
           tooltip: {
             callbacks: {
-              label: (context) => `${context.label}: ${context.raw} jours`
-            }
-          }
-        }
-      }
+              label: (context) => `${context.label}: ${context.raw} jours`,
+            },
+          },
+        },
+      },
     });
   }
 
@@ -177,28 +182,35 @@ export class RequestLeavesComponent {
   }
 
   requestLeave() {
-    if(!this.requestLeavesForm.valid) {
+    if (!this.requestLeavesForm.valid) {
       this.swalService.showWarning('Veuillez remplir tous les champs requis.');
     }
 
     const payload = {
-    ...this.requestLeavesForm.value,
-    employee_id: this.employeeID,
-    start_date: this.formatDateToLocal(this.requestLeavesForm.value.start_date),
-    end_date: this.formatDateToLocal(this.requestLeavesForm.value.end_date),
-  };
+      ...this.requestLeavesForm.value,
+      employee_id: this.employeeID,
+      start_date: this.formatDateToLocal(
+        this.requestLeavesForm.value.start_date
+      ),
+      end_date: this.formatDateToLocal(this.requestLeavesForm.value.end_date),
+    };
 
     this.isLoading = true;
-    this.leaveServices.requestLeave(payload).subscribe((data:any) => {      
-      if(data.success) {
+    this.leaveServices.requestLeave(payload).subscribe((data: any) => {
+      if (data.success) {
         this.isLoading = false;
-        this.swalService.showSuccess('Demande de congé envoyée avec succès.').then(() => {
-          this.requestLeavesForm.reset();
-        })
-      }else {        
+        this.swalService
+          .showSuccess('Demande de congé envoyée avec succès.')
+          .then(() => {
+            this.requestLeavesForm.reset();
+          });
+      } else {
         this.isLoading = false;
-        this.swalService.showError('Erreur lors de l\'envoi de la demande de congé. Veuillez réessayer plus tard.').then(() => {
-        });
+        this.swalService
+          .showError(
+            "Erreur lors de l'envoi de la demande de congé. Veuillez réessayer plus tard."
+          )
+          .then(() => {});
       }
     });
   }
