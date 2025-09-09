@@ -26,6 +26,7 @@ import { LeavesListComponent } from '../components/hr/leaves/leaves-list/leaves-
 import { SignupComponent } from '../components/signup/signup.component';
 import { MyLeavesComponent } from '../components/hr/leaves/my-leaves/my-leaves.component';
 import { VehiclesListComponent } from '../components/materials/vehicles-list/vehicles-list.component';
+import { AddVehiclesComponent } from '../components/materials/add-vehicles/add-vehicles.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -66,7 +67,7 @@ export const routes: Routes = [
         canActivateChild: [AuthGuard],
         children: [
           { path: 'vehicles-list', component: VehiclesListComponent },
-          { path: 'add-vehicles', component: AddEmployeeComponent },
+          { path: 'add-vehicles', component: AddVehiclesComponent },
         ],
       },
       {
