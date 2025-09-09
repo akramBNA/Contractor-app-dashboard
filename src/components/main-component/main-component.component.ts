@@ -17,6 +17,7 @@ export class MainComponentComponent {
   showPlanningSubmenu: boolean = false;
   showSettingsSubmenu: boolean = false;
   showMissionsSubmenu: boolean = false;
+  showMaterialsSubmenu: boolean = false;
 
   showSttingsMenu: boolean = false;
   showPlanningMenu: boolean = false;
@@ -82,6 +83,10 @@ export class MainComponentComponent {
 
   toggleMissionsSubmenu(): void {
     this.showMissionsSubmenu = !this.showMissionsSubmenu;
+  }
+
+  toggleMaterialsSubmenu(): void {
+    this.showMaterialsSubmenu = !this.showMaterialsSubmenu;
   }
 
   logout(): void {

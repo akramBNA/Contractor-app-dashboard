@@ -7,7 +7,6 @@ import { AddEmployeeComponent } from '../components/hr/add-employee/add-employee
 import { EmployeeListComponent } from '../components/hr/employee-list/employee-list.component';
 import { HrStatsComponent } from '../components/hr/hr-stats/hr-stats.component';
 import { EditEmployeeComponent } from '../components/hr/edit-employee/edit-employee.component';
-import { MaterialsComponent } from '../components/materials/materials/materials.component';
 import { MissionsListComponent } from '../components/missions/missions-list/missions-list.component';
 import { AddProjectComponent } from '../components/planning/add-project/add-project.component';
 import { ShowProjectsComponent } from '../components/planning/show-projects/show-projects.component';
@@ -26,6 +25,8 @@ import { HolidaysListComponent } from '../components/hr/holidays-list/holidays-l
 import { LeavesListComponent } from '../components/hr/leaves/leaves-list/leaves-list.component';
 import { SignupComponent } from '../components/signup/signup.component';
 import { MyLeavesComponent } from '../components/hr/leaves/my-leaves/my-leaves.component';
+import { VehiclesListComponent } from '../components/materials/vehicles-list/vehicles-list.component';
+import { AddVehiclesComponent } from '../components/materials/add-vehicles/add-vehicles.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -45,9 +46,9 @@ export const routes: Routes = [
           { path: 'edit-employee/:id', component: EditEmployeeComponent },
           { path: 'request-leaves', component: RequestLeavesComponent },
           { path: 'leaves-list', component: LeavesListComponent },
-          { path: 'my-leaves', component: MyLeavesComponent},
+          { path: 'my-leaves', component: MyLeavesComponent },
           { path: 'salaries', component: SalariesComponent },
-          { path: 'holidays-list', component: HolidaysListComponent}
+          { path: 'holidays-list', component: HolidaysListComponent },
         ],
       },
       {
@@ -60,7 +61,15 @@ export const routes: Routes = [
           { path: 'view-project/:id', component: ViewProjectComponent },
         ],
       },
-      { path: 'material', component: MaterialsComponent },
+      {
+        path: 'material',
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
+        children: [
+          { path: 'vehicles-list', component: VehiclesListComponent },
+          { path: 'add-vehicles', component: AddVehiclesComponent },
+        ],
+      },
       {
         path: 'missions',
         canActivate: [AuthGuard],
@@ -81,7 +90,7 @@ export const routes: Routes = [
           { path: 'contracts-settings', component: ContractsSettingsComponent },
           { path: 'hr-settings', component: HrSettingsComponent },
           { path: 'edit-user/:id', component: EditUserComponent },
-          { path: 'add-user', component: AddUserComponent }
+          { path: 'add-user', component: AddUserComponent },
         ],
       },
     ],
