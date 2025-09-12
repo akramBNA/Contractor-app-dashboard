@@ -12,4 +12,8 @@ export class VehiclesService {
     getAllVehicles(limit: number, offset: number, keyword: string): Observable<any> {
       return this.http.get<any>(`${this.base_url}/vehicles/getAllVehicles/${JSON.stringify({ limit: limit, offset: offset, keyword: keyword })}`);
     };
+
+    addVehicle(data: any): Observable<any> {
+      return this.http.post<any>(`${this.base_url}/vehicles/addVehicle/`, data);
+    }
 }
