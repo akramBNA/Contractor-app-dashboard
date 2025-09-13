@@ -54,7 +54,7 @@ export class VehiclesListComponent {
     this.isLoading = true;
     this.isEmpty = false;
     this.vehiclesService.getAllVehicles(lim, off, key).subscribe({
-      next: (response) => {
+      next: (response) => {        
         if (response.success) {
           this.isLoading = false;
           this.vehicles_data = response.data;
