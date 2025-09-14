@@ -53,12 +53,15 @@ export class VehiclesListComponent {
   fetchVehiclesData(lim: number, off: number, key: string) {
     this.isLoading = true;
     this.isEmpty = false;
+    this.keyword = key;
+
     this.vehiclesService.getAllVehicles(lim, off, key).subscribe({
-      next: (response) => {        
+      next: (response) => {                
         if (response.success) {
           this.isLoading = false;
           this.vehicles_data = response.data;
           this.total_count = response.attributes.total;
+          this.isEmpty = this.vehicles_data.length === 0;
         } else {
           this.isLoading = false;
           this.isEmpty = true;
@@ -66,7 +69,7 @@ export class VehiclesListComponent {
           this.total_count = 0;
         }
       },
-      error: (error) => {
+      error: () => {
         this.isLoading = false;
         this.swalService.showError('Une erreur est survenue lors de la récupération des véhicules.');
       },
