@@ -37,6 +37,21 @@ export class VehiclesListComponent {
   page_size_options: number[] = [5, 10, 20, 50];
   keywordControl: FormControl = new FormControl('');
 
+  vehicleTypeTranslations: { [key: string]: string } = {
+    car: 'Voiture',
+    motorcycle: 'Moto',
+    truck: 'Camion',
+    pickup: 'Pick-up',
+    van: 'Fourgonnette',
+    bus: 'Bus',
+    'construction vehicle': 'Engin de chantier',
+    other: 'Autre'
+  };
+
+  translateVehicleType(type: string): string {
+    return this.vehicleTypeTranslations[type] || type;
+  }
+
   constructor(
     private vehiclesService: VehiclesService,
     private swalService: SwalService
@@ -53,12 +68,15 @@ export class VehiclesListComponent {
   fetchVehiclesData(lim: number, off: number, key: string) {
     this.isLoading = true;
     this.isEmpty = false;
+    this.keyword = key;
+
     this.vehiclesService.getAllVehicles(lim, off, key).subscribe({
-      next: (response) => {        
+      next: (response) => {                
         if (response.success) {
           this.isLoading = false;
           this.vehicles_data = response.data;
           this.total_count = response.attributes.total;
+          this.isEmpty = this.vehicles_data.length === 0;
         } else {
           this.isLoading = false;
           this.isEmpty = true;
@@ -66,7 +84,7 @@ export class VehiclesListComponent {
           this.total_count = 0;
         }
       },
-      error: (error) => {
+      error: () => {
         this.isLoading = false;
         this.swalService.showError('Une erreur est survenue lors de la récupération des véhicules.');
       },

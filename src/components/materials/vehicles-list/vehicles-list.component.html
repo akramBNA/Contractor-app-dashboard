@@ -29,7 +29,7 @@
 
   <mat-form-field class="w-full sm:w-1/3" appearance="fill">
     <mat-label>Rechercher..</mat-label>
-    <input matInput type="text" [formControl]="keywordControl" placeholder="Tapez un nom..." />
+    <input matInput type="text" [formControl]="keywordControl" placeholder="Tapez une marque, un modèle ou une immatriculation..." />
     @if (keywordControl.value) {
       <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()" disableRipple class="clear-icon-button">
         <mat-icon>close</mat-icon>
@@ -57,7 +57,7 @@
         <td colspan="9" class="text-center text-gray-500 py-4">Aucune vehiclue trouvée.</td>
       </tr>
     <tr *ngFor="let vehicle of vehicles_data">
-        <td class="px-4 py-2 text-sm">{{ vehicle.vehicle_type }}</td>
+        <td class="px-4 py-2 text-sm">{{ translateVehicleType(vehicle.vehicle_type) }}</td>
         <td class="px-4 py-2 text-sm">{{ vehicle.brand }}</td>
         <td class="px-4 py-2 text-sm">{{ vehicle.model }}</td>
         <td class="px-4 py-2 text-sm">{{ vehicle.model_year }}</td>
