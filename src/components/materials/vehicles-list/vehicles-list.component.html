@@ -29,7 +29,7 @@
 
   <mat-form-field class="w-full sm:w-1/3" appearance="fill">
     <mat-label>Rechercher..</mat-label>
-    <input matInput type="text" [formControl]="keywordControl" placeholder="Tapez un nom..." />
+    <input matInput type="text" [formControl]="keywordControl" placeholder="Tapez une marque, un modèle ou une immatriculation..." />
     @if (keywordControl.value) {
       <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()" disableRipple class="clear-icon-button">
         <mat-icon>close</mat-icon>
