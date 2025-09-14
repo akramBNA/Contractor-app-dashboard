@@ -37,6 +37,21 @@ export class VehiclesListComponent {
   page_size_options: number[] = [5, 10, 20, 50];
   keywordControl: FormControl = new FormControl('');
 
+  vehicleTypeTranslations: { [key: string]: string } = {
+    car: 'Voiture',
+    motorcycle: 'Moto',
+    truck: 'Camion',
+    pickup: 'Pick-up',
+    van: 'Fourgonnette',
+    bus: 'Bus',
+    'construction vehicle': 'Engin de chantier',
+    other: 'Autre'
+  };
+
+  translateVehicleType(type: string): string {
+    return this.vehicleTypeTranslations[type] || type;
+  }
+
   constructor(
     private vehiclesService: VehiclesService,
     private swalService: SwalService

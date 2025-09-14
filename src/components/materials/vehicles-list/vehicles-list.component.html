@@ -57,7 +57,7 @@
         <td colspan="9" class="text-center text-gray-500 py-4">Aucune vehiclue trouvée.</td>
       </tr>
     <tr *ngFor="let vehicle of vehicles_data">
-        <td class="px-4 py-2 text-sm">{{ vehicle.vehicle_type }}</td>
+        <td class="px-4 py-2 text-sm">{{ translateVehicleType(vehicle.vehicle_type) }}</td>
         <td class="px-4 py-2 text-sm">{{ vehicle.brand }}</td>
         <td class="px-4 py-2 text-sm">{{ vehicle.model }}</td>
         <td class="px-4 py-2 text-sm">{{ vehicle.model_year }}</td>
