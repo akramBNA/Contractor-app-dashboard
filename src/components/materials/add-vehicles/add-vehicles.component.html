@@ -9,14 +9,10 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <mat-form-field appearance="fill">
         <mat-label>Type de Véhicule</mat-label>
-        <mat-select formControlName="vehicle_type" required>
-          <mat-option value="car">Voiture</mat-option>
-          <mat-option value="motorcycle">Moto</mat-option>
-          <mat-option value="truck">Camion</mat-option>
-          <mat-option value="bus">Bus</mat-option>
-          <mat-option value="van">Fourgon</mat-option>
-          <mat-option value="construction vehicle">Engin de chantier</mat-option>
-          <mat-option value="other">Autre</mat-option>
+        <mat-select formControlName="vehicle_type_id" required>
+          <mat-option *ngFor="let vt of vehicle_types_data" [value]="vt.vehicle_type_id">
+            {{ vt.vehicle_type_fr }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
 
