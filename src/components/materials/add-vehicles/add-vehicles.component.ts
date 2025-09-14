@@ -36,7 +36,7 @@ export class AddVehiclesComponent {
     pickup: 'Pick-up',
     van: 'Fourgon',
     bus: 'Bus',
-    'construction vehicle': 'Véhicule de chantier',
+    'construction vehicle': 'Engin de chantier',
     other: 'Autre'
   };
 
