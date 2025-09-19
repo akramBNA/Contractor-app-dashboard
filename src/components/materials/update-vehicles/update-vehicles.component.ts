@@ -42,10 +42,7 @@ export class UpdateVehiclesComponent {
 
   ngOnInit(): void {
     const veh_id = window.location.pathname.split('/').pop();
-    const veh_id_2 = Number(this.route.snapshot.paramMap.get('id'));
-    console.log("id1 : ", veh_id," - id2 : ", veh_id_2);
     
-
     this.getVehicleTypes();
     const veh_id_num = Number(veh_id);
     if (!isNaN(veh_id_num)) {
@@ -69,7 +66,7 @@ export class UpdateVehiclesComponent {
     });
   };
   
-  getVehicles(ID: number) {
+  getVehicles(ID: any) {
     this.isLoading = true;
     this.vehiclesService.getVehicleById(ID).subscribe({
       next: (res) => {

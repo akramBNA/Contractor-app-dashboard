@@ -27,6 +27,8 @@ import { SignupComponent } from '../components/signup/signup.component';
 import { MyLeavesComponent } from '../components/hr/leaves/my-leaves/my-leaves.component';
 import { VehiclesListComponent } from '../components/materials/vehicles-list/vehicles-list.component';
 import { AddVehiclesComponent } from '../components/materials/add-vehicles/add-vehicles.component';
+import { U } from '@angular/cdk/keycodes';
+import { UpdateVehiclesComponent } from '../components/materials/update-vehicles/update-vehicles.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -68,7 +70,7 @@ export const routes: Routes = [
         children: [
           { path: 'vehicles-list', component: VehiclesListComponent },
           { path: 'add-vehicles', component: AddVehiclesComponent },
-          { path: 'update-vehicles/:id', component: AddVehiclesComponent },
+          { path: 'update-vehicles/:id', component: UpdateVehiclesComponent },
         ],
       },
       {
