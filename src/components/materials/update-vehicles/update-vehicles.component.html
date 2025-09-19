@@ -9,7 +9,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <mat-form-field appearance="fill">
         <mat-label>Type de Véhicule</mat-label>
-        <mat-select formControlName="vehicle_type_id" required>
+        <mat-select formControlName="vehicle_type_id">
           <mat-option *ngFor="let vt of vehicle_types_data" [value]="vt.vehicle_type_id">
             {{ vt.vehicle_type_fr }}
           </mat-option>
@@ -56,6 +56,6 @@
   </div>
 
   <div class="text-center pt-6">
-    <button type="button" (click)="onUpdate()" [disabled]="vehicleForm.invalid || isLoading" class="btn-edit" >Modifier</button>
+    <button type="button" (click)="onUpdate(vehicle_data.vehicle_id)" [disabled]="vehicleForm.invalid || isLoading" class="btn-edit" >Modifier</button>
   </div>
 </form>
