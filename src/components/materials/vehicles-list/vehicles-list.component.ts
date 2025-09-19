@@ -10,6 +10,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicles-list',
@@ -54,7 +55,8 @@ export class VehiclesListComponent {
 
   constructor(
     private vehiclesService: VehiclesService,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private router: Router
   ) {}
   ngOnInit() {
     this.fetchVehiclesData(this.limit, this.offset, this.keyword ?? '');
@@ -97,7 +99,10 @@ export class VehiclesListComponent {
     this.fetchVehiclesData(this.limit, this.offset, this.keyword ?? '');
   }
 
-  onEditvehicle(vehicleId: number) {}
+  onEditvehicle(vehicleId: number) {
+        this.router.navigate(['/main-page/material/update-vehicles', vehicleId]);
+  };
+
   onDeletevehicle(vehicleId: number) {}
 
   clearSearch() {
