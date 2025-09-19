@@ -68,6 +68,7 @@ export const routes: Routes = [
         children: [
           { path: 'vehicles-list', component: VehiclesListComponent },
           { path: 'add-vehicles', component: AddVehiclesComponent },
+          { path: 'update-vehicles/:id', component: AddVehiclesComponent },
         ],
       },
       {
