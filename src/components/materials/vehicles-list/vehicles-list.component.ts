@@ -22,8 +22,8 @@ import { Router } from '@angular/router';
     MatButtonModule,
     MatPaginatorModule,
     ReactiveFormsModule,
-    LoadingSpinnerComponent
-],
+    LoadingSpinnerComponent,
+  ],
   templateUrl: './vehicles-list.component.html',
   styleUrl: './vehicles-list.component.css',
 })
@@ -46,7 +46,7 @@ export class VehiclesListComponent {
     van: 'Fourgonnette',
     bus: 'Bus',
     'construction vehicle': 'Engin de chantier',
-    other: 'Autre'
+    other: 'Autre',
   };
 
   translateVehicleType(type: string): string {
@@ -61,7 +61,9 @@ export class VehiclesListComponent {
   ngOnInit() {
     this.fetchVehiclesData(this.limit, this.offset, this.keyword ?? '');
 
-    this.keywordControl.valueChanges.pipe(debounceTime(500)).subscribe((value: string | null) => {
+    this.keywordControl.valueChanges
+      .pipe(debounceTime(500))
+      .subscribe((value: string | null) => {
         this.offset = 0;
         this.fetchVehiclesData(this.limit, this.offset, (value ?? '').trim());
       });
@@ -73,7 +75,7 @@ export class VehiclesListComponent {
     this.keyword = key;
 
     this.vehiclesService.getAllVehicles(lim, off, key).subscribe({
-      next: (response) => {                
+      next: (response) => {
         if (response.success) {
           this.isLoading = false;
           this.vehicles_data = response.data;
@@ -88,7 +90,9 @@ export class VehiclesListComponent {
       },
       error: () => {
         this.isLoading = false;
-        this.swalService.showError('Une erreur est survenue lors de la récupération des véhicules.');
+        this.swalService.showError(
+          'Une erreur est survenue lors de la récupération des véhicules.'
+        );
       },
     });
   }
@@ -100,10 +104,36 @@ export class VehiclesListComponent {
   }
 
   onEditvehicle(vehicleId: number) {
-        this.router.navigate(['/main-page/material/update-vehicles', vehicleId]);
-  };
+    this.router.navigate(['/main-page/material/update-vehicles', vehicleId]);
+  }
 
-  onDeletevehicle(vehicleId: number) {}
+  onDeletevehicle(vehicleId: number) {
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce véhicule ?').then((result) => {
+        if (result.isConfirmed) {
+          this.isLoading = true;
+          this.vehiclesService.deleteVehicle(vehicleId).subscribe({
+            next: (response) => {
+              if (response.success) {
+                this.isLoading = false;
+                this.swalService.showSuccess('Véhicule supprimé avec succès.');
+                this.vehicles_data = this.vehicles_data.filter(
+                  (v) => v.id !== vehicleId
+                );
+
+                this.total_count = this.total_count - 1;
+
+                this.isEmpty = this.vehicles_data.length === 0;
+              } else {
+                this.swalService.showError('Échec de la suppression du véhicule. Veuillez réessayer.');
+              }
+            },
+            error: () => {
+              this.swalService.showError('Une erreur est survenue lors de la suppression du véhicule. Veuillez réessayer.');
+            },
+          });
+        }
+      });
+  }
 
   clearSearch() {
     this.keywordControl.setValue('');
