@@ -53,16 +53,11 @@ export class UpdateVehiclesComponent {
     });
   }
 
-  ngOnInit(): void {
-    // const veh_id = window.location.pathname.split('/').pop();
-    
+  ngOnInit(): void {    
     this.getVehicleTypes();
     const veh_id_num = Number(window.location.pathname.split('/').pop());
-    console.log("veh_id_num ===> ", veh_id_num);
     
-    if (!isNaN(veh_id_num)) {
-      console.log("yes ?");
-      
+    if (!isNaN(veh_id_num)) {      
       this.getVehicle(veh_id_num);
     } else {
       this.swal.showError('ID du véhicule invalide.');
@@ -119,9 +114,7 @@ export class UpdateVehiclesComponent {
     });
   }
 
-  onUpdate(id:any) {
-    console.log("update id ===> ", id);
-    
+  onUpdate(id:any) {    
     if (this.vehicleForm.invalid) {
       this.swal.showWarning('Veuillez remplir tous les champs obligatoires.');
       return;
