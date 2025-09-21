@@ -1,5 +1,121 @@
-<div class="bg-white/40 backdrop-blur-sm relative">
-  <h1 class="absolute top-6 left-6 text-4xl md:text-5xl font-bold text-gray-700">
-    Contracts settings is coming Soon..
-  </h1>
+<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+  Liste des Types de Contrat
+</h1>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div
+    class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+  >
+    <h2 class="text-gray-900 text-sm">Nombre Total des Contrats</h2>
+    <p class="text-2xl font-bold text-green-600">{{ overall_count }}</p>
+  </div>
+  <div
+    class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+  >
+    <h2 class="text-gray-900 text-sm">Contrats Actifs</h2>
+    <p class="text-2xl font-bold text-blue-600">{{ active_contracts_count }}</p>
+  </div>
+  <div
+    class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer"
+  >
+    <h2 class="text-gray-900 text-sm">Contrats Inactifs</h2>
+    <p class="text-2xl font-bold text-red-600">{{ inactive_contracts_count }}</p>
+  </div>
+</div>
+
+<!-- <mat-form-field class="w-full sm:w-1/3" appearance="fill">
+  <mat-label>Rechercher..</mat-label>
+  <input
+    matInput
+    type="text"
+    [formControl]="keywordControl"
+    placeholder="Tapez un type de contrat..."
+  />
+  @if (keywordControl.value) {
+    <button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="clearSearch()"
+      disableRipple
+      class="clear-icon-button"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  }
+</mat-form-field> -->
+
+<div class="bg-white shadow-md rounded-lg p-4">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+          Type de Contrat
+        </th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+          Crédits Congés
+        </th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+          Statut
+        </th>
+        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200">
+      <tr *ngIf="isEmpty">
+        <td colspan="4" class="text-center text-gray-500 py-4">
+          Aucun type de contrat trouvé.
+        </td>
+      </tr>
+
+      <tr *ngFor="let ct of contract_types_data">
+        <td class="px-4 py-2 text-sm">{{ ct.contract_name }}</td>
+        <td class="px-4 py-2 text-sm">{{ ct.leaves_credit }}</td>
+        <td class="px-4 py-2 text-sm">
+          <span
+            class="px-2 py-1 rounded-full text-white text-xs font-semibold"
+            [ngClass]="{
+              'bg-green-500': ct.active === 'Y',
+              'bg-red-500': ct.active !== 'Y'
+            }"
+          >
+            {{ ct.active === 'Y' ? 'Actif' : 'Inactif' }}
+          </span>
+        </td>
+        <td class="px-4 py-2 text-sm flex space-x-2">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="onEditContractType(ct.contract_type_id)"
+            class="cursor-pointer"
+          >
+            <mat-icon style="color: #3b82f6;">edit</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="onDeleteContractType(ct.contract_type_id)"
+            class="cursor-pointer"
+          >
+            <mat-icon style="color: #ef4444;">delete</mat-icon>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Paginator -->
+  <!-- <mat-paginator
+    [length]="total_contracts_count"
+    [pageSize]="limit"
+    [pageSizeOptions]="page_size_options"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator> -->
 </div>
