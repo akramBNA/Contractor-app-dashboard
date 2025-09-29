@@ -2,10 +2,15 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/authentication.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
+import { SwalService } from '../../shared/Swal/swal.service';
+
 
 @Component({
   selector: 'app-main-component',
-  imports: [RouterOutlet, RouterLink, CommonModule],
+  imports: [RouterOutlet, RouterLink, CommonModule, MatIconModule, MatBadgeModule, MatMenuModule],
   standalone: true,
   templateUrl: './main-component.component.html',
   styleUrl: './main-component.component.css',
@@ -34,6 +39,7 @@ export class MainComponentComponent {
   showHolidaysMenu: boolean = true;
 
   user_name: string = '';
+  notificationsCount = 4;
 
   constructor(private authService: AuthService) {}
 
@@ -67,31 +73,35 @@ export class MainComponentComponent {
       this.showStatsMenu = false;
       this.showHolidaysMenu = true;
     }
-  }
+  };
 
   toggleRHSubmenu() {
     this.showRHSubmenu = !this.showRHSubmenu;
-  }
+  };
 
   togglePlanningSubmenu() {
     this.showPlanningSubmenu = !this.showPlanningSubmenu;
-  }
+  };
 
   toggleSettingsSubmenu() {
     this.showSettingsSubmenu = !this.showSettingsSubmenu;
-  }
+  };
 
   toggleMissionsSubmenu(): void {
     this.showMissionsSubmenu = !this.showMissionsSubmenu;
-  }
+  };
 
   toggleMaterialsSubmenu(): void {
     this.showMaterialsSubmenu = !this.showMaterialsSubmenu;
-  }
+  };
 
   logout(): void {
     if (this.authService) {
       this.authService.logout();
     }
-  }
+  };
+
+  openNotifications() {
+    console.log("Notifications clicked!");
+  };
 }
