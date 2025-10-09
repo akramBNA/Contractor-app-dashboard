@@ -39,7 +39,7 @@ export class MainComponentComponent {
   showHolidaysMenu: boolean = true;
 
   user_name: string = '';
-  notificationsCount = 4;
+  notificationsCount = 2;
 
   constructor(private authService: AuthService) {}
 
