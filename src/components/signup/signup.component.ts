@@ -21,6 +21,7 @@ import { LoadingSpinnerComponent } from "../../shared/loading-spinner/loading-sp
   imports: [CommonModule, MatInputModule, MatIconModule, ReactiveFormsModule, LoadingSpinnerComponent],
 })
 export class SignupComponent {
+  current_year: number = new Date().getFullYear();
   isLoading: boolean = false;
   user_data: any = [];
   signupForm: FormGroup;
