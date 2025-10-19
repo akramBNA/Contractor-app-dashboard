@@ -82,7 +82,6 @@ export class MyLeavesComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Error fetching leaves:', err);
         this.leaves_data = [];
         this.isEmpty = true;
       }
