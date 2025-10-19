@@ -122,6 +122,9 @@ export class MyLeavesComponent {
     });
   };
 
+  editMyLeave(leave_id: number) {
+  };
+
   onPageChange(event: PageEvent) {
     this.limit = event.pageSize;
     this.offset = event.pageIndex * event.pageSize;
