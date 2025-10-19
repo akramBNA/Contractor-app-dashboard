@@ -82,7 +82,6 @@ export class MyLeavesComponent {
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Error fetching leaves:', err);
         this.leaves_data = [];
         this.isEmpty = true;
       }
@@ -99,22 +98,32 @@ export class MyLeavesComponent {
     })
   }
 
-  deleteLeave(leave_id: number){    
-    this.isLoading = true;
-    this.leaveServices.deleteLeaves(leave_id, {}).subscribe((data:any) => {
-      if(data.success){
-        this.isLoading = false;
-        this.swalService.showConfirmation("Etes-vous sur de vouloir supprimé ce congé ?").then(()=>{
-          this.swalService.showSuccess('Le congé a été supprimé avec succès !').then(() => {
-            this.getAllLeavesById(this.limit, this.offset, this.employeeID);
-          })
-        })
-      } else {
-        this.isLoading = false;
-        this.swalService.showError("Le congé n\'est pas suprimé");
+  deleteLeave(leave_id: number) {
+    this.swalService.showConfirmation("Etes-vous sur de vouloir supprimé ce congé ?").then((result) => {
+      if (result && result.isConfirmed) {
+        this.isLoading = true;
+        this.leaveServices.deleteLeaves(leave_id, {}).subscribe({
+          next: (data: any) => {
+            this.isLoading = false;
+            if (data.success) {
+              this.swalService.showSuccess('Le congé a été supprimé avec succès !').then(() => {
+                this.getAllLeavesById(this.limit, this.offset, this.employeeID);
+              });
+            } else {
+              this.swalService.showError("Le congé n'est pas suprimé");
+            }
+          },
+          error: (err) => {
+            this.isLoading = false;
+            this.swalService.showError("Erreur lors de la suppression");
+          }
+        });
       }
-    })
-  }
+    });
+  };
+
+  editMyLeave(leave_id: number) {
+  };
 
   onPageChange(event: PageEvent) {
     this.limit = event.pageSize;
