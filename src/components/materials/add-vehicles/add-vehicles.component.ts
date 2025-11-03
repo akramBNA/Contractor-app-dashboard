@@ -3,14 +3,11 @@ import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { VehiclesService } from '../../../services/vehicles.services';
 import { VehicleTypesService } from '../../../services/vehicle_types.services';
-import { routes } from '../../../app/app.routes';
 
 @Component({
   selector: 'app-add-vehicles',
@@ -95,9 +92,7 @@ export class AddVehiclesComponent {
       return;
     }
 
-    this.isLoading = true;
-    console.log("vehilcle data ===> ", this.vehicleForm.value);
-    
+    this.isLoading = true;    
     this.vehiclesService.addVehicle(this.vehicleForm.value).subscribe({
       next: (response) => {
         if (response.success) {
