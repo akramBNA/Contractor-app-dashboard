@@ -6,10 +6,11 @@
   <p>Aucune information sur l'entreprise n'a été trouvée.</p>
 </div>
 
-<form *ngIf="!isLoading && !isEmpty && company_data.length > 0"
+<form *ngIf="!isLoading && !isEmpty && company_data"
       [formGroup]="companyForm"
       (ngSubmit)="onSubmit()"
       class="space-y-12 px-6 md:px-12">
+
 
   <div>
     <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Détails de l'Entreprise</h2>
