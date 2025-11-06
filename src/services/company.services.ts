@@ -11,5 +11,9 @@ export class CompanyService {
 
     getCompanyInformations(): Observable<any> {
       return this.http.get<any>(`${this.base_url}/company/getCompanyInformations/`);
-    }
+    };
+
+    updateCompany(data: any): Observable<any> {
+      return this.http.put<any>(`${this.base_url}/company/updateCompanyInformations/`, data);
+    };
 }
