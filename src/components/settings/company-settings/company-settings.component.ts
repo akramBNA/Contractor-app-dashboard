@@ -16,8 +16,8 @@ export class CompanySettingsComponent implements OnInit {
   companyForm!: FormGroup;
   formSubmitted = false;
   isLoading: boolean = false;
-  isEmpty: boolean =false;
-  company_data:any[] =[];
+  isEmpty: boolean = false;
+  company_data: any = null;
 
   constructor(
     private fb: FormBuilder,
@@ -39,20 +39,39 @@ export class CompanySettingsComponent implements OnInit {
   }
 
   getCompanyInformations(): void {    
-    this.isLoading = true
+    this.isLoading = true;
 
-      this.companyService.getCompanyInformations().subscribe((data)=>{        
-        if(data.success){
-          this.isLoading = false;
-          this.isEmpty = false;
-          this.company_data = data.data;
-        } else {
-          this.isLoading = false;
-          this.isEmpty = true;
-          this.company_data = []
-        }
-      })
+    this.companyService.getCompanyInformations().subscribe((data) => {        
+      if (data.success && data.data) {
+        this.isLoading = false;
+        this.isEmpty = false;
+        this.company_data = Array.isArray(data.data) ? data.data[0] : data.data;
+
+        console.log("company data: ", this.company_data);
+
+        this.companyForm.patchValue({
+          company_name: this.company_data.company_name,
+          company_activity_field: this.company_data.company_activity_field,
+          company_representative_id: this.company_data.company_representative_id,
+          company_tax_id: this.company_data.company_tax_id,
+          company_ss_id: this.company_data.company_ss_id,
+          company_establishment_year: this.company_data.company_establishment_year,
+          active: this.company_data.active
+        });
+
+      } else {
+        this.isLoading = false;
+        this.isEmpty = true;
+        this.company_data = null;
+      }
+    });
   }
 
-  onSubmit(): void {}
+  onSubmit(): void {
+    this.formSubmitted = true;
+    if (this.companyForm.invalid) return;
+
+    const updatedData = this.companyForm.value;
+    console.log('Updated company info:', updatedData);
+  }
 }
