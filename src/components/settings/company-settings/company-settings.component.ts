@@ -37,6 +37,8 @@ export class CompanySettingsComponent implements OnInit {
       company_ss_id: ['', Validators.required],
       company_establishment_year: ['', Validators.required],
       active: ['Y', Validators.required],
+      employee_name: [''],
+      employee_lastname: [''],
     });
 
     this.getCompanyInformations();
@@ -60,7 +62,9 @@ export class CompanySettingsComponent implements OnInit {
           company_tax_id: this.company_data.company_tax_id,
           company_ss_id: this.company_data.company_ss_id,
           company_establishment_year: this.company_data.company_establishment_year,
-          active: this.company_data.active
+          active: this.company_data.active,
+          employee_name: this.company_data.employee_name,
+          employee_lastname: this.company_data.employee_lastname,
         });
 
       } else {
