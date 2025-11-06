@@ -5,6 +5,8 @@ import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { CompanyService } from '../../../services/company.services';
+import { SwalService } from '../../../shared/Swal/swal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-company-settings',
@@ -21,7 +23,9 @@ export class CompanySettingsComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private swalService: SwalService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -68,10 +72,33 @@ export class CompanySettingsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.formSubmitted = true;
-    if (this.companyForm.invalid) return;
+    this.isLoading = true;
 
-    const updatedData = this.companyForm.value;
-    console.log('Updated company info:', updatedData);
-  }
+    if (this.companyForm.invalid || !this.company_data) {
+      return;
+    }
+
+    const updatedCompanyData = {
+      company_id: this.company_data.company_id,
+      ...this.companyForm.value,
+    };
+
+    console.log("Submitting updated data:", updatedCompanyData);
+
+    this.companyService.updateCompany(updatedCompanyData).subscribe({
+      next: (res) => {
+        this.isLoading = false;
+        if (res.success) {
+          this.swalService.showSuccess("Informations de l'entreprise mises à jour avec succès.");
+          this.company_data = res.data;
+        } else {
+          this.swalService.showError("Échec de la mise à jour des informations de l'entreprise.");
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.swalService.showError("Une erreur est survenue lors de la mise à jour des informations de l'entreprise.");
+      },
+    });
+  };
 }
