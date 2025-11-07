@@ -11,6 +11,9 @@ import { debounceTime } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
 
 @Component({
   selector: 'app-vehicles-list',
@@ -35,7 +38,7 @@ export class VehiclesListComponent {
   keyword: string = '';
   vehicles_data: any[] = [];
   total_count: number = 0;
-  page_size_options: number[] = [5, 10, 20, 50];
+  page_size_options: number[] = [2, 5, 10, 20, 50];
   keywordControl: FormControl = new FormControl('');
 
   vehicleTypeTranslations: { [key: string]: string } = {
@@ -138,4 +141,65 @@ export class VehiclesListComponent {
   clearSearch() {
     this.keywordControl.setValue('');
   }
+
+  downloadPDF() {
+    const doc = new jsPDF('l', 'mm', 'a4');
+    const title = 'Liste des Véhicules';
+
+    // Add title
+    doc.setFontSize(18);
+    doc.text(`Société SOHABA`, 14, 12);
+    doc.setFontSize(12);
+    doc.text(title, 14, 20);
+    // doc.setFontSize(12);
+    // doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 30);
+
+    const head = [[
+      'Type de véhicule',
+      'Marque',
+      'Modèle',
+      'Année',
+      'Matricule',
+      '1e mise en circulation',
+      'N° VIN',
+      'N° Assurance'
+    ]];
+
+    const body = this.vehicles_data.map(v => [
+      this.translateVehicleType(v.vehicle_type),
+      v.brand,
+      v.model,
+      v.model_year,
+      v.licence_plate,
+      v.circulation_date,
+      v.vin_number,
+      v.insurance_number
+    ]);
+
+    autoTable(doc, {
+      head: head,
+      body: body,
+      startY: 25,
+      styles: {
+        fontSize: 10,
+        cellPadding: 3,
+      },
+      headStyles: {
+        fillColor: [41, 128, 185],
+        textColor: 255,
+        halign: 'center'
+      },
+      alternateRowStyles: { fillColor: [240, 240, 240] },
+    });
+
+    const pageCount = doc.internal.pages.length - 1;
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(10);
+      doc.text(`Page ${i} / ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+    }
+
+    doc.save(`liste_vehicules_${new Date().toLocaleDateString()}.pdf`);
+  }
+
 }
