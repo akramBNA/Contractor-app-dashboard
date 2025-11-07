@@ -146,8 +146,13 @@ export class VehiclesListComponent {
     const doc = new jsPDF('l', 'mm', 'a4');
     const title = 'Liste des Véhicules';
 
+    // Add title
+    doc.setFontSize(18);
+    doc.text(`Société SOHABA`, 14, 12);
     doc.setFontSize(12);
-    doc.text('Société SOHABA', 14, 10);
+    doc.text(title, 14, 20);
+    // doc.setFontSize(12);
+    // doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 30);
 
     const head = [[
       'Type de véhicule',
@@ -187,7 +192,6 @@ export class VehiclesListComponent {
       alternateRowStyles: { fillColor: [240, 240, 240] },
     });
 
-    // Footer
     const pageCount = doc.internal.pages.length - 1;
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
@@ -195,8 +199,7 @@ export class VehiclesListComponent {
       doc.text(`Page ${i} / ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
     }
 
-    // Save the PDF
-    doc.save('liste_vehicules.pdf');
+    doc.save(`liste_vehicules_${new Date().toLocaleDateString()}.pdf`);
   }
 
 }
