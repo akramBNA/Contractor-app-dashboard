@@ -109,7 +109,6 @@ export class AccountSettingsComponent implements OnInit {
     this.isLoading = true;
     this.usersService.getAllUsers(lim, off, key).subscribe((data: any) => {
       this.isLoading = false;
-      console.log("data: ", data);
       
       if (data.success) {
         this.users_data = data.data;

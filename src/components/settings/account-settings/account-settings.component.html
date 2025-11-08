@@ -8,10 +8,6 @@
     <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-    <!-- <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
-      <h2 class="text-gray-900 text-sm">Nombre Total des Utilisateurs</h2>
-      <p class="text-2xl font-bold text-green-600">{{ stats_data.active_users }}</p>
-    </div> -->
     <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
       <h2 class="text-gray-900 text-sm">Utilisateurs actifs</h2>
       <p class="text-2xl font-bold text-blue-600">
@@ -34,7 +30,7 @@
 
   <mat-form-field class="w-full sm:w-2/3">
     <mat-label>Chercher un utilisateur..</mat-label>
-    <input matInput type="text" [formControl]="searchControl" placeholder="Tapez un nom..." />
+    <input matInput type="text" [formControl]="searchControl" placeholder="Tapez un Prénom..." />
   </mat-form-field>
 
   <div class="bg-white shadow-md rounded-lg overflow-x-auto">
