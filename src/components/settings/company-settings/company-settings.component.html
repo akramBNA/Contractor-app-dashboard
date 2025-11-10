@@ -33,14 +33,19 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="w-full">
+      <!-- <mat-form-field appearance="fill" class="w-full">
         <mat-label>Identifiant du Représentant</mat-label>
         <input matInput type="number" formControlName="company_representative_id" />
+      </mat-form-field> -->
+
+      <mat-form-field appearance="fill" class="w-full">
+        <mat-label>Prénom du représentant</mat-label>
+        <input matInput  formControlName="employee_name" />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="w-full">
-        <mat-label>Représentant</mat-label>
-        <input matInput  formControlName="employee_name" />
+        <mat-label>Nom du représentant</mat-label>
+        <input matInput  formControlName="employee_lastname" />
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="w-full">
