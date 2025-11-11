@@ -1,3 +1,4 @@
+// src/app/services/socket.service.ts
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../environments/environment';
@@ -9,7 +10,9 @@ export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io(environment.backendURL);
+    this.socket = io(environment.socketURL, {
+      transports: ['websocket'],
+    });
   }
 
   register(userId: number, role: string) {
@@ -18,5 +21,13 @@ export class SocketService {
 
   onNewNotification(callback: (data: any) => void) {
     this.socket.on('new-notification', callback);
+  }
+
+  onDisconnect(callback: () => void) {
+    this.socket.on('disconnect', callback);
+  }
+
+  disconnect() {
+    this.socket.disconnect();
   }
 }
