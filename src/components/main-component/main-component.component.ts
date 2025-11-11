@@ -5,7 +5,7 @@ import { AuthService } from '../../services/authentication.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
-import { SwalService } from '../../shared/Swal/swal.service';
+import { SocketService } from '../../services/socket.services';
 
 
 @Component({
@@ -17,7 +17,7 @@ import { SwalService } from '../../shared/Swal/swal.service';
 })
 export class MainComponentComponent {
   current_year: number = new Date().getFullYear();
-  my_web_resume_link: string = 'https://akrambna.github.io/My-Web-Resume/';
+  my_web_resume_link: string = 'https://akram-benaoun.site/';
   showRHSubmenu: boolean = false;
   showPlanningSubmenu: boolean = false;
   showSettingsSubmenu: boolean = false;
@@ -38,14 +38,29 @@ export class MainComponentComponent {
   showStatsMenu: boolean = true;
   showHolidaysMenu: boolean = true;
 
-  user_name: string = '';
-  notificationsCount = 2;
+  showNotificationsDropdown = false;
 
-  constructor(private authService: AuthService) {}
+  user_name: string = '';
+  notificationsCount = 0;
+  notificationsList: any[] = [];
+
+  constructor(
+    private authService: AuthService,
+    private socketService: SocketService
+  ) {}
 
   ngOnInit() {
-    const userRole = sessionStorage.getItem('user_role');
+    const userId = parseInt(sessionStorage.getItem('user_id') || '0', 10);
+    const userRole = sessionStorage.getItem('user_role') ?? '';
     this.user_name = sessionStorage.getItem('user_name') ?? '';
+
+    this.socketService.register(userId, userRole);
+
+    this.socketService.onNewNotification((notif: any) => {
+      this.notificationsList.unshift(notif);
+      this.notificationsCount++;
+      console.log('🔔 New notification:', notif);
+    });
 
     if (userRole === 'super_admin' || userRole === 'admin') {
       this.showSttingsMenu = true;
@@ -102,6 +117,30 @@ export class MainComponentComponent {
   };
 
   openNotifications() {
-    console.log("Notifications clicked!");
+    this.notificationsCount = 0;
+    console.table(this.notificationsList);
   };
+
+  toggleNotifications() {
+    this.showNotificationsDropdown = !this.showNotificationsDropdown;
+    if (this.showNotificationsDropdown) {
+      this.notificationsCount = 0;
+    }
+  };
+
+  clearNotifications(event: Event) {
+    event.stopPropagation();
+    this.notificationsList = [];
+    this.notificationsCount = 0;
+  };
+
+  ngAfterViewInit() {
+    document.addEventListener('click', (event: any) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.relative')) {
+        this.showNotificationsDropdown = false;
+      }
+    });
+  };
+
 }
