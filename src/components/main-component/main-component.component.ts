@@ -133,4 +133,14 @@ export class MainComponentComponent {
     this.notificationsList = [];
     this.notificationsCount = 0;
   };
+
+  ngAfterViewInit() {
+    document.addEventListener('click', (event: any) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.relative')) {
+        this.showNotificationsDropdown = false;
+      }
+    });
+  };
+
 }
