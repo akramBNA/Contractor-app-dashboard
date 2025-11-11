@@ -17,7 +17,7 @@ import { SocketService } from '../../services/socket.services';
 })
 export class MainComponentComponent {
   current_year: number = new Date().getFullYear();
-  my_web_resume_link: string = 'https://akrambna.github.io/My-Web-Resume/';
+  my_web_resume_link: string = 'https://akram-benaoun.site/';
   showRHSubmenu: boolean = false;
   showPlanningSubmenu: boolean = false;
   showSettingsSubmenu: boolean = false;
@@ -37,6 +37,8 @@ export class MainComponentComponent {
   showSalariesMenu: boolean = true;
   showStatsMenu: boolean = true;
   showHolidaysMenu: boolean = true;
+
+  showNotificationsDropdown = false;
 
   user_name: string = '';
   notificationsCount = 0;
@@ -117,5 +119,18 @@ export class MainComponentComponent {
   openNotifications() {
     this.notificationsCount = 0;
     console.table(this.notificationsList);
-  }
+  };
+
+  toggleNotifications() {
+    this.showNotificationsDropdown = !this.showNotificationsDropdown;
+    if (this.showNotificationsDropdown) {
+      this.notificationsCount = 0;
+    }
+  };
+
+  clearNotifications(event: Event) {
+    event.stopPropagation();
+    this.notificationsList = [];
+    this.notificationsCount = 0;
+  };
 }
