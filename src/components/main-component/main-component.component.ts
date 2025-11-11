@@ -5,7 +5,7 @@ import { AuthService } from '../../services/authentication.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
-import { SwalService } from '../../shared/Swal/swal.service';
+import { SocketService } from '../../services/socket.services';
 
 
 @Component({
@@ -39,13 +39,26 @@ export class MainComponentComponent {
   showHolidaysMenu: boolean = true;
 
   user_name: string = '';
-  notificationsCount = 2;
+  notificationsCount = 0;
+  notificationsList: any[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private socketService: SocketService
+  ) {}
 
   ngOnInit() {
-    const userRole = sessionStorage.getItem('user_role');
+    const userId = parseInt(sessionStorage.getItem('user_id') || '0', 10);
+    const userRole = sessionStorage.getItem('user_role') ?? '';
     this.user_name = sessionStorage.getItem('user_name') ?? '';
+
+    this.socketService.register(userId, userRole);
+
+    this.socketService.onNewNotification((notif: any) => {
+      this.notificationsList.unshift(notif);
+      this.notificationsCount++;
+      console.log('🔔 New notification:', notif);
+    });
 
     if (userRole === 'super_admin' || userRole === 'admin') {
       this.showSttingsMenu = true;
@@ -102,6 +115,7 @@ export class MainComponentComponent {
   };
 
   openNotifications() {
-    console.log("Notifications clicked!");
-  };
+    this.notificationsCount = 0;
+    console.table(this.notificationsList);
+  }
 }
