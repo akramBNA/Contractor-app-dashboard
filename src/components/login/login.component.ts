@@ -40,9 +40,7 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response: any) => {        
-          console.log("response: ", response);
-           
+        next: (response: any) => {                   
           this.isLoading = false;
           this.authService.saveToken(response.token);
           this.authService.setUserData(response);
