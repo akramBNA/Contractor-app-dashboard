@@ -30,7 +30,7 @@
             <div *ngIf="notificationsList.length === 0" class="p-4 text-center text-sm text-gray-500">Aucune notification</div>
 
             <ul *ngIf="notificationsList.length > 0" class="divide-y divide-gray-100">
-              <li *ngFor="let notif of notificationsList" class="notif-item">
+                <li *ngFor="let notif of notificationsList; trackBy: trackByNotifId" class="notif-item">
                 <p class="text-sm">{{ notif.message || notif.text || 'Nouvelle notification' }}</p>
                 <p class="text-xs text-gray-400 mt-1">
                   {{ notif.created_at ? (notif.created_at | date:'short') : '' }}
