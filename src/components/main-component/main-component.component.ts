@@ -44,6 +44,9 @@ export class MainComponentComponent {
   notificationsCount = 0;
   notificationsList: any[] = [];
 
+  badgePulse = false;
+
+
   constructor(
     private authService: AuthService,
     private socketService: SocketService
@@ -58,7 +61,12 @@ export class MainComponentComponent {
 
     this.socketService.onNewNotification((notif: any) => {
       this.notificationsList.unshift(notif);
-      this.notificationsCount++;
+      if (!this.showNotificationsDropdown) {
+        this.notificationsCount++;
+        this.badgePulse = false;
+        setTimeout(() => this.badgePulse = true, 10);
+        setTimeout(() => this.badgePulse = false, 700);
+      }
       console.log('🔔 New notification:', notif);
     });
 
@@ -137,7 +145,7 @@ export class MainComponentComponent {
   ngAfterViewInit() {
     document.addEventListener('click', (event: any) => {
       const target = event.target as HTMLElement;
-      if (!target.closest('.relative')) {
+      if (!target.closest('.sidebar') && !target.closest('.notif-dropdown')) {
         this.showNotificationsDropdown = false;
       }
     });
