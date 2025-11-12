@@ -13,7 +13,7 @@ import { SocketService } from '../../services/socket.services';
   imports: [RouterOutlet, RouterLink, CommonModule, MatIconModule, MatBadgeModule, MatMenuModule],
   standalone: true,
   templateUrl: './main-component.component.html',
-  styleUrl: './main-component.component.css',
+  styleUrls: ['./main-component.component.css'],
 })
 export class MainComponentComponent {
   current_year: number = new Date().getFullYear();
@@ -44,9 +44,13 @@ export class MainComponentComponent {
   notificationsCount = 0;
   notificationsList: any[] = [];
 
+  badgePulse = false;
+
+  private clickListener!: (event: any) => void;
+
   constructor(
     private authService: AuthService,
-    private socketService: SocketService
+    private socketService: SocketService,
   ) {}
 
   ngOnInit() {
@@ -58,7 +62,12 @@ export class MainComponentComponent {
 
     this.socketService.onNewNotification((notif: any) => {
       this.notificationsList.unshift(notif);
-      this.notificationsCount++;
+      if (!this.showNotificationsDropdown) {
+        this.notificationsCount++;
+        this.badgePulse = false;
+        setTimeout(() => this.badgePulse = true, 10);
+        setTimeout(() => this.badgePulse = false, 700);
+      }
       console.log('🔔 New notification:', notif);
     });
 
@@ -135,12 +144,21 @@ export class MainComponentComponent {
   };
 
   ngAfterViewInit() {
-    document.addEventListener('click', (event: any) => {
+    this.clickListener = (event: any) => {
       const target = event.target as HTMLElement;
-      if (!target.closest('.relative')) {
+      if (!target.closest('.sidebar') && !target.closest('.notif-dropdown')) {
         this.showNotificationsDropdown = false;
       }
-    });
+    };
+    document.addEventListener('click', this.clickListener);
+  };
+
+  ngOnDestroy() {
+    document.removeEventListener('click', this.clickListener);
+  };
+
+  trackByNotifId(index: number, notif: any) {
+    return notif.id || index;
   };
 
 }
