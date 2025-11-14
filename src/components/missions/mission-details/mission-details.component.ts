@@ -387,16 +387,25 @@ export class MissionDetailsComponent implements OnInit {
         {
           children: [
             new Paragraph({
-              text: todayFormatted,
+              children: [new TextRun({ text: "SOHABA", bold: true, size: 28 })],
               alignment: AlignmentType.LEFT,
             }),
+
+            new Paragraph({
+              children: [new TextRun({ text: todayFormatted, bold: true })],
+              alignment: AlignmentType.RIGHT,
+            }),
+
+            new Paragraph({ text: "", spacing: { after: 300 } }),
 
             new Paragraph({
               text: `Ordre de Mission N° ${missionId}`,
               heading: HeadingLevel.HEADING_1,
               alignment: AlignmentType.CENTER,
             }),
+
             new Paragraph({ text: "", spacing: { after: 300 } }),
+
             detailsTable,
             new Paragraph({ text: "", spacing: { after: 800 } }),
             signatureTable,
