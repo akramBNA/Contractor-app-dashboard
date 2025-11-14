@@ -277,9 +277,9 @@ export class MissionDetailsComponent implements OnInit {
     const missionDesc = fv.mission_description || "—";
     const startDate   = this.formatDateLocal(fv.start_at) || "—";
     const endDate     = this.formatDateLocal(fv.end_at) || "—";
-    const priority = priorityMap[fv.priority] || "—";    
+    const priority    = priorityMap[fv.priority] || "—";    
     const expenses    = `${fv?.expenses ?? 0} TND`;
-    const employees = (this.selectedEmployees || []).map(
+    const employees   = (this.selectedEmployees || []).map(
       (e: any) => `${e.employee_name} ${e.employee_lastname}`
     );
 
@@ -332,12 +332,12 @@ export class MissionDetailsComponent implements OnInit {
     const detailsTable = new Table({
       width: { size: 100, type: WidthType.PERCENTAGE },
       borders: {
-        top: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
-        bottom: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
-        left: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
-        right: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
-        insideHorizontal: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
-        insideVertical: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
+        top: { style: BorderStyle.SINGLE, size: 1 },
+        bottom: { style: BorderStyle.SINGLE, size: 1 },
+        left: { style: BorderStyle.SINGLE, size: 1 },
+        right: { style: BorderStyle.SINGLE, size: 1 },
+        insideHorizontal: { style: BorderStyle.SINGLE, size: 1 },
+        insideVertical: { style: BorderStyle.SINGLE, size: 1 },
       },
       rows,
     });
@@ -382,19 +382,50 @@ export class MissionDetailsComponent implements OnInit {
       ],
     });
 
+    const headerTable = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      borders: {
+        top: { style: BorderStyle.NONE },
+        bottom: { style: BorderStyle.NONE },
+        left: { style: BorderStyle.NONE },
+        right: { style: BorderStyle.NONE },
+        insideHorizontal: { style: BorderStyle.NONE },
+        insideVertical: { style: BorderStyle.NONE },
+      },
+      rows: [
+        new TableRow({
+          children: [
+            new TableCell({
+              width: { size: 50, type: WidthType.PERCENTAGE },
+              verticalAlign: "center",
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: "SOHABA", bold: true, size: 28 })],
+                  alignment: AlignmentType.LEFT,
+                }),
+              ],
+            }),
+
+            new TableCell({
+              width: { size: 50, type: WidthType.PERCENTAGE },
+              verticalAlign: "center",
+              children: [
+                new Paragraph({
+                  children: [new TextRun({ text: todayFormatted, bold: true, size: 28 })],
+                  alignment: AlignmentType.RIGHT,
+                }),
+              ],
+            }),
+          ],
+        }),
+      ],
+    });
+
     const doc = new Document({
       sections: [
         {
           children: [
-            new Paragraph({
-              children: [new TextRun({ text: "SOHABA", bold: true, size: 28 })],
-              alignment: AlignmentType.LEFT,
-            }),
-
-            new Paragraph({
-              children: [new TextRun({ text: todayFormatted, bold: true })],
-              alignment: AlignmentType.RIGHT,
-            }),
+            headerTable,
 
             new Paragraph({ text: "", spacing: { after: 300 } }),
 
