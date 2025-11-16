@@ -99,7 +99,6 @@ export class MainComponentComponent {
     }
   };
 
-  // Close ALL menus
   closeAllMenus() {
     this.showRHSubmenu = false;
     this.showPlanningSubmenu = false;
@@ -108,7 +107,6 @@ export class MainComponentComponent {
     this.showMaterialsSubmenu = false;
   };
 
-  // Toggle functions (open one, close everything else)
   toggleRHSubmenu() {
     const newState = !this.showRHSubmenu;
     this.closeAllMenus();
@@ -138,7 +136,6 @@ export class MainComponentComponent {
     this.closeAllMenus();
     this.showMaterialsSubmenu = newState;
   };
-
 
   logout(): void {
     if (this.authService) {
