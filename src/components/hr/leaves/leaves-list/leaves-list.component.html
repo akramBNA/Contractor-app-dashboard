@@ -58,13 +58,14 @@
           </span>
         </td>            
         <td class="px-4 py-2 text-sm flex space-x-2">
-              <button mat-icon-button color="primary" (click)="acceptLeave(leave.employee_id, leave.leave_id)" class="cursor: pointer;">
-                <mat-icon style="color: #045221;">check</mat-icon>
-              </button>
-
-              <button mat-icon-button color="warn" (click)="rejectLeave(leave.employee_id, leave.leave_id)" class="cursor: pointer;">
-                <mat-icon style="color: #ef4444;">cancel</mat-icon>
-              </button>
+          <ng-container *ngIf="leave.status !== 'Rejected' && leave.status !== 'Approved'">
+            <button mat-icon-button color="primary" (click)="acceptLeave(leave.employee_id, leave.leave_id)" class="cursor-pointer">
+              <mat-icon style="color: #045221;">check</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="rejectLeave(leave.employee_id, leave.leave_id)" class="cursor-pointer">
+              <mat-icon style="color: #ef4444;">cancel</mat-icon>
+            </button>
+          </ng-container>
         </td>
       </tr>
     </tbody>
