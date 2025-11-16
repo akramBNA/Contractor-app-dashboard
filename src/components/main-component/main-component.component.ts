@@ -99,25 +99,46 @@ export class MainComponentComponent {
     }
   };
 
+  // Close ALL menus
+  closeAllMenus() {
+    this.showRHSubmenu = false;
+    this.showPlanningSubmenu = false;
+    this.showSettingsSubmenu = false;
+    this.showMissionsSubmenu = false;
+    this.showMaterialsSubmenu = false;
+  };
+
+  // Toggle functions (open one, close everything else)
   toggleRHSubmenu() {
-    this.showRHSubmenu = !this.showRHSubmenu;
+    const newState = !this.showRHSubmenu;
+    this.closeAllMenus();
+    this.showRHSubmenu = newState;
   };
 
   togglePlanningSubmenu() {
-    this.showPlanningSubmenu = !this.showPlanningSubmenu;
+    const newState = !this.showPlanningSubmenu;
+    this.closeAllMenus();
+    this.showPlanningSubmenu = newState;
   };
 
   toggleSettingsSubmenu() {
-    this.showSettingsSubmenu = !this.showSettingsSubmenu;
+    const newState = !this.showSettingsSubmenu;
+    this.closeAllMenus();
+    this.showSettingsSubmenu = newState;
   };
 
-  toggleMissionsSubmenu(): void {
-    this.showMissionsSubmenu = !this.showMissionsSubmenu;
+  toggleMissionsSubmenu() {
+    const newState = !this.showMissionsSubmenu;
+    this.closeAllMenus();
+    this.showMissionsSubmenu = newState;
   };
 
-  toggleMaterialsSubmenu(): void {
-    this.showMaterialsSubmenu = !this.showMaterialsSubmenu;
+  toggleMaterialsSubmenu() {
+    const newState = !this.showMaterialsSubmenu;
+    this.closeAllMenus();
+    this.showMaterialsSubmenu = newState;
   };
+
 
   logout(): void {
     if (this.authService) {
