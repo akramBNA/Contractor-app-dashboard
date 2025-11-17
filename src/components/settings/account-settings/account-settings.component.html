@@ -10,18 +10,18 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
     <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
       <h2 class="text-gray-900 text-sm">Utilisateurs actifs</h2>
-      <p class="text-2xl font-bold text-blue-600">
+      <p class="text-2xl font-bold text-green-700">
         {{ stats_data.active_users }}
       </p>
     </div>
     <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
-      <h2 class="text-gray-900 text-sm">Utilisateurs inactifs</h2>
-      <p class="text-2xl font-bold text-green-700">
+      <h2 class="text-gray-900 text-sm">Utilisateurs admin</h2>
+      <p class="text-2xl font-bold text-blue-600">
         {{ stats_data.inactive_users }}
       </p>
     </div>
     <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
-      <h2 class="text-gray-900 text-sm">Utilisateurs admin</h2>
+      <h2 class="text-gray-900 text-sm">Utilisateurs inactifs</h2>
       <p class="text-2xl font-bold text-red-600">
         {{ stats_data.admin_users }}
       </p>
