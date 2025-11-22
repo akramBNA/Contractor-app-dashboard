@@ -91,7 +91,6 @@ export class LeavesListComponent {
     )
   };
     
-
   rejectLeave(employeeId: number, leaveId: number) {
     this.isLoading = true;
     this.leavesService.rejectLeaves(employeeId, leaveId, {}).subscribe((data: any) => {
