@@ -33,7 +33,6 @@ export class MissionsListComponent {
 
   page_size_options: number[] = [2, 10, 20, 50, 100];
 
-  total_missions_count = 0;
   active_missions_count = 0;
   completed_missions_count = 0;
   canceled_missions_count = 0;
@@ -67,13 +66,10 @@ export class MissionsListComponent {
   getAllMissions(lim:number, off:number, key:string) {
     this.isEmpty = false;
     this.isLoading = true;
-    this.missionsService.getAllActiveMissions(lim, off, key).subscribe((data: any) => {
-      console.log("data: ", data);
-      
+    this.missionsService.getAllActiveMissions(lim, off, key).subscribe((data: any) => {      
       if (data.success) {
         this.isLoading = false;
         this.missions_data = data.data;
-        this.total_missions_count = data.attributes.total;
         this.overall_count = data.attributes.overall_count;
         this.active_missions_count = data.running_missions;
         this.completed_missions_count = data.completed_missions;
@@ -102,7 +98,6 @@ export class MissionsListComponent {
         this.missionsService.deleteMission(missionId).subscribe((data: any) => {
           if (data.success) {
             this.missions_data = this.missions_data.filter((m: any) => m.mission_id !== missionId);
-            this.total_missions_count--;
             this.overall_count--;
             this.swalService.showSuccess('La mission a été supprimée avec succès.');
           } else {
