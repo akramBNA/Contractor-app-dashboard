@@ -29,4 +29,8 @@ export class SocketService {
   disconnect() {
     this.socket.disconnect();
   }
+
+  onLeaveStatusUpdate(callback: (data: any) => void) {
+    this.socket.on("leave_status_update", callback);
+  }
 }
