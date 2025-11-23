@@ -6,6 +6,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { SwalService } from '../../../../shared/Swal/swal.service';
 import { MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { LoadingSpinnerComponent } from "../../../../shared/loading-spinner/loading-spinner.component";
+import { SocketService } from '../../../../services/socket.services';
 
 @Component({
   selector: 'app-my-leaves',
@@ -28,6 +29,7 @@ export class MyLeavesComponent {
   rejected_count: number = 0;
   
   employeeID: number = 1;
+  user_role: string = '';
 
    leaveTypeTranslations: { [key: string]: string } = {
       'Annual Leave': 'Congé Annuel',
@@ -53,12 +55,27 @@ export class MyLeavesComponent {
   constructor(
     private leaveServices: LeavesService,
     private leaveTypesService: LeavesTypesService, 
-    private swalService: SwalService
+    private swalService: SwalService,
+    private socketService: SocketService
   ) {}
 
   ngOnInit() {
     this.employeeID = parseInt(sessionStorage.getItem('user_id') || '1', 10);
+    this.user_role = sessionStorage.getItem('user_role') || '';
+    console.log("sessions storage data =====> ", this.employeeID, " - ",this.user_role);
+    
     this.getAllLeavesById(this.limit, this.offset, this.employeeID);
+
+    this.socketService.register(this.employeeID, this.user_role);
+
+    this.socketService.onLeaveStatusUpdate((data) => {
+      if (data.type === 'approved') {
+        this.swalService.showSuccess("Votre congé a été approuvé !");
+      }
+      if (data.type === 'rejected') {
+        this.swalService.showError("Votre congé a été rejeté.");
+      }
+    });
   }
 
   getAllLeavesById(limit: number, offset: number, employeeId: number) {
