@@ -1,5 +1,43 @@
-<div class="bg-white/40 backdrop-blur-sm relative">
-  <h1 class="absolute top-6 left-6 text-4xl md:text-5xl font-bold text-gray-700">
-    HR stats is coming Soon..
-  </h1>
+<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Statistiques RH</h1>
+
+<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+
+  <div class="bg-gray-200 shadow p-5 rounded-xl flex flex-col" style="min-height: 300px;">
+    <h2 class="text-xl font-semibold mb-4 flex items-center">🎂 Anniversaires du mois</h2>
+
+    <div *ngIf="!isLoading && birthdays.length === 0" class="text-gray-500">Aucun anniversaire ce mois-ci.</div>
+
+    <div *ngFor="let emp of birthdays" 
+         class="flex items-center justify-between border-b last:border-b-0 py-2">
+      
+      <div>
+        <p class="font-medium">
+          {{ emp.employee_name }} {{ emp.employee_lastname }}
+        </p>
+        <p class="text-gray-500 text-sm">
+          {{ emp.employee_birth_date | date:'dd MMMM' }}
+        </p>
+      </div>
+
+      <span class="text-xl">🎉</span>
+    </div>
+  </div>
+
+  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500" style="min-height: 300px;">
+    <span class="font-medium text-lg z-10">Widget à venir...</span>
+    <div class="absolute inset-0 bg-gray-200/50 backdrop-blur-sm rounded-xl"></div>
+  </div>
+
+  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500" style="min-height: 300px;">
+    <span class="font-medium text-lg z-10">Widget à venir...</span>
+    <div class="absolute inset-0 bg-gray-200/50 backdrop-blur-sm rounded-xl"></div>
+  </div>
+
+  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500" style="min-height: 300px;">
+    <span class="font-medium text-lg z-10">Widget à venir...</span>
+    <div class="absolute inset-0 bg-gray-200/50 backdrop-blur-sm rounded-xl"></div>
+  </div>
+
 </div>
