@@ -9,19 +9,16 @@
 
     <div *ngIf="!isLoading && birthdays.length === 0" class="text-gray-500">Aucun anniversaire ce mois-ci.</div>
 
-    <div *ngFor="let emp of birthdays" 
-         class="flex items-center justify-between border-b last:border-b-0 py-2">
-      
-      <div>
-        <p class="font-medium">
-          {{ emp.employee_name }} {{ emp.employee_lastname }}
-        </p>
-        <p class="text-gray-500 text-sm">
-          {{ emp.employee_birth_date | date:'dd MMMM' }}
-        </p>
-      </div>
+    <div *ngIf="birthdays.length > 0" class="overflow-y-auto scrollbar-thin" style="max-height: 220px;">
+      <div *ngFor="let emp of birthdays" class="flex items-center justify-between border-b last:border-b-0 py-2 hover:bg-gray-100 rounded cursor-pointer">
+        
+        <div>
+          <p class="font-medium">{{ emp.employee_name }} {{ emp.employee_lastname }}</p>
+          <p class="text-gray-500 text-sm">{{ emp.employee_birth_date | date:'dd MMMM' }}</p>
+        </div>
 
-      <span class="text-xl">🎉</span>
+        <span class="text-xl">🎉</span>
+      </div>
     </div>
   </div>
 
