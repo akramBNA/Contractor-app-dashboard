@@ -2,14 +2,14 @@
 
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6">
 
-  <div class="bg-gray-200 shadow p-5 rounded-xl flex flex-col" style="min-height: 300px;">
+  <div class="bg-gray-200 shadow p-5 rounded-xl flex flex-col min-w-0" style="min-height: 300px;">
     <h2 class="text-xl font-semibold mb-4 flex items-center">🎂 Anniversaires du mois</h2>
 
     <div *ngIf="!isLoading && birthdays.length === 0" class="text-gray-500">Aucun anniversaire ce mois-ci.</div>
 
-    <div *ngIf="birthdays.length > 0" class="overflow-y-auto scrollbar-thin" style="max-height: 220px;">
+    <div *ngIf="birthdays.length > 0" class="overflow-y-auto scrollbar-thin flex-1" style="max-height: 220px;">
       <div *ngFor="let emp of birthdays" class="flex items-center justify-between border-b last:border-b-0 py-2 hover:bg-gray-100 rounded cursor-pointer">
         
         <div>
@@ -22,17 +22,17 @@
     </div>
   </div>
 
-  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500" style="min-height: 300px;">
+  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500 min-w-0" style="min-height: 300px;">
     <span class="font-medium text-lg z-10">Widget à venir...</span>
     <div class="absolute inset-0 bg-gray-200/50 backdrop-blur-sm rounded-xl"></div>
   </div>
 
-  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500" style="min-height: 300px;">
+  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500 min-w-0" style="min-height: 300px;">
     <span class="font-medium text-lg z-10">Widget à venir...</span>
     <div class="absolute inset-0 bg-gray-200/50 backdrop-blur-sm rounded-xl"></div>
   </div>
 
-  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500" style="min-height: 300px;">
+  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500 min-w-0" style="min-height: 300px;">
     <span class="font-medium text-lg z-10">Widget à venir...</span>
     <div class="absolute inset-0 bg-gray-200/50 backdrop-blur-sm rounded-xl"></div>
   </div>
