@@ -27,7 +27,7 @@ export class HrStatsComponent implements OnInit {
     this.isLoading = true;
     this.hrService.getAllEmployeesBirthdaysForThisMonth().subscribe({
       next: (response) => {
-        this.birthdays = response.data || [];
+        this.birthdays = response.data.birthdaysData || [];
         this.isLoading = false;
       },
       error: (err) => {
