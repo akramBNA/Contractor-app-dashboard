@@ -38,38 +38,21 @@
   </div>
 
   <div class="bg-gray-200 shadow p-5 rounded-xl flex flex-col min-w-0" style="min-height: 300px;">
-    <h2 class="text-xl font-semibold mb-4 flex items-center">🟢 Congés en cours</h2>
+    <h2 class="text-xl font-semibold mb-4 flex items-center">🍃 Congés en cours</h2>
 
-    <div *ngIf="!isLoading && ongoingLeaves.length === 0" class="text-gray-500">
-      Aucun congé en cours aujourd'hui.
-    </div>
+    <div *ngIf="!isLoading && ongoingLeaves.length === 0" class="text-gray-500">Aucun congé en cours aujourd'hui.</div>
 
     <div *ngIf="ongoingLeaves.length > 0" class="overflow-y-auto scrollbar-thin flex-1" style="max-height: 220px;">
 
-      <div *ngFor="let leave of ongoingLeaves" 
-          class="border-b last:border-b-0 py-2 hover:bg-gray-100 rounded cursor-pointer px-1">
-
-        <div class="flex justify-between">
-          <p class="font-medium">
-            {{ leave.employee_name }} {{ leave.employee_lastname }}
-          </p>
-
-          <span class="text-sm bg-blue-500 text-white px-2 py-0.5 rounded-lg">
-            {{ leave.leave_type_name }}
-          </span>
+      <div *ngFor="let leave of ongoingLeaves" class="border-b last:border-b-0 py-2 hover:bg-gray-100 rounded cursor-pointer px-1">
+        <div class="flex justify-between items-center">
+          <p class="font-medium">{{ leave.employee_name }} {{ leave.employee_lastname }}</p>
+          <span class="text-sm bg-blue-500 text-white px-2 py-0.5 rounded-lg">{{ translateLeaveType(leave.leave_type_name) }}</span>
         </div>
 
-        <p class="text-gray-600 text-sm mt-1">
-          📅 Du {{ leave.start_date | date:'dd MMM' }}  
-          au {{ leave.end_date | date:'dd MMM' }}
-        </p>
-
-        <p class="text-gray-500 text-sm">
-          ⏳ {{ calculateLeaveDuration(leave.start_date, leave.end_date) }} jours
-        </p>
-
+        <p class="text-gray-600 text-sm mt-1">📅 Du {{ leave.start_date | date:'dd MMM' }} au {{ leave.end_date | date:'dd MMM' }}</p>
+        <p class="text-gray-500 text-sm">⏳ {{ calculateLeaveDuration(leave.start_date, leave.end_date) }} jours</p>
       </div>
-
     </div>
   </div>
 
