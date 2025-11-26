@@ -15,6 +15,8 @@ import Chart from 'chart.js/auto';
 export class HrStatsComponent implements OnInit {
   birthdays: any[] = [];
   genderData: any = {};
+  ongoingLeaves: any[] = [];
+
   isLoading: boolean = true;
   
   @ViewChild('genderChart') genderChartRef!: ElementRef<HTMLCanvasElement>;
@@ -35,6 +37,7 @@ export class HrStatsComponent implements OnInit {
       next: (response) => {
         this.birthdays = response.data.birthdaysData || [];
         this.genderData = response.data.genderDistributionData || {};
+        this.ongoingLeaves = response.data.ongoingLeaves || [];
         this.isLoading = false;
 
         setTimeout(() => {
@@ -83,6 +86,13 @@ export class HrStatsComponent implements OnInit {
         }
       }
     });
+  };
+
+  calculateLeaveDuration(start: string, end: string): number {
+    const s = new Date(start);
+    const e = new Date(end);
+    const diff = e.getTime() - s.getTime();
+    return Math.floor(diff / (1000 * 3600 * 24)) + 1;
   };
 
 }
