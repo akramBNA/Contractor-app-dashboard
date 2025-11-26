@@ -22,6 +22,17 @@ export class HrStatsComponent implements OnInit {
   @ViewChild('genderChart') genderChartRef!: ElementRef<HTMLCanvasElement>;
   genderChart!: Chart;
 
+  translateLeaveType(type: string): string {
+    const translations: any = {
+      "Annual Leave": "Congé Annuel",
+      "Sick Leave": "Congé Maladie",
+      "Maternity Leave": "Congé Maternité",
+      "Unpaid Leave": "Congé Sans Solde",
+    };
+
+    return translations[type] || type;
+  }
+
   constructor(
     private hrService: hrStatsService,
     @Inject(SwalService) private swalService: SwalService
