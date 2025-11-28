@@ -44,7 +44,14 @@ export class LoginComponent {
           this.isLoading = false;
           this.authService.saveToken(response.token);
           this.authService.setUserData(response);
-          this.router.navigate(['/main-page/hr/hr-stats']);
+
+          const userRole = sessionStorage.getItem('user_role') ?? '';
+          if (userRole === 'super_admin' || userRole === 'admin') {
+            this.router.navigate(['/main-page/hr/hr-stats']);
+          } else {
+            this.router.navigate(['/main-page/hr/my-leaves']);
+          }
+
         },
         error: (err) => {
           this.isLoading = false;
