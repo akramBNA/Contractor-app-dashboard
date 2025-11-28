@@ -39,10 +39,10 @@ export class HrStatsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getBirthdays();
+    this.getHrStats();
   }
 
-  getBirthdays() {
+  getHrStats() {
     this.isLoading = true;
     this.hrService.getAllEmployeesBirthdaysForThisMonth().subscribe({
       next: (response) => {
@@ -57,7 +57,6 @@ export class HrStatsComponent implements OnInit {
 
       },
       error: (err) => {
-        console.error('Error loading birthdays', err);
         this.isLoading = false;
         this.swalService.showError('Une erreur est survenue lors du chargement des anniversaires.');
       },
