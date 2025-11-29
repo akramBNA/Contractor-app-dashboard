@@ -49,7 +49,7 @@ export class LoginComponent {
           if (userRole === 'super_admin' || userRole === 'admin') {
             this.router.navigate(['/main-page/hr/hr-stats']);
           } else {
-            this.router.navigate(['/main-page/hr/my-leaves']);
+            this.router.navigate(['/main-page/hr/holidays-list']);
           }
 
         },
