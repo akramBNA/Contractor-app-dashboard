@@ -16,6 +16,8 @@ export class HrStatsComponent implements OnInit {
   birthdays: any[] = [];
   genderData: any = {};
   ongoingLeaves: any[] = [];
+  missionsThisMonth: any[] = [];
+
 
   isLoading: boolean = true;
   
@@ -31,6 +33,15 @@ export class HrStatsComponent implements OnInit {
     };
 
     return translations[type] || type;
+  }
+
+  translatePriority(priority: string): string {
+    const translations: any = {
+      "LOW": "Faible",
+      "MEDIUM": "Moyenne",
+      "HIGH": "Haute",
+    };
+    return translations[priority] || priority;
   }
 
   constructor(
@@ -49,6 +60,8 @@ export class HrStatsComponent implements OnInit {
         this.birthdays = response.data.birthdaysData || [];
         this.genderData = response.data.genderDistributionData || {};
         this.ongoingLeaves = response.data.ongoingLeaves || [];
+        this.missionsThisMonth = response.data.missionsThisMonth || [];
+
         this.isLoading = false;
 
         setTimeout(() => {
