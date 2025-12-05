@@ -56,9 +56,32 @@
     </div>
   </div>
 
-  <div class="relative bg-gray-200 shadow p-5 rounded-xl flex items-center justify-center text-gray-500 min-w-0" style="min-height: 300px;">
-    <span class="font-medium text-lg z-10">Widget à venir...</span>
-    <div class="absolute inset-0 bg-gray-200/50 backdrop-blur-sm rounded-xl"></div>
+  <div class="bg-gray-200 shadow p-5 rounded-xl flex flex-col min-w-0" style="min-height: 300px;">
+    <h2 class="text-xl font-semibold mb-4 flex items-center">🛠️ Missions du mois</h2>
+
+    <div *ngIf="!isLoading && missionsThisMonth.length === 0" class="text-gray-500">Aucune mission pour ce mois.</div>
+
+    <div *ngIf="missionsThisMonth.length > 0" class="overflow-y-auto scrollbar-thin flex-1" style="max-height: 220px;">
+
+      <div *ngFor="let mission of missionsThisMonth"  class="border-b last:border-b-0 py-3 px-2 hover:bg-gray-100 rounded cursor-pointer">
+
+        <div class="flex justify-between items-center">
+          <p class="font-medium text-gray-800">{{ mission.mission_name }}</p>
+
+          <span class="text-xs px-2 py-1 rounded-lg text-white"
+            [ngClass]="{
+              'bg-red-600': mission.priority === 'HIGH',
+              'bg-yellow-600': mission.priority === 'MEDIUM',
+              'bg-green-600': mission.priority === 'LOW'
+            }">
+            {{ translatePriority(mission.priority) }}
+          </span>
+        </div>
+
+        <p class="text-gray-600 text-sm mt-1">💰 Dépenses : <span class="font-semibold">{{ mission.expenses }} DT</span></p>
+      </div>
+
+    </div>
   </div>
 
 </div>
