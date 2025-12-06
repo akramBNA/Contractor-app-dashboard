@@ -12,7 +12,12 @@ export class HolidaysService {
     getAllHolidays(year: number): Observable<any> {
       return this.http.get<any>(`${this.base_url}/holidays/getAllHolidaysByYear/${JSON.stringify({year:year})}`);
     };
+
     addHoliday(holiday_data: any): Observable<any> {
       return this.http.post<any>(`${this.base_url}/holidays/addHoliday/`, holiday_data);
-    }
+    };
+
+    updateHoliday(holiday_id:any, holiday_data: any): Observable<any> {
+      return this.http.put<any>(`${this.base_url}/holidays/updateHoliday/${JSON.stringify({holiday_id:holiday_id})}`, holiday_data);
+    };
 }
