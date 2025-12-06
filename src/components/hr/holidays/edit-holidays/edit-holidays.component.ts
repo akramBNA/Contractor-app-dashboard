@@ -1,12 +1,22 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormField, MatLabel } from "@angular/material/input";
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-edit-holidays',
-  imports: [CommonModule, MatFormField, MatLabel, ReactiveFormsModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
   templateUrl: './edit-holidays.component.html',
   styleUrl: './edit-holidays.component.css'
 })
@@ -14,14 +24,14 @@ export class EditHolidaysComponent {
   editForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<EditHolidaysComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
+    public dialogRef: MatDialogRef<EditHolidaysComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private fb: FormBuilder
+  ) {    
 
     this.editForm = this.fb.group({
-      holiday_name: [data.holiday.holiday_name, [Validators.required, Validators.minLength(2)]],
-      holiday_date: [data.holiday.holiday_date, Validators.required]
+      holiday_name: [data.holiday.holiday_name, Validators.required],
+      holiday_date: [data.holiday.holiday_date.substring(0,10), Validators.required]
     });
   }
 
@@ -31,9 +41,6 @@ export class EditHolidaysComponent {
 
   save() {
     if (this.editForm.invalid) return;
-
-    this.dialogRef.close({
-      ...this.editForm.value
-    });
+    this.dialogRef.close(this.editForm.value);
   }
 }
