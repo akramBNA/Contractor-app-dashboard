@@ -1,1 +1,24 @@
-<p>edit-holidays works!</p>
+<h2 mat-dialog-title>Modifier le jour férié</h2>
+
+<div mat-dialog-content>
+  <form [formGroup]="editForm" class="flex flex-col space-y-4">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Nom du jour férié</mat-label>
+      <input matInput formControlName="holiday_name">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" formControlName="holiday_date">
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Annuler</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="editForm.invalid">
+    Modifier
+  </button>
+</div>
