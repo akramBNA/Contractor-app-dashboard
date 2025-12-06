@@ -12,6 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCalendar } from '@angular/material/datepicker';
 import { MatSelectModule } from "@angular/material/select";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditHolidaysComponent } from '../edit-holidays/edit-holidays.component';
+
 
 @Component({
   selector: 'app-holidays-list',
@@ -122,7 +124,26 @@ export class HolidaysListComponent {
     }
   };
 
-  holidayEdit(holidayId: number) {};
+  holidayEdit(holidayId: number) {
+    const holiday = this.holidays_data.find(h => h.holiday_id === holidayId);
+    if (!holiday) return;
+
+    const dialogRef = this.dialog.open(EditHolidaysComponent, {
+      width: '420px',
+      disableClose: true,
+      data: { holiday }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.holidaysService.updateHoliday(holidayId, result).subscribe(res => {
+          if (res.success) {
+            this.fetchHolidays(this.selected_year);
+          }
+        });
+      }
+    });
+  };
 
   holidayDelete(holidayId: number) {};
 }
