@@ -3,15 +3,17 @@ import {
   MatDialog,
   MatDialogModule,
 } from '@angular/material/dialog';
-import { AddHolidaysComponent } from '../add-holidays/add-holidays.component';
+import { AddHolidaysComponent } from '../../add-holidays/add-holidays.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { HolidaysService } from '../../../services/holidays.service';
+import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { HolidaysService } from '../../../../services/holidays.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCalendar } from '@angular/material/datepicker';
 import { MatSelectModule } from "@angular/material/select";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditHolidaysComponent } from '../edit-holidays/edit-holidays.component';
+
 
 @Component({
   selector: 'app-holidays-list',
@@ -122,7 +124,26 @@ export class HolidaysListComponent {
     }
   };
 
-  holidayEdit(holidayId: number) {};
+  holidayEdit(holidayId: number) {
+    const holiday = this.holidays_data.find(h => h.holiday_id === holidayId);
+    if (!holiday) return;
+
+    const dialogRef = this.dialog.open(EditHolidaysComponent, {
+      width: '420px',
+      disableClose: true,
+      data: { holiday }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.holidaysService.updateHoliday(holidayId, result).subscribe(res => {
+          if (res.success) {
+            this.fetchHolidays(this.selected_year);
+          }
+        });
+      }
+    });
+  };
 
   holidayDelete(holidayId: number) {};
 }
