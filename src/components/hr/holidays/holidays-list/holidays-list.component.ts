@@ -3,11 +3,11 @@ import {
   MatDialog,
   MatDialogModule,
 } from '@angular/material/dialog';
-import { AddHolidaysComponent } from '../add-holidays/add-holidays.component';
+import { AddHolidaysComponent } from '../../add-holidays/add-holidays.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { HolidaysService } from '../../../services/holidays.service';
+import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { HolidaysService } from '../../../../services/holidays.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCalendar } from '@angular/material/datepicker';
 import { MatSelectModule } from "@angular/material/select";

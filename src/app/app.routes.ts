@@ -21,7 +21,7 @@ import { MissionDetailsComponent } from '../components/missions/mission-details/
 import { SalariesComponent } from '../components/hr/salaries/salaries.component';
 import { AddUserComponent } from '../components/settings/add-user/add-user.component';
 import { RequestLeavesComponent } from '../components/hr/leaves/request-leaves/request-leaves.component';
-import { HolidaysListComponent } from '../components/hr/holidays-list/holidays-list.component';
+import { HolidaysListComponent } from '../components/hr/holidays/holidays-list/holidays-list.component';
 import { LeavesListComponent } from '../components/hr/leaves/leaves-list/leaves-list.component';
 import { SignupComponent } from '../components/signup/signup.component';
 import { MyLeavesComponent } from '../components/hr/leaves/my-leaves/my-leaves.component';
