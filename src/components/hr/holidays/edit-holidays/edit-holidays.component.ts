@@ -46,6 +46,21 @@ export class EditHolidaysComponent {
 
   save() {
     if (this.editForm.invalid) return;
-    this.dialogRef.close(this.editForm.value);
+
+    const formValue = this.editForm.value;
+
+    const dateObj = new Date(formValue.holiday_date);
+    const formattedDate =
+      dateObj.getFullYear() +
+      '-' +
+      String(dateObj.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(dateObj.getDate()).padStart(2, '0');
+
+    this.dialogRef.close({
+      ...formValue,
+      holiday_date: formattedDate
+    });
   }
+
 }
