@@ -1,22 +1,28 @@
-<h2 mat-dialog-title>Modifier le jour férié</h2>
+<div class="w-auto h-auto m-8">
+  <h2 mat-dialog-title>Modifier le jour férié</h2>
 
-<div mat-dialog-content class="pb-4">
-  <form [formGroup]="editForm" class="space-y-6">
+  <form [formGroup]="editForm" class="space-y-4">
 
-    <mat-form-field appearance="outline" class="w-full">
+    <mat-form-field appearance="fill" class="w-full">
       <mat-label>Nom du jour férié</mat-label>
-      <input matInput formControlName="holiday_name">
+      <input matInput formControlName="holiday_name" required>
+      <mat-error *ngIf="editForm.get('holiday_name')?.hasError('required')">
+        Le nom du jour férié est requis.
+      </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-full">
+    <mat-form-field appearance="fill" class="w-full">
       <mat-label>Date</mat-label>
-      <input matInput type="date" formControlName="holiday_date">
+      <input matInput type="date" formControlName="holiday_date" required>
+      <mat-error *ngIf="editForm.get('holiday_date')?.hasError('required')">La date est requise.</mat-error>
     </mat-form-field>
+
+    <div class="flex justify-end gap-2 pt-4">
+      <button class="btn-cancel" type="button" (click)="close()">Annuler</button>
+      <button class="btn-edit" type="button" (click)="save()" [disabled]="editForm.invalid">
+        Modifier
+      </button>
+    </div>
 
   </form>
-</div>
-
-<div mat-dialog-actions align="end" class="pb-3 pt-2 flex justify-end gap-4">
-  <button class="btn-cancel" (click)="close()">Annuler</button>
-  <button class="btn-edit" (click)="save()" [disabled]="editForm.invalid">Modifier</button>
 </div>
