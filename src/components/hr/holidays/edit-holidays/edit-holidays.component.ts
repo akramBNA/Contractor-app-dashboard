@@ -36,7 +36,7 @@ export class EditHolidaysComponent {
 
     this.editForm = this.fb.group({
       holiday_name: [data.holiday.holiday_name, Validators.required],
-      holiday_date: [data.holiday.holiday_date.substring(0,10), Validators.required]
+      holiday_date: [new Date(data.holiday.holiday_date), Validators.required]
     });
   }
 
