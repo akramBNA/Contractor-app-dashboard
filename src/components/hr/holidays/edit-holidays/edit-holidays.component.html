@@ -6,9 +6,7 @@
     <mat-form-field appearance="fill" class="w-full">
       <mat-label>Nom du jour férié</mat-label>
       <input matInput formControlName="holiday_name" required>
-      <mat-error *ngIf="editForm.get('holiday_name')?.hasError('required')">
-        Le nom du jour férié est requis.
-      </mat-error>
+      <mat-error *ngIf="editForm.get('holiday_name')?.hasError('required')">Le nom du jour férié est requis.</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="w-full">
@@ -19,9 +17,7 @@
 
     <div class="flex justify-end gap-2 pt-4">
       <button class="btn-cancel" type="button" (click)="close()">Annuler</button>
-      <button class="btn-edit" type="button" (click)="save()" [disabled]="editForm.invalid">
-        Modifier
-      </button>
+      <button class="btn-edit" type="button" (click)="save()" [disabled]="editForm.invalid">Modifier</button>
     </div>
 
   </form>
