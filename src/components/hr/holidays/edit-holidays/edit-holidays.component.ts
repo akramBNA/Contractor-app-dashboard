@@ -5,22 +5,44 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+export const FRENCH_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 
 @Component({
   selector: 'app-edit-holidays',
   standalone: true,
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: FRENCH_DATE_FORMATS }
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   templateUrl: './edit-holidays.component.html',
   styleUrl: './edit-holidays.component.css'
 })
 export class EditHolidaysComponent {
+
   editForm: FormGroup;
 
   constructor(
@@ -31,7 +53,7 @@ export class EditHolidaysComponent {
 
     this.editForm = this.fb.group({
       holiday_name: [data.holiday.holiday_name, Validators.required],
-      holiday_date: [data.holiday.holiday_date.substring(0,10), Validators.required]
+      holiday_date: [new Date(data.holiday.holiday_date), Validators.required]
     });
   }
 
@@ -41,6 +63,22 @@ export class EditHolidaysComponent {
 
   save() {
     if (this.editForm.invalid) return;
-    this.dialogRef.close(this.editForm.value);
+
+    const formValue = this.editForm.value;
+    const dateObj = new Date(formValue.holiday_date);
+
+    const formattedDate =
+      dateObj.getFullYear() +
+      '-' +
+      String(dateObj.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(dateObj.getDate()).padStart(2, '0');
+
+    this.dialogRef.close({
+      ...formValue,
+      holiday_date: formattedDate
+    });
   }
+
+
 }
