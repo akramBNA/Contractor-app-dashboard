@@ -7,10 +7,27 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+
+export const FRENCH_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMMM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
 
 @Component({
   selector: 'app-edit-holidays',
   standalone: true,
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: FRENCH_DATE_FORMATS }
+  ],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -48,8 +65,8 @@ export class EditHolidaysComponent {
     if (this.editForm.invalid) return;
 
     const formValue = this.editForm.value;
-
     const dateObj = new Date(formValue.holiday_date);
+
     const formattedDate =
       dateObj.getFullYear() +
       '-' +
@@ -62,5 +79,6 @@ export class EditHolidaysComponent {
       holiday_date: formattedDate
     });
   }
+
 
 }
