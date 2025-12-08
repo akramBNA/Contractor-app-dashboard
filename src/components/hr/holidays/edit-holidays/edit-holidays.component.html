@@ -11,7 +11,9 @@
 
     <mat-form-field appearance="fill" class="w-full">
       <mat-label>Date</mat-label>
-      <input matInput type="date" formControlName="holiday_date" required>
+      <input matInput [matDatepicker]="picker" formControlName="holiday_date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="editForm.get('holiday_date')?.hasError('required')">La date est requise.</mat-error>
     </mat-form-field>
 
