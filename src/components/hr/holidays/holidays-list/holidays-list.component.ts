@@ -13,6 +13,7 @@ import { MatCalendar } from '@angular/material/datepicker';
 import { MatSelectModule } from "@angular/material/select";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditHolidaysComponent } from '../edit-holidays/edit-holidays.component';
+import { SwalService } from '../../../../shared/Swal/swal.service';
 
 
 @Component({
@@ -46,7 +47,8 @@ export class HolidaysListComponent {
 
   constructor(
     private holidaysService: HolidaysService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private swalService: SwalService
   ) {}
 
   ngOnInit() {
@@ -135,10 +137,17 @@ export class HolidaysListComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.isLoading = true;
       if (result) {
         this.holidaysService.updateHoliday(holidayId, result).subscribe(res => {
           if (res.success) {
-            this.fetchHolidays(this.selected_year);
+            this.isLoading = false;
+            this.swalService.showSuccess('Jour férié mis à jour avec succès').then(() => {
+              this.fetchHolidays(this.selected_year);
+            });
+          } else {
+            this.isLoading = false;
+            this.swalService.showError('Échec de la mise à jour du jour férié');
           }
         });
       }
