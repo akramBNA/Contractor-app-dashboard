@@ -154,5 +154,22 @@ export class HolidaysListComponent {
     });
   };
 
-  holidayDelete(holidayId: number) {};
+  holidayDelete(holidayId: number) {
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce jour férié ?').then((result) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+        this.holidaysService.deleteHoliday(holidayId).subscribe(res => {
+          if (res.success) {
+            this.isLoading = false;
+            this.swalService.showSuccess('Jour férié supprimé avec succès').then(() => {
+              this.fetchHolidays(this.selected_year);
+            });
+          } else {
+            this.isLoading = false;
+            this.swalService.showError('Échec de la suppression du jour férié');
+          }
+        });
+      }
+    });
+  };
 }
