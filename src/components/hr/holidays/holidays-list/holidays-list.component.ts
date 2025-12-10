@@ -137,8 +137,8 @@ export class HolidaysListComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.isLoading = true;
       if (result) {
+        this.isLoading = true;
         this.holidaysService.updateHoliday(holidayId, result).subscribe(res => {
           if (res.success) {
             this.isLoading = false;
