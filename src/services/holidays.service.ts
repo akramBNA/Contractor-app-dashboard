@@ -20,4 +20,8 @@ export class HolidaysService {
     updateHoliday(holiday_id:any, holiday_data: any): Observable<any> {
       return this.http.put<any>(`${this.base_url}/holidays/updateHoliday/${JSON.stringify({holiday_id:holiday_id})}`, holiday_data);
     };
+
+    deleteHoliday(holiday_id: any): Observable<any> {
+      return this.http.delete<any>(`${this.base_url}/holidays/deleteHoliday/${JSON.stringify({holiday_id:holiday_id})}`);
+    };
 }
