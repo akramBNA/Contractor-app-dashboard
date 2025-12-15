@@ -11,5 +11,9 @@ export class ContractTypesService {
 
     getAllContractTypes(): Observable<any> {
       return this.http.get<any>(`${this.base_url}/contract_types/getAllContractTypes/`);
-    }
+    };
+
+    updateContractType(contractTypeId: number, data: any): Observable<any> {
+      return this.http.put<any>(`${this.base_url}/contract_types/updateContractType/${contractTypeId}/`, data);
+    };
 }
