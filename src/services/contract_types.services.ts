@@ -17,4 +17,8 @@ export class ContractTypesService {
       return this.http.put<any>(`${this.base_url}/contract_types/updateContractType/`, data);
     };
 
+    deleteContractType(id: number): Observable<any> {
+      return this.http.delete<any>(`${this.base_url}/contract_types/deleteContractType/${id}`);
+    };
+
 }
