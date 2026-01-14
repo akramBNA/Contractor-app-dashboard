@@ -61,8 +61,36 @@ export class ContractsSettingsComponent {
   };
 
   onDeleteContractType(contractTypeId: number): void {
-    // Logic to delete contract type
-  };
+    this.swalService.showConfirmation('Voulez-vous vraiment supprimer ce type de contrat ?').then((result: any) => {
+      if (result.isConfirmed) {
+        this.isLoading = true;
+
+        this.contractTypesService.deleteContractType(contractTypeId).subscribe({
+          next: (response) => {
+            if (response.success) {
+              this.contract_types_data = this.contract_types_data.filter(
+                ct => ct.contract_type_id !== contractTypeId
+              );
+
+              this.overall_count = this.contract_types_data.length;
+              this.isEmpty = this.overall_count === 0;
+
+              this.swalService.showSuccess('Le type de contrat a été supprimé avec succès.');
+            } else {
+              this.swalService.showError('Erreur', response.message || 'Impossible de supprimer ce type de contrat.');
+            }
+
+            this.isLoading = false;
+          },
+          error: () => {
+            this.isLoading = false;
+            this.swalService.showError('Erreur','Une erreur est survenue lors de la suppression.');
+          }
+        });
+      }
+    });
+  }
+
 
   onPageChange(event: any): void {
     // Logic to handle page change
