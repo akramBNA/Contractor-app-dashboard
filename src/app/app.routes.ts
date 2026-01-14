@@ -13,7 +13,7 @@ import { ShowProjectsComponent } from '../components/planning/show-projects/show
 import { ViewProjectComponent } from '../components/planning/view-project/view-project.component';
 import { AccountSettingsComponent } from '../components/settings/account-settings/account-settings.component';
 import { CompanySettingsComponent } from '../components/settings/company-settings/company-settings.component';
-import { ContractsSettingsComponent } from '../components/settings/contracts-settings/contracts-settings.component';
+import { ContractsSettingsComponent } from '../components/settings/contracts-settings/show-contract-types/contracts-settings.component';
 import { HrSettingsComponent } from '../components/settings/hr-settings/hr-settings.component';
 import { EditUserComponent } from '../components/settings/edit-user/edit-user.component';
 import { AddMissionsComponent } from '../components/missions/add-missions/add-missions.component';
