@@ -24,7 +24,6 @@ export class ContractTypeFormDialogComponent {
     this.form = this.fb.group({
       contract_name: [data.contract_name, Validators.required],
       leaves_credit: [data.leaves_credit, [Validators.required, Validators.min(0)]],
-      status: [data.status, Validators.required]
     });
   }
 
@@ -33,32 +32,21 @@ export class ContractTypeFormDialogComponent {
 
     this.isLoading = true;
 
-    this.contractTypesService
-      .updateContractType(this.form.value, this.data.contract_type_id)
-      .subscribe({
+    this.contractTypesService.updateContractType(this.form.value, this.data.contract_type_id).subscribe({
         next: (response) => {
           this.isLoading = false;
 
           if (response.success) {
-            this.swalService.showSuccess(
-              'Succès',
-              'Type de contrat modifié avec succès.'
-            );
+            this.swalService.showSuccess('Type de contrat modifié avec succès.');
 
-            this.dialogRef.close(response.data); // return updated data
+            this.dialogRef.close(response.data);
           } else {
-            this.swalService.showError(
-              'Erreur',
-              response.message || 'Modification impossible.'
-            );
+            this.swalService.showError('Erreur', response.message || 'Modification impossible.');
           }
         },
         error: () => {
           this.isLoading = false;
-          this.swalService.showError(
-            'Erreur',
-            'Une erreur est survenue.'
-          );
+          this.swalService.showError('Erreur','Une erreur est survenue.');
         }
       });
   }
