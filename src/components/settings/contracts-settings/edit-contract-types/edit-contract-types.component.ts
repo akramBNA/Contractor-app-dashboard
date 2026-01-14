@@ -4,11 +4,16 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/materia
 import { ContractTypesService } from '../../../../services/contract_types.services';
 import { SwalService } from '../../../../shared/Swal/swal.service';
 import { MatSelectModule } from "@angular/material/select";
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-contract-type-form-dialog',
   templateUrl: './edit-contract-types.component.html',
-  imports: [MatDialogModule, MatSelectModule, ReactiveFormsModule],
+  imports: [CommonModule, MatDialogModule, MatSelectModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
 export class ContractTypeFormDialogComponent {
   form!: FormGroup;
