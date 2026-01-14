@@ -7,6 +7,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ContractTypesService } from '../../../../services/contract_types.services';
 import { SwalService } from '../../../../shared/Swal/swal.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ContractTypeFormDialogComponent } from '../edit-contract-types/edit-contract-types.component';
+
 
 @Component({
   selector: 'app-contracts-settings',
@@ -27,7 +30,9 @@ export class ContractsSettingsComponent {
 
   constructor(
     private contractTypesService: ContractTypesService,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private dialog: MatDialog
+
   ) {}
 
   ngOnInit(): void {
@@ -56,9 +61,27 @@ export class ContractsSettingsComponent {
     });
   };
 
-  onEditContractType(contractTypeId: number): void {
-    // Logic to edit contract type
-  };
+  onEditContractType(contractType: any): void {
+    const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
+      width: '450px',
+      disableClose: true,
+      data: contractType
+    });
+
+    dialogRef.afterClosed().subscribe((updatedData) => {
+      if (updatedData) {
+        const index = this.contract_types_data.findIndex(
+          ct => ct.contract_type_id === updatedData.contract_type_id
+        );
+
+        if (index !== -1) {
+          this.contract_types_data[index] = updatedData;
+          this.contract_types_data = [...this.contract_types_data];
+        }
+      }
+    });
+  }
+
 
   onDeleteContractType(contractTypeId: number): void {
     this.swalService.showConfirmation('Voulez-vous vraiment supprimer ce type de contrat ?').then((result: any) => {
