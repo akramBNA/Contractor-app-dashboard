@@ -1,1 +1,22 @@
-<p>add-contract-types works!</p>
+<h2 mat-dialog-title>Ajouter un type de contrat</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-dialog-content>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Type du contrat</mat-label>
+      <input matInput formControlName="contract_name">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Crédit de congés</mat-label>
+      <input matInput type="number" formControlName="leaves_credit">
+    </mat-form-field>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="flex justify-end gap-2 pt-4">
+    <button class="btn-cancel" type="button" (click)="close()">Annuler</button>
+    <button class="btn-add" type="submit">Ajouter</button>
+  </mat-dialog-actions>
+</form>
