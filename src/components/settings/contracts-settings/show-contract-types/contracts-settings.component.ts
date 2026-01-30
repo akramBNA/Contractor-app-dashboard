@@ -61,6 +61,22 @@ export class ContractsSettingsComponent {
     });
   };
 
+  onAddContractType(): void {
+    const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
+      width: '450px',
+      disableClose: true,
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe((newData) => {
+      if (newData) {
+        this.contract_types_data = [newData, ...this.contract_types_data];
+        this.overall_count = this.contract_types_data.length;
+        this.isEmpty = false;
+      }
+    });
+  };
+
   onEditContractType(contractType: any): void {
     const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
       width: '450px',
@@ -80,7 +96,7 @@ export class ContractsSettingsComponent {
         }
       }
     });
-  }
+  };
 
 
   onDeleteContractType(contractTypeId: number): void {
@@ -112,7 +128,7 @@ export class ContractsSettingsComponent {
         });
       }
     });
-  }
+  };
 
 
   onPageChange(event: any): void {
