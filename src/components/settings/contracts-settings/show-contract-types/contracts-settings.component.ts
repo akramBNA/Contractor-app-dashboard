@@ -21,6 +21,10 @@ export class ContractsSettingsComponent {
   isLoading: boolean = false;
   isEmpty: boolean = false;
 
+  limit: number = 10;
+  offset: number = 0;
+  keyword: string = '';
+
   contract_types_data: any[] = [];
   total_contracts_count: number = 0;
 
@@ -36,12 +40,12 @@ export class ContractsSettingsComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getContractTypes();
+    this.getContractTypes(this.limit, this.offset, this.keyword);
   };
 
-  getContractTypes(): void {
+  getContractTypes(lim:number, off: number, key: string): void {
     this.isLoading = true;
-    this.contractTypesService.getAllContractTypes().subscribe({
+    this.contractTypesService.getAllContractTypes(lim, off, key).subscribe({
       next: (response) => {
         if(response.success){
           this.contract_types_data = response.data;
@@ -57,6 +61,22 @@ export class ContractsSettingsComponent {
       error: (error) => {
         this.isLoading = false;
         this.swalService.showError('Erreur', 'Une erreur est survenue lors de la récupération des types de contrat.');
+      }
+    });
+  };
+
+  onAddContractType(): void {
+    const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
+      width: '450px',
+      disableClose: true,
+      data: null
+    });
+
+    dialogRef.afterClosed().subscribe((newData) => {
+      if (newData) {
+        this.contract_types_data = [newData, ...this.contract_types_data];
+        this.overall_count = this.contract_types_data.length;
+        this.isEmpty = false;
       }
     });
   };
@@ -80,7 +100,7 @@ export class ContractsSettingsComponent {
         }
       }
     });
-  }
+  };
 
 
   onDeleteContractType(contractTypeId: number): void {
@@ -112,7 +132,7 @@ export class ContractsSettingsComponent {
         });
       }
     });
-  }
+  };
 
 
   onPageChange(event: any): void {
