@@ -31,6 +31,7 @@ export class ContractsSettingsComponent {
   overall_count: number = 0;
   active_contracts_count: number = 0;
   inactive_contracts_count: number = 0;
+  keywordControl: any;
 
   constructor(
     private contractTypesService: ContractTypesService,
@@ -137,5 +138,10 @@ export class ContractsSettingsComponent {
 
   onPageChange(event: any): void {
     // Logic to handle page change
+  };
+
+  clearSearch(): void {
+    this.keyword = '';
+    this.getContractTypes(this.limit, this.offset, this.keyword);
   };
 }
