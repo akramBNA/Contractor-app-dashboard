@@ -27,8 +27,8 @@ export class addContractTypeFormDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = this.fb.group({
-      contract_name: [data.contract_name, Validators.required],
-      leaves_credit: [data.leaves_credit, [Validators.required, Validators.min(0)]],
+      contract_name: ['', Validators.required],
+      leaves_credit: [0, [Validators.required, Validators.min(0)]],
     });
   }
 

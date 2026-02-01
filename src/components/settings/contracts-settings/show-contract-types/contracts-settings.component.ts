@@ -115,7 +115,6 @@ export class ContractsSettingsComponent {
     });
   };
 
-
   onDeleteContractType(contractTypeId: number): void {
     this.swalService.showConfirmation('Voulez-vous vraiment supprimer ce type de contrat ?').then((result: any) => {
       if (result.isConfirmed) {
@@ -147,12 +146,9 @@ export class ContractsSettingsComponent {
     });
   };
 
-
   onPageChange(event: any): void {
     // Logic to handle page change
   };
-
-
 
   clearSearch(): void {
     this.keywordControl.setValue('');
