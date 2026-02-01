@@ -15,7 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './edit-contract-types.component.html',
   imports: [CommonModule, MatDialogModule, MatSelectModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
-export class editContractTypeFormDialogComponent {
+export class EditContractTypeFormDialogComponent {
   form!: FormGroup;
   isLoading = false;
 
@@ -23,7 +23,7 @@ export class editContractTypeFormDialogComponent {
     private fb: FormBuilder,
     private contractTypesService: ContractTypesService,
     private swalService: SwalService,
-    private dialogRef: MatDialogRef<editContractTypeFormDialogComponent>,
+    private dialogRef: MatDialogRef<EditContractTypeFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = this.fb.group({
