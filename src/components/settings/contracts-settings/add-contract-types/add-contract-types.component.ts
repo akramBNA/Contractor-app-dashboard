@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
-  selector: 'app-contract-type-form-dialog',
+  selector: 'app-add-contract-type-form-dialog',
   templateUrl: './add-contract-types.component.html',
   imports: [CommonModule, MatDialogModule, MatSelectModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
