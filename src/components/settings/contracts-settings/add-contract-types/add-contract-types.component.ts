@@ -11,11 +11,11 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
-  selector: 'app-contract-type-form-dialog',
+  selector: 'app-add-contract-type-form-dialog',
   templateUrl: './add-contract-types.component.html',
   imports: [CommonModule, MatDialogModule, MatSelectModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
 })
-export class ContractTypeFormDialogComponent {
+export class addContractTypeFormDialogComponent {
   form!: FormGroup;
   isLoading = false;
 
@@ -23,12 +23,12 @@ export class ContractTypeFormDialogComponent {
     private fb: FormBuilder,
     private contractTypesService: ContractTypesService,
     private swalService: SwalService,
-    private dialogRef: MatDialogRef<ContractTypeFormDialogComponent>,
+    private dialogRef: MatDialogRef<addContractTypeFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.form = this.fb.group({
-      contract_name: [data.contract_name, Validators.required],
-      leaves_credit: [data.leaves_credit, [Validators.required, Validators.min(0)]],
+      contract_name: ['', Validators.required],
+      leaves_credit: [0, [Validators.required, Validators.min(0)]],
     });
   }
 

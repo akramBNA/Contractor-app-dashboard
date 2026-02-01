@@ -10,7 +10,7 @@ export class ContractTypesService {
   readonly base_url = environment.backendURL;    
 
     getAllContractTypes(limit: number, offset: number, keyword: string): Observable<any> {
-      return this.http.get<any>(`${this.base_url}/contract_types/getAllContractTypes/${limit}/${offset}/${keyword}`);
+      return this.http.get<any>(`${this.base_url}/contract_types/getAllContractTypes/${JSON.stringify({limit:limit, offset:offset, keyword:keyword})}`);
     };
 
     addContractType(data: any): Observable<any> {

@@ -4,16 +4,20 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ContractTypesService } from '../../../../services/contract_types.services';
 import { SwalService } from '../../../../shared/Swal/swal.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ContractTypeFormDialogComponent } from '../edit-contract-types/edit-contract-types.component';
+import { addContractTypeFormDialogComponent } from '../add-contract-types/add-contract-types.component';
+import { EditContractTypeFormDialogComponent } from '../edit-contract-types/edit-contract-types.component';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @Component({
   selector: 'app-contracts-settings',
-  imports: [CommonModule,LoadingSpinnerComponent, MatSelectModule, MatIconModule, MatPaginatorModule, ReactiveFormsModule],
+  imports: [CommonModule,LoadingSpinnerComponent, MatSelectModule, MatIconModule, MatPaginatorModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './contracts-settings.component.html',
   styleUrl: './contracts-settings.component.css'
 })
@@ -23,7 +27,7 @@ export class ContractsSettingsComponent {
 
   limit: number = 10;
   offset: number = 0;
-  keyword: string = '';
+  keywordControl: FormControl = new FormControl('');
 
   contract_types_data: any[] = [];
   total_contracts_count: number = 0;
@@ -31,7 +35,6 @@ export class ContractsSettingsComponent {
   overall_count: number = 0;
   active_contracts_count: number = 0;
   inactive_contracts_count: number = 0;
-  keywordControl: any;
 
   constructor(
     private contractTypesService: ContractTypesService,
@@ -41,7 +44,16 @@ export class ContractsSettingsComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getContractTypes(this.limit, this.offset, this.keyword);
+    this.getContractTypes(this.limit, this.offset, '');
+
+    this.keywordControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value: string | null) => {
+            this.offset = 0;
+            this.getContractTypes(
+              this.limit,
+              this.offset,
+              (value ?? '').trim()
+            );
+          });
   };
 
   getContractTypes(lim:number, off: number, key: string): void {
@@ -67,7 +79,7 @@ export class ContractsSettingsComponent {
   };
 
   onAddContractType(): void {
-    const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
+    const dialogRef = this.dialog.open(addContractTypeFormDialogComponent, {
       width: '450px',
       disableClose: true,
       data: null
@@ -83,7 +95,7 @@ export class ContractsSettingsComponent {
   };
 
   onEditContractType(contractType: any): void {
-    const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
+    const dialogRef = this.dialog.open(EditContractTypeFormDialogComponent, {
       width: '450px',
       disableClose: true,
       data: contractType
@@ -102,7 +114,6 @@ export class ContractsSettingsComponent {
       }
     });
   };
-
 
   onDeleteContractType(contractTypeId: number): void {
     this.swalService.showConfirmation('Voulez-vous vraiment supprimer ce type de contrat ?').then((result: any) => {
@@ -135,13 +146,12 @@ export class ContractsSettingsComponent {
     });
   };
 
-
   onPageChange(event: any): void {
     // Logic to handle page change
   };
 
   clearSearch(): void {
-    this.keyword = '';
-    this.getContractTypes(this.limit, this.offset, this.keyword);
+    this.keywordControl.setValue('');
+    this.getContractTypes(this.limit, this.offset, '');
   };
 }
