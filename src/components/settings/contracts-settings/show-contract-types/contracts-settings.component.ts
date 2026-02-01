@@ -8,6 +8,7 @@ import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { ContractTypesService } from '../../../../services/contract_types.services';
 import { SwalService } from '../../../../shared/Swal/swal.service';
 import { MatDialog } from '@angular/material/dialog';
+import { addContractTypeFormDialogComponent } from '../add-contract-types/add-contract-types.component';
 import { ContractTypeFormDialogComponent } from '../edit-contract-types/edit-contract-types.component';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -78,7 +79,7 @@ export class ContractsSettingsComponent {
   };
 
   onAddContractType(): void {
-    const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
+    const dialogRef = this.dialog.open(addContractTypeFormDialogComponent, {
       width: '450px',
       disableClose: true,
       data: null
