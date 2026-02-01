@@ -9,7 +9,7 @@ import { ContractTypesService } from '../../../../services/contract_types.servic
 import { SwalService } from '../../../../shared/Swal/swal.service';
 import { MatDialog } from '@angular/material/dialog';
 import { addContractTypeFormDialogComponent } from '../add-contract-types/add-contract-types.component';
-import { ContractTypeFormDialogComponent } from '../edit-contract-types/edit-contract-types.component';
+import { EditContractTypeFormDialogComponent } from '../edit-contract-types/edit-contract-types.component';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -95,7 +95,7 @@ export class ContractsSettingsComponent {
   };
 
   onEditContractType(contractType: any): void {
-    const dialogRef = this.dialog.open(ContractTypeFormDialogComponent, {
+    const dialogRef = this.dialog.open(EditContractTypeFormDialogComponent, {
       width: '450px',
       disableClose: true,
       data: contractType
