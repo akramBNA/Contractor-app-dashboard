@@ -3,12 +3,12 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-dialog-content>
 
-    <mat-form-field appearance="outline" class="w-100">
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>Type du contrat</mat-label>
       <input matInput formControlName="contract_name">
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-100">
+    <mat-form-field appearance="outline" class="w-full">
       <mat-label>Crédit de congés</mat-label>
       <input matInput type="number" formControlName="leaves_credit">
     </mat-form-field>
