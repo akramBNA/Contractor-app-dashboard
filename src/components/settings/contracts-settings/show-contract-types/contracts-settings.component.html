@@ -27,8 +27,8 @@
 
 <div class="flex flex-col sm:flex-row gap-8 items-center justify-between">
   <mat-form-field class="w-full sm:w-2/3" appearance="fill">
-    <mat-label>Rechercher..</mat-label>
-    <input matInput type="text" [formControl]="keywordControl" placeholder="Tapez un Nom du contract..." />
+    <mat-label>Chercher un contract..</mat-label>
+    <input matInput type="text" [formControl]="keywordControl" placeholder="Tapez un nom du contract.." />
       @if (keywordControl.value) {
         <button matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()" disableRipple class="clear-icon-button">
           <mat-icon>close</mat-icon>
