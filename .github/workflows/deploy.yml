@@ -22,8 +22,8 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install dependencies --legacy-peer-deps
-        run: npm install
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
 
       - name: Build Angular
         run: npx ng build --configuration production --base-href "/Contractor-app-dashboard/"
