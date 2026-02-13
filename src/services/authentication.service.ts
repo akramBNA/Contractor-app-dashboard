@@ -22,6 +22,7 @@ export class AuthService {
     sessionStorage.removeItem('user_name');
     sessionStorage.removeItem('user_lastname');
     sessionStorage.removeItem('user_role');
+    sessionStorage.removeItem('user_id');
   }
 
   saveToken(token: string): void {
