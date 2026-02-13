@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "clean:dist": "rm -rf dist",
+    "build:gh": "ng build --configuration production --base-href \"/Contractor-app-dashboard/\" && cp dist/contractor-app-dashboard/browser/index.html dist/contractor-app-dashboard/browser/404.html",
+    "deploy:gh": "npx angular-cli-ghpages --dir=dist/contractor-app-dashboard/browser"
   },
   "private": true,
   "dependencies": {
