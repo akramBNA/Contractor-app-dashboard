@@ -18,10 +18,12 @@ export class AuthService {
   }
 
   logout(): void {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user_name');
-    sessionStorage.removeItem('user_lastname');
-    sessionStorage.removeItem('user_role');
+    // sessionStorage.removeItem('token');
+    // sessionStorage.removeItem('user_name');
+    // sessionStorage.removeItem('user_lastname');
+    // sessionStorage.removeItem('user_role');
+    // sessionStorage.removeItem('user_id');
+    sessionStorage.clear();
   }
 
   saveToken(token: string): void {
