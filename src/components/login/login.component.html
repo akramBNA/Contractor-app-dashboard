@@ -1,31 +1,70 @@
-<div class="flex items-center justify-center h-screen bg-gradient-to-br from-green-900 to-green-400 relative">
+<div class="min-h-[100dvh] flex flex-col items-center justify-center bg-gradient-to-br from-green-900 to-green-400 relative px-4">
 
-    <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
-  
-    <div class="absolute top-30 text-white text-4xl font-semibold text-center w-full">Welcome Back!</div>
-  
-    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="bg-white bg-opacity-20 backdrop-blur-md rounded-2xl shadow-xl p-16 w-full max-w-md mx-4">
-      <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Login</h2>
-  
-      <div class="mb-5">
-        <label for="user_email" class="block text-gray-800 font-medium mb-2">Email *</label>
-        <input id="user_email" type="email" formControlName="user_email" class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500" required />
-      </div>
-  
-      <div class="mb-6">
-        <label for="user_password" class="block text-gray-800 font-medium mb-2">Password *</label>
-        <input id="user_password" type="password" formControlName="user_password" class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500" required />
-      </div>
-  
-      <button type="submit" [disabled]="loginForm.invalid" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer">Login</button>
-      <button type="button" (click)="goToSignUp()" class="w-full mt-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer">Create an Account</button>
-  
-      <div *ngIf="loginError" class="text-red-500 text-sm mt-4 text-center">{{ loginError }}</div>
-    </form>
-  
-    <footer class="absolute bottom-4 text-white text-sm text-center w-full px-4">
-      Developed with love ❤️ by
-      <a href="https://akram-benaoun.site" target="_blank" class="font-semibold no-underline hover:text-yellow-300 transition">Akram Benaoun</a> © {{ current_year }}
-    </footer>
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+  <div class="text-white text-3xl sm:text-4xl font-semibold text-center mb-8 mt-10">Welcome Back!</div>
+
+  <form 
+    (ngSubmit)="onSubmit()" 
+    [formGroup]="loginForm" 
+    class="bg-white bg-opacity-20 backdrop-blur-md rounded-2xl shadow-xl p-8 sm:p-12 w-full max-w-md"
+  >
+
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6 text-center text-gray-800">Login</h2>
+
+    <div class="mb-5">
+      <label for="user_email" class="block text-gray-800 font-medium mb-2">
+        Email *
+      </label>
+      <input 
+        id="user_email" 
+        type="email" 
+        formControlName="user_email"
+        class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+        required 
+      />
+    </div>
+
+    <div class="mb-6">
+      <label for="user_password" class="block text-gray-800 font-medium mb-2">
+        Password *
+      </label>
+      <input 
+        id="user_password" 
+        type="password" 
+        formControlName="user_password"
+        class="w-full px-4 py-2 rounded-lg bg-white bg-opacity-80 text-black border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+        required 
+      />
+    </div>
+
+    <button 
+      type="submit" 
+      [disabled]="loginForm.invalid"
+      class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer"
+    >
+      Login
+    </button>
+
+    <button 
+      type="button" 
+      (click)="goToSignUp()" 
+      class="w-full mt-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer"
+    >
+      Create an Account
+    </button>
+
+$    <div *ngIf="loginError" class="text-red-500 text-sm mt-4 text-center">{{ loginError }}</div>
+
+  </form>
+
+  <footer class="mt-10 text-white text-sm text-center px-4">
+    Developed with love ❤️ by
+    <a 
+      href="https://akram-benaoun.site" 
+      target="_blank" 
+      class="font-semibold no-underline hover:text-yellow-300 transition"
+    >Akram Benaoun</a> © {{ current_year }}
+  </footer>
+
 </div>
-  
