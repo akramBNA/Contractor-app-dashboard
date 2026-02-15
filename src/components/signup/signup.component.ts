@@ -52,6 +52,7 @@ export class SignupComponent {
     if (this.signupForm.invalid || this.passwordMismatch) {
       this.isLoading = false;
       this.swalService.showWarning('Votre formulaire est invalide ou les mots de passe ne correspondent pas.');
+      return;
     }
     
     this.userService.signupWithEmployeeEmail(this.signupForm.value).subscribe((data: any) => {
