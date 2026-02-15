@@ -2,7 +2,7 @@
 
   <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-  <div class="text-white text-3xl sm:text-4xl font-semibold text-center mb-8 mt-10">Welcome Back!</div>
+  <div class="text-white text-3xl sm:text-4xl font-semibold text-center mb-8 mt-10">Bienvenue sur votre espace personnel</div>
 
   <form 
     (ngSubmit)="onSubmit()" 
@@ -27,7 +27,7 @@
 
     <div class="mb-6">
       <label for="user_password" class="block text-gray-800 font-medium mb-2">
-        Password *
+        Mot de passe *
       </label>
       <input 
         id="user_password" 
@@ -51,7 +51,7 @@
       (click)="goToSignUp()" 
       class="w-full mt-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 rounded-lg transition cursor-pointer"
     >
-      Create an Account
+      Créer un compte
     </button>
 
     <div *ngIf="loginError" class="text-red-500 text-sm mt-4 text-center">{{ loginError }}</div>
