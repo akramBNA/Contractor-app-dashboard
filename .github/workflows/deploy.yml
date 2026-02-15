@@ -36,3 +36,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/contractor-app-dashboard/browser
           cname: dashboard-sohaba.work.gd
+          force_orphan: true
