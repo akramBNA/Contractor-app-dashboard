@@ -137,5 +137,8 @@
 </ng-template>
 
 <div class="flex justify-center mt-4">
-  <button mat-raised-button color="primary" (click)="downloadPDF()"><mat-icon>picture_as_pdf</mat-icon>Télécharger PDF</button>
+  <button class="btn-add flex items-center gap-2" (click)="downloadPDF()">
+    <mat-icon class="text-lg leading-none">picture_as_pdf</mat-icon>
+    <span class="leading-none">Télécharger PDF</span>
+  </button>
 </div>
