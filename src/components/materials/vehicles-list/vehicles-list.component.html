@@ -2,6 +2,8 @@
 
 <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
+<ng-container *ngIf="!isMobile; else mobileView">
+
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
   <div class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
     <h2 class="text-gray-900 text-sm">Nombre Total des Véhicules</h2>
@@ -85,8 +87,55 @@
     [pageSizeOptions]="page_size_options"
     (page)="onPageChange($event)">
   </mat-paginator>
-
 </div>
+</ng-container>
+
+<ng-template #mobileView>
+  <div class="space-y-4">
+    <div *ngFor="let vehicle of vehicles_data" class="bg-white shadow rounded-lg p-4">
+      <div class="flex justify-between">
+        <div class="text-sm font-semibold">Type:</div>
+        <div class="text-sm">{{ translateVehicleType(vehicle.vehicle_type) }}</div>
+      </div>
+      <div class="flex justify-between mt-1">
+        <div class="text-sm font-semibold">Marque:</div>
+        <div class="text-sm">{{ vehicle.brand }}</div>
+      </div>
+      <div class="flex justify-between mt-1">
+        <div class="text-sm font-semibold">Modèle:</div>
+        <div class="text-sm">{{ vehicle.model }}</div>
+      </div>
+      <div class="flex justify-between mt-1">
+        <div class="text-sm font-semibold">Année:</div>
+        <div class="text-sm">{{ vehicle.model_year }}</div>
+      </div>
+      <div class="flex justify-between mt-1">
+        <div class="text-sm font-semibold">Matricule:</div>
+        <div class="text-sm">{{ vehicle.licence_plate }}</div>
+      </div>
+
+      <div class="flex justify-between mt-1">
+        <div class="text-sm font-semibold">Actions:</div>
+        <div class="flex space-x-2">
+          <button mat-icon-button color="primary" (click)="onEditvehicle(vehicle.vehicle_id)">
+            <mat-icon style="color: #3b82f6;">edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDeletevehicle(vehicle.vehicle_id)">
+            <mat-icon style="color: #ef4444;">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional mobile paginator -->
+    <mat-paginator
+      [length]="total_count"
+      [pageSize]="limit"
+      [pageSizeOptions]="page_size_options"
+      (page)="onPageChange($event)">
+    </mat-paginator>
+  </div>
+</ng-template>
 
 <div class="flex justify-center mt-4">
   <button mat-raised-button color="primary" (click)="downloadPDF()">

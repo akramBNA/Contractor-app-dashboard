@@ -31,6 +31,7 @@ import autoTable from 'jspdf-autotable';
   styleUrl: './vehicles-list.component.css',
 })
 export class VehiclesListComponent {
+  isMobile: boolean = false;
   isLoading: boolean = false;
   isEmpty: boolean = false;
   limit: number = 20;
@@ -61,7 +62,10 @@ export class VehiclesListComponent {
     private swalService: SwalService,
     private router: Router
   ) {}
+  
   ngOnInit() {
+    this.checkScreen();
+    window.addEventListener('resize', () => this.checkScreen());
     this.fetchVehiclesData(this.limit, this.offset, this.keyword ?? '');
 
     this.keywordControl.valueChanges
@@ -70,6 +74,10 @@ export class VehiclesListComponent {
         this.offset = 0;
         this.fetchVehiclesData(this.limit, this.offset, (value ?? '').trim());
       });
+  }
+
+  checkScreen() {
+    this.isMobile = window.innerWidth < 768;
   }
 
   fetchVehiclesData(lim: number, off: number, key: string) {
