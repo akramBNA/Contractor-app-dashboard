@@ -127,7 +127,6 @@
       </div>
     </div>
 
-    <!-- Optional mobile paginator -->
     <mat-paginator
       [length]="total_count"
       [pageSize]="limit"
@@ -138,8 +137,5 @@
 </ng-template>
 
 <div class="flex justify-center mt-4">
-  <button mat-raised-button color="primary" (click)="downloadPDF()">
-    <mat-icon>picture_as_pdf</mat-icon>
-    Télécharger PDF
-  </button>
+  <button mat-raised-button color="primary" (click)="downloadPDF()"><mat-icon>picture_as_pdf</mat-icon>Télécharger PDF</button>
 </div>
