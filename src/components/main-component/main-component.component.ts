@@ -45,6 +45,8 @@ export class MainComponentComponent {
   notificationsList: any[] = [];
 
   badgePulse = false;
+  isMobileSidebarOpen: boolean = false;
+
 
   private clickListener!: (event: any) => void;
 
@@ -178,5 +180,12 @@ export class MainComponentComponent {
   trackByNotifId(index: number, notif: any) {
     return notif.id || index;
   };
+  
+  toggleMobileSidebar() {
+    this.isMobileSidebarOpen = !this.isMobileSidebarOpen;
+  };
 
+  closeMobileSidebar() {
+    this.isMobileSidebarOpen = false;
+  };
 }
