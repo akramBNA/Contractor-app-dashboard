@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -33,6 +34,7 @@ export class ShowProjectsComponent {
   projects_data: any[] = [];
   isLoading: boolean = false;
   projects_flag: boolean = false;
+  isMobile: boolean = false;
 
   limit = 20;
   offset = 0;
@@ -49,15 +51,24 @@ export class ShowProjectsComponent {
   };
 
   constructor(
-    private projectService: ProjectsService, 
+    private projectService: ProjectsService,
     private router: Router,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private breakpointObserver: BreakpointObserver,
   ) {}
 
   ngOnInit() {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset, Breakpoints.Small])
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
+
     this.fetchProjects(this.limit, this.offset, this.keyword.value ?? '');
 
-    this.keyword.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value: string | null) => {
+    this.keyword.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value: string | null) => {
         this.offset = 0;
         this.fetchProjects(this.limit, this.offset, (value ?? '').trim());
       });
@@ -66,33 +77,35 @@ export class ShowProjectsComponent {
   fetchProjects(limit: number, offset: number, keyword: string) {
     this.projects_flag = false;
     this.isLoading = true;
-    this.projectService.getAllProjects(limit, offset, keyword).subscribe((data: any) => {
-      this.isLoading = false;
-      if (data.success) {
-        if(data.data.length === 0) {
-          this.projects_flag = true;
+    this.projectService
+      .getAllProjects(limit, offset, keyword)
+      .subscribe((data: any) => {
+        this.isLoading = false;
+        if (data.success) {
+          if (data.data.length === 0) {
+            this.projects_flag = true;
+            this.totalItems = 0;
+            this.projectStats = {
+              notStarted: 0,
+              inProgress: 0,
+              finished: 0,
+              canceled: 0,
+            };
+          }
+          this.projects_data = data.data;
+          this.totalItems = data.attributes.total;
+          this.projectStats = data.stats;
+        } else {
+          this.projects_data = [];
           this.totalItems = 0;
           this.projectStats = {
             notStarted: 0,
             inProgress: 0,
             finished: 0,
             canceled: 0,
-          }
-        };
-        this.projects_data = data.data;
-        this.totalItems = data.attributes.total;
-        this.projectStats = data.stats;
-      } else {
-        this.projects_data = [];
-        this.totalItems = 0;
-        this.projectStats = {
-          notStarted: 0,
-          inProgress: 0,
-          finished: 0,
-          canceled: 0,
-        };
-      }
-    });
+          };
+        }
+      });
   }
 
   onPageChange(event: PageEvent) {
@@ -111,62 +124,68 @@ export class ShowProjectsComponent {
     this.router.navigate(['/main-page/planning/view-project', projectId]);
   }
 
-  // DeleteProject(projectId: number) {
-  //   this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?').then((result) => {
-  //     if (result.isConfirmed) {
-  //       this.isLoading = true;
-  //       this.projectService.deleteProject(projectId).subscribe((data: any) => {
-  //         if (data.success) {
-  //           this.isLoading = false;
-  //           this.swalService.showSuccess('Ce projet a été supprimé avec succès.').then(() => {
-  //           });
-  //         } else {
-  //           this.isLoading = false;
-  //           this.swalService.showError('Une erreur s\'est produite lors de la suppression de ce projet.');
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
   DeleteProject(projectId: number) {
-    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?').then((result) => {
-      if (result.isConfirmed) {
-        this.isLoading = true;
-        this.projectService.deleteProject(projectId).subscribe((data: any) => {
-          this.isLoading = false;
-          if (data.success) {
-            this.projects_data = this.projects_data.filter(p => p.project_id !== projectId);
+    this.swalService
+      .showConfirmation('Êtes-vous sûr de vouloir supprimer ce projet ?')
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.isLoading = true;
+          this.projectService
+            .deleteProject(projectId)
+            .subscribe((data: any) => {
+              this.isLoading = false;
+              if (data.success) {
+                this.projects_data = this.projects_data.filter(
+                  (p) => p.project_id !== projectId,
+                );
 
-            this.totalItems--;
+                this.totalItems--;
 
-            const deletedProject = this.projects_data.find(p => p.project_id === projectId);
-            if (deletedProject) {
-              switch (deletedProject.status) {
-                case 'Not Started': this.projectStats.notStarted--; break;
-                case 'In Progress': this.projectStats.inProgress--; break;
-                case 'Finished': this.projectStats.finished--; break;
-                case 'Canceled': this.projectStats.canceled--; break;
+                const deletedProject = this.projects_data.find(
+                  (p) => p.project_id === projectId,
+                );
+                if (deletedProject) {
+                  switch (deletedProject.status) {
+                    case 'Not Started':
+                      this.projectStats.notStarted--;
+                      break;
+                    case 'In Progress':
+                      this.projectStats.inProgress--;
+                      break;
+                    case 'Finished':
+                      this.projectStats.finished--;
+                      break;
+                    case 'Canceled':
+                      this.projectStats.canceled--;
+                      break;
+                  }
+                }
+
+                this.swalService.showSuccess(
+                  'Ce projet a été supprimé avec succès.',
+                );
+              } else {
+                this.swalService.showError(
+                  "Une erreur s'est produite lors de la suppression de ce projet.",
+                );
               }
-            }
-
-            this.swalService.showSuccess('Ce projet a été supprimé avec succès.');
-          } else {
-            this.swalService.showError('Une erreur s\'est produite lors de la suppression de ce projet.');
-          }
-        });
-      }
-    });
+            });
+        }
+      });
   }
 
   getStatusLabel(status: string): string {
     switch (status) {
-      case 'Not Started': return 'Non Commencé';
-      case 'In Progress': return 'En Cours';
-      case 'Finished': return 'Terminé';
-      case 'Canceled': return 'Annulé';
-      default: return status;
+      case 'Not Started':
+        return 'Non Commencé';
+      case 'In Progress':
+        return 'En Cours';
+      case 'Finished':
+        return 'Terminé';
+      case 'Canceled':
+        return 'Annulé';
+      default:
+        return status;
     }
   }
-
 }
