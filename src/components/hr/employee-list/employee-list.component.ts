@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { EmployeesService } from '../../../services/employees.services';
 import { SwalService } from '../../../shared/Swal/swal.service';
@@ -28,7 +28,7 @@ import { MatInputModule } from '@angular/material/input';
     LoadingSpinnerComponent,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule,
+    MatInputModule
   ],
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
@@ -37,6 +37,7 @@ import { MatInputModule } from '@angular/material/input';
 export class EmployeeListComponent implements OnInit {
   isLoading: boolean = false;
   isEmpty: boolean = false;
+  isMobile: boolean = false;
 
   limit: number = 20;
   offset: number = 0;
@@ -51,10 +52,17 @@ export class EmployeeListComponent implements OnInit {
   constructor(
     private employeeServicee: EmployeesService,
     private router: Router,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private breakpointObserver: BreakpointObserver,
   ) {}
 
   ngOnInit(): void {
+     this.breakpointObserver
+       .observe([Breakpoints.Handset, Breakpoints.Small])
+       .subscribe((result) => {
+         this.isMobile = result.matches;
+       });
+
     this.getAllEmployeesFunction( this.limit, this.offset, this.keyword.value ?? '');
 
     this.keyword.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value: string | null) => {
@@ -106,32 +114,6 @@ export class EmployeeListComponent implements OnInit {
     this.offset = 0;
     this.getAllEmployeesFunction(this.limit, this.offset, '');
   }
-
-  // onDeleteEmployee(employeeId: number) {
-  //   this.swalService
-  //     .showConfirmation('Êtes-vous sûr de vouloir supprimer cet employé ?').then((result) => {
-  //       if (result.isConfirmed) {
-  //         this.isLoading = true;
-  //         this.employeeServicee.deleteEmployee(Number(employeeId)).subscribe((data: any) => {
-  //             if (data.success) {
-  //               this.isLoading = false;
-  //               this.swalService.showSuccess("L'employé a été supprimé avec succès.").then(() => {
-  //                   this.getAllEmployeesFunction(
-  //                     this.limit,
-  //                     this.offset,
-  //                     this.keyword.value ?? ''
-  //                   );
-  //                 });
-  //             } else {
-  //               this.isLoading = false;
-  //               this.swalService.showError(
-  //                 "Une erreur s'est produite lors de la suppression de l'employé."
-  //               );
-  //             }
-  //           });
-  //       }
-  //     });
-  // }
 
   onDeleteEmployee(employeeId: number) {
     const deletedEmployee = this.employeeList.find(emp => emp.employee_id === employeeId);
