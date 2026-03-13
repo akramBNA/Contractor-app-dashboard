@@ -6,6 +6,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../shared/Swal/swal.service';
 import { AuthService } from '../../services/authentication.service';
@@ -13,7 +15,7 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent],
+  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent, MatFormFieldModule, MatInputModule ],
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -32,7 +34,7 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       user_email: ['', [Validators.required, Validators.email]],
-      user_password: ['', Validators.required],
+      user_password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
