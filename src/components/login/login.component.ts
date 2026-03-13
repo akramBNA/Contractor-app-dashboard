@@ -6,14 +6,24 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../shared/Swal/swal.service';
 import { AuthService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
+import { MatIconModule } from "@angular/material/icon";
 
 
 @Component({
-  imports: [ReactiveFormsModule, CommonModule, LoadingSpinnerComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    LoadingSpinnerComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule
+],
   standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -23,24 +33,29 @@ export class LoginComponent {
   loginForm: FormGroup;
   loginError: string = '';
   isLoading = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private swalService: SwalService
+    private swalService: SwalService,
   ) {
     this.loginForm = this.fb.group({
       user_email: ['', [Validators.required, Validators.email]],
-      user_password: ['', Validators.required],
+      user_password: ['', [Validators.required, Validators.minLength(6)]],
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
       this.isLoading = true;
       this.authService.login(this.loginForm.value).subscribe({
-        next: (response: any) => {                   
+        next: (response: any) => {
           this.isLoading = false;
           this.authService.saveToken(response.token);
           this.authService.setUserData(response);
@@ -51,13 +66,16 @@ export class LoginComponent {
           } else {
             this.router.navigate(['/main-page/hr/holidays-list']);
           }
-
         },
         error: (err) => {
           this.isLoading = false;
-          this.swalService.showError('Erreur de connexion. Veuillez vérifier vos informations.').then(() => {
-            this.loginForm.reset();
-          });
+          this.swalService
+            .showError(
+              'Erreur de connexion. Veuillez vérifier vos informations.',
+            )
+            .then(() => {
+              this.loginForm.reset();
+            });
         },
       });
     }
