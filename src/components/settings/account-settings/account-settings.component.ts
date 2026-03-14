@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { UsersService } from '../../../services/users.services';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
@@ -39,6 +40,8 @@ export class AccountSettingsComponent implements OnInit {
   offset: number = 0;
   keyword: string = '';
 
+  isMobile: boolean = false;
+
   usersForm: FormGroup;
   roleForm: FormGroup;
   roles_data: any[] = [];
@@ -68,7 +71,8 @@ export class AccountSettingsComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private swalService: SwalService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver,
   ) {
     this.usersForm = this.fb.group({
       user_name: ['', Validators.required],
@@ -84,6 +88,10 @@ export class AccountSettingsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Small]).subscribe((result) => {
+        this.isMobile = result.matches;
+      });
+
     this.isLoading = true;
     this.user_role = sessionStorage.getItem('user_role') || '';
 
