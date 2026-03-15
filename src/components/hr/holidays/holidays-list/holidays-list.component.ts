@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   MatDialog,
   MatDialogModule,
@@ -38,6 +39,7 @@ export class HolidaysListComponent {
   
   isLoading: boolean = false;
   isEmpty: boolean = false;
+  isMobile: boolean = false;
   holidays_data: any[] = [];
   selected_year: number = new Date().getFullYear();
 
@@ -48,10 +50,14 @@ export class HolidaysListComponent {
   constructor(
     private holidaysService: HolidaysService,
     private dialog: MatDialog,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit() {
+    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      this.isMobile = result.matches;
+    });
     this.fetchHolidays(this.selected_year);
   };
 
@@ -71,7 +77,6 @@ export class HolidaysListComponent {
       this.today = newDate;
     }
   }
-
 
   refreshCalendar() {
     if (this.calendar) {
