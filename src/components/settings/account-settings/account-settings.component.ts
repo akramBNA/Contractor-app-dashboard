@@ -136,6 +136,8 @@ export class AccountSettingsComponent implements OnInit {
     this.fetchUsers(this.limit, this.offset, this.keyword);
   }
 
+  onOpenUserModal() {}
+
   onAddUser() {
     this.isLoading = true;
 
