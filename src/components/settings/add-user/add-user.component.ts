@@ -1,19 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { UsersService } from '../../../services/users.services';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { MatInputModule } from "@angular/material/input";
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-user',
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatAutocompleteModule, LoadingSpinnerComponent, MatInputModule, MatSelectModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    LoadingSpinnerComponent,
+    MatInputModule,
+    MatSelectModule,
+  ],
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.css'],
 })
@@ -26,7 +39,8 @@ export class AddUserComponent implements OnInit {
     private fb: FormBuilder,
     private usersService: UsersService,
     private swalService: SwalService,
-    private router: Router
+    private router: Router,
+    private dialogRef: MatDialogRef<AddUserComponent>,
   ) {}
 
   ngOnInit(): void {
@@ -42,7 +56,7 @@ export class AddUserComponent implements OnInit {
   }
 
   fetchRoles() {
-    this.usersService.getAllUsers(20,0,'').subscribe((data: any) => {
+    this.usersService.getAllUsers(20, 0, '').subscribe((data: any) => {
       if (data.success) {
         this.roles_data = data.roles;
       }
@@ -56,19 +70,19 @@ export class AddUserComponent implements OnInit {
         this.isLoading = false;
         if (res.success) {
           this.swalService.showSuccess('Utilisateur ajouté avec succès').then(() => {
-            this.router.navigate(['/main-page/settings/account-settings']);
-          });
+              this.router.navigate(['/main-page/settings/account-settings']);
+            });
         } else {
-          this.swalService.showError('Erreur lors de l\'ajout');
+          this.swalService.showError("Erreur lors de l'ajout");
         }
       });
     } else {
       this.userForm.markAllAsTouched();
-      this.swalService.showWarning('Veuillez corriger les erreurs du formulaire.');
+      this.swalService.showWarning('Veuillez corriger les erreurs du formulaire.',);
     }
   }
 
   goBack(): void {
-    this.router.navigate(['/main-page/settings/account-settings']);
+    this.dialogRef.close(false);
   }
 }
