@@ -19,6 +19,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { RoleDialogComponent } from '../role-dialog/role-dialog.component';
+import { AddUserComponent } from '../add-user/add-user.component';
 
 @Component({
   selector: 'app-account-settings',
@@ -136,7 +137,16 @@ export class AccountSettingsComponent implements OnInit {
     this.fetchUsers(this.limit, this.offset, this.keyword);
   }
 
-  onOpenUserModal() {}
+  onOpenUserModal() {
+    const dialogRef = this.dialog.open(AddUserComponent, {
+      width: 'auto',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === true) {};
+    });
+  }
 
   onAddUser() {
     this.isLoading = true;
