@@ -28,15 +28,15 @@ import { SwalService } from '../../../../shared/Swal/swal.service';
     MatIconModule,
     MatCalendar,
     MatSelectModule,
-    FormsModule, 
-    ReactiveFormsModule
-],
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './holidays-list.component.html',
   styleUrl: './holidays-list.component.css',
 })
 export class HolidaysListComponent {
   @ViewChild(MatCalendar) calendar!: MatCalendar<Date>;
-  
+
   isLoading: boolean = false;
   isEmpty: boolean = false;
   isMobile: boolean = false;
@@ -51,21 +51,23 @@ export class HolidaysListComponent {
     private holidaysService: HolidaysService,
     private dialog: MatDialog,
     private swalService: SwalService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
   ) {}
 
   ngOnInit() {
-    this.breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-      this.isMobile = result.matches;
-    });
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
     this.fetchHolidays(this.selected_year);
-  };
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.calendar.updateTodaysDate();
     });
-  };
+  }
 
   selectYear(year: number) {
     this.selected_year = year;
@@ -83,7 +85,7 @@ export class HolidaysListComponent {
       const currentActiveDate = this.calendar.activeDate;
       this.calendar.activeDate = new Date(currentActiveDate);
     }
-  };
+  }
 
   fetchHolidays(year: number) {
     this.isLoading = true;
@@ -94,33 +96,44 @@ export class HolidaysListComponent {
         this.isLoading = false;
         this.holidays_data = data.data;
         this.years = data.years;
-        this.holidayDates = this.holidays_data.map((h: any) => new Date(h.holiday_date));
-        
-        this.calendar.updateTodaysDate();  
+        this.holidayDates = this.holidays_data.map(
+          (h: any) => new Date(h.holiday_date),
+        );
+
+        this.calendar.updateTodaysDate();
       }
     });
-  };
+  }
 
   highlightHolidays = (date: Date): string => {
     const dateStr = this.formatDateLocal(date);
-    const isHoliday = this.holidayDates.some((d) => this.formatDateLocal(d) === dateStr);
+    const isHoliday = this.holidayDates.some(
+      (d) => this.formatDateLocal(d) === dateStr,
+    );
     return isHoliday ? 'holiday-highlight' : '';
   };
 
   private formatDateLocal(date: Date): string {
-    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
-  };
+    return (
+      date.getFullYear() +
+      '-' +
+      String(date.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(date.getDate()).padStart(2, '0')
+    );
+  }
 
-    openAddHolidayModal() {
+  openAddHolidayModal() {
     const dialogRef = this.dialog.open(AddHolidaysComponent, {
       width: 'auto',
       disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === true) {};
+      if (result === true) {
+      }
     });
-  };
+  }
 
   onCalendarYearChange(date: Date | null) {
     if (!date) return;
@@ -129,52 +142,64 @@ export class HolidaysListComponent {
       this.selected_year = year;
       this.fetchHolidays(year);
     }
-  };
+  }
 
   holidayEdit(holidayId: number) {
-    const holiday = this.holidays_data.find(h => h.holiday_id === holidayId);
+    const holiday = this.holidays_data.find((h) => h.holiday_id === holidayId);
     if (!holiday) return;
 
     const dialogRef = this.dialog.open(EditHolidaysComponent, {
       width: '420px',
       disableClose: true,
-      data: { holiday }
+      data: { holiday },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.isLoading = true;
-        this.holidaysService.updateHoliday(holidayId, result).subscribe(res => {
-          if (res.success) {
-            this.isLoading = false;
-            this.swalService.showSuccess('Jour férié mis à jour avec succès').then(() => {
-              this.fetchHolidays(this.selected_year);
-            });
-          } else {
-            this.isLoading = false;
-            this.swalService.showError('Échec de la mise à jour du jour férié');
-          }
-        });
+        this.holidaysService
+          .updateHoliday(holidayId, result)
+          .subscribe((res) => {
+            if (res.success) {
+              this.isLoading = false;
+              this.swalService
+                .showSuccess('Jour férié mis à jour avec succès')
+                .then(() => {
+                  this.fetchHolidays(this.selected_year);
+                });
+            } else {
+              this.isLoading = false;
+              this.swalService.showError(
+                'Échec de la mise à jour du jour férié',
+              );
+            }
+          });
       }
     });
-  };
+  }
 
   holidayDelete(holidayId: number) {
-    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce jour férié ?').then((result) => {
-      if (result.isConfirmed) {
-        this.isLoading = true;
-        this.holidaysService.deleteHoliday(holidayId).subscribe(res => {
-          if (res.success) {
-            this.isLoading = false;
-            this.swalService.showSuccess('Jour férié supprimé avec succès').then(() => {
-              this.fetchHolidays(this.selected_year);
-            });
-          } else {
-            this.isLoading = false;
-            this.swalService.showError('Échec de la suppression du jour férié');
-          }
-        });
-      }
-    });
-  };
+    this.swalService
+      .showConfirmation('Êtes-vous sûr de vouloir supprimer ce jour férié ?')
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.isLoading = true;
+          this.holidaysService.deleteHoliday(holidayId).subscribe((res) => {
+            if (res.success) {
+              this.isLoading = false;
+              this.swalService
+                .showSuccess('Jour férié supprimé avec succès')
+                .then(() => {
+                  this.fetchHolidays(this.selected_year);
+                });
+            } else {
+              this.isLoading = false;
+              this.swalService.showError(
+                'Échec de la suppression du jour férié',
+              );
+            }
+          });
+        }
+      });
+  }
 }
