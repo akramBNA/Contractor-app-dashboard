@@ -75,11 +75,10 @@ export class AddMissionsComponent implements OnInit {
 
   ngOnInit(): void {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
     this.minStartDate = new Date(
       today.getFullYear(),
       today.getMonth(),
-      today.getDate()
+      today.getDate(),
     );
 
     this.getAllActiveEmployeesNames();
@@ -114,6 +113,19 @@ export class AddMissionsComponent implements OnInit {
         }
       });
   }
+
+  dateFilter = (date: Date | null): boolean => {
+    if (!date) return false;
+
+    const today = new Date();
+    const normalizedToday = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+    );
+
+    return date >= normalizedToday;
+  };
 
   getAllActiveEmployeesNames() {
     this.employeeService.getAllActiveEmployeesNames().subscribe((data: any) => {
@@ -174,7 +186,9 @@ export class AddMissionsComponent implements OnInit {
 
     if (!this.missionForm.valid) {
       this.isLoading = false;
-      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.',);
+      this.swalService.showWarning(
+        'Veuillez remplir tous les champs obligatoires.',
+      );
       return;
     }
 
@@ -188,7 +202,9 @@ export class AddMissionsComponent implements OnInit {
         });
       } else {
         this.isLoading = false;
-        this.swalService.showError("Une erreur s'est produite lors de l'ajout de la mission.").then(() => {
+        this.swalService
+          .showError("Une erreur s'est produite lors de l'ajout de la mission.")
+          .then(() => {
             this.router.navigate(['/main-page/missions/missions-list']);
           });
       }
