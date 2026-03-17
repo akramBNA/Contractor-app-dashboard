@@ -4,8 +4,6 @@
 
 <form [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
   <div>
-    <h2 class="text-xl font-semibold text-gray-700 mb-6 border-b pb-2">Détails de la Mission</h2>
-
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <mat-form-field appearance="fill">
         <mat-label>Nom de la Mission</mat-label>
@@ -72,7 +70,8 @@
     </mat-form-field>
   </div>
 
-  <div class="text-center pt-6">
-    <button type="button" (click)="onSubmitMission()" class="btn-add">Ajouter</button>
+  <div class="flex justify-center gap-2 pt-4">
+    <button class="btn-cancel" type="button" (click)="goBack()">Annuler</button>
+    <button class="btn-add" type="button" (click)="onSubmitMission()">Ajouter</button>
   </div>
 </form>
