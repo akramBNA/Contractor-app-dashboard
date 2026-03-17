@@ -76,7 +76,11 @@ export class AddMissionsComponent implements OnInit {
   ngOnInit(): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    this.minStartDate = today;
+    this.minStartDate = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate()
+    );
 
     this.getAllActiveEmployeesNames();
 
