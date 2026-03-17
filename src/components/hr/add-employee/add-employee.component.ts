@@ -48,7 +48,7 @@ export class AddEmployeeComponent implements OnInit {
     private fb: FormBuilder,
     private employeeService: EmployeesService,
     private router: Router,
-    private swalService: SwalService
+    private swalService: SwalService,
   ) {
     this.employeeForm = this.fb.group({
       employee_name: ['', Validators.required],
@@ -86,56 +86,69 @@ export class AddEmployeeComponent implements OnInit {
     });
 
     this.employeeForm.get('employee_joining_date')?.valueChanges.subscribe((startDate: Date) => {
-    this.minEndDate = startDate;
+        this.minEndDate = startDate;
 
-    const endDate = this.employeeForm.get('employee_end_date')?.value;
-    if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
-      this.employeeForm.get('employee_end_date')?.setValue(null);
-    }
-  });
+        const endDate = this.employeeForm.get('employee_end_date')?.value;
+        if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+          this.employeeForm.get('employee_end_date')?.setValue(null);
+        }
+      });
   }
 
   formatDate(date: any): string | null {
-  if (!date) return null;
-  const d = new Date(date);
-  return d.toISOString().split('T')[0];
+    if (!date) return null;
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
   }
 
-  onSubmitAll() {    
+  onSubmitAll() {
     this.formSubmitted = true;
 
-    if ( this.employeeForm.valid && this.contactForm.valid && this.bankDetailsForm.valid ) {
-
+    if (
+      this.employeeForm.valid &&
+      this.contactForm.valid &&
+      this.bankDetailsForm.valid
+    ) {
       const payload = {
         ...this.employeeForm.value,
         ...this.contactForm.value,
         ...this.bankDetailsForm.value,
-        employee_birth_date: this.formatDate(this.employeeForm.value.employee_birth_date),
-        employee_joining_date: this.formatDate(this.employeeForm.value.employee_joining_date),
-        employee_end_date: this.formatDate(this.employeeForm.value.employee_end_date),
+        employee_birth_date: this.formatDate(
+          this.employeeForm.value.employee_birth_date,
+        ),
+        employee_joining_date: this.formatDate(
+          this.employeeForm.value.employee_joining_date,
+        ),
+        employee_end_date: this.formatDate(
+          this.employeeForm.value.employee_end_date,
+        ),
       };
       this.employeeService.addOneEmployee(payload).subscribe((data: any) => {
         this.isLoading = true;
         if (data.success) {
           this.isLoading = false;
-          this.swalService.showSuccess('L\'employé est ajouté avec succès').then(() => {
-            this.employeeForm.reset();
-            this.contactForm.reset();
-            this.bankDetailsForm.reset();
-            this.router.navigate(['/main-page/hr/employees-list']);
-          });
+          this.swalService.showSuccess("L'employé est ajouté avec succès").then(() => {
+              this.employeeForm.reset();
+              this.contactForm.reset();
+              this.bankDetailsForm.reset();
+              this.router.navigate(['/main-page/hr/employees-list']);
+            });
         } else {
           this.isLoading = false;
-          this.swalService.showError('Une erreur s\'est produite lors de l\'ajout de l\'employé.');
+          this.swalService.showError("Une erreur s'est produite lors de l'ajout de l'employé.",);
         }
       });
     } else {
       this.isLoading = false;
       this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.').then(() => {
-        this.employeeForm.markAllAsTouched();
-        this.contactForm.markAllAsTouched();    
-        this.bankDetailsForm.markAllAsTouched();
-      });
+          this.employeeForm.markAllAsTouched();
+          this.contactForm.markAllAsTouched();
+          this.bankDetailsForm.markAllAsTouched();
+        });
     }
+  }
+
+  goBack() {
+    this.router.navigate(['/main-page/hr/employees-list']);
   }
 }
