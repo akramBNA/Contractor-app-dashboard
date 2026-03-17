@@ -67,8 +67,9 @@
             <button mat-icon-button color="primary" (click)="onEditMission(mission.mission_id)">
               <mat-icon style="color: #3b82f6;">edit</mat-icon>
             </button>
-            <button mat-icon-button color="warn" (click)="onDeleteMission(mission.mission_id)">
-              <mat-icon style="color: #ef4444;">delete</mat-icon>
+            <button mat-icon-button color="warn" (click)="onDeleteMission(mission.mission_id)"[disabled]="loadingMap[mission.mission_id]">
+              <mat-icon *ngIf="!loadingMap[mission.mission_id]" style="color: #ef4444;">delete</mat-icon>
+              <mat-icon *ngIf="loadingMap[mission.mission_id]" class="animate-spin">refresh</mat-icon>
             </button>
           </td>
         </tr>
@@ -124,8 +125,9 @@
           <button mat-icon-button color="primary" (click)="onEditMission(mission.mission_id)">
             <mat-icon style="color: #3b82f6;">edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="onDeleteMission(mission.mission_id)">
-            <mat-icon style="color: #ef4444;">delete</mat-icon>
+          <button mat-icon-button color="warn" (click)="onDeleteMission(mission.mission_id)"[disabled]="loadingMap[mission.mission_id]">
+            <mat-icon *ngIf="!loadingMap[mission.mission_id]" style="color: #ef4444;">delete</mat-icon>
+            <mat-icon *ngIf="loadingMap[mission.mission_id]" class="animate-spin">refresh</mat-icon>
           </button>
         </div>
       </div>

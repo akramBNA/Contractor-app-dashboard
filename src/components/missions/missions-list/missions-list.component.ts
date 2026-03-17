@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { finalize } from 'rxjs/operators';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -45,6 +46,8 @@ export class MissionsListComponent {
   completed_missions_count = 0;
   canceled_missions_count = 0;
   overall_count: number = 0;
+
+  loadingMap: { [key: string]: boolean } = {};
 
   priorityMap: { [key: string]: string } = {
     LOW: 'Faible',
@@ -111,30 +114,48 @@ export class MissionsListComponent {
   }
 
   onDeleteMission(missionId: string) {
-    this.swalService
-      .showConfirmation('Êtes-vous sûr de vouloir supprimer cette mission ?')
-      .then((result) => {
-        if (result.isConfirmed) {
-          this.isLoading = true;
-          this.missionsService
-            .deleteMission(missionId)
-            .subscribe((data: any) => {
-              if (data.success) {
-                this.missions_data = this.missions_data.filter(
-                  (m: any) => m.mission_id !== missionId,
-                );
-                this.overall_count--;
-                this.swalService.showSuccess(
-                  'La mission a été supprimée avec succès.',
-                );
-              } else {
-                this.isLoading = false;
-                this.swalService.showError(
-                  "Une erreur s'est produite lors de la suppression de cette mission.",
-                );
-              }
-            });
-        }
+    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer cette mission ?').then((result) => {
+        if (!result.isConfirmed) return;
+
+        const backup = [...this.missions_data];
+        const deletedMission = this.missions_data.find(
+          (m: any) => m.mission_id === missionId,
+        );
+
+        this.missions_data = this.missions_data.filter(
+          (m: any) => m.mission_id !== missionId,
+        );
+        this.overall_count = this.missions_data.length;
+
+        this.swalService.showUndo('Mission supprimée', 5000).then((undoClicked: boolean) => {
+            if (undoClicked) {
+              this.missions_data = backup;
+              this.overall_count = this.missions_data.length;
+              return;
+            }
+            this.loadingMap[missionId] = true;
+
+            this.missionsService.deleteMission(missionId).pipe(finalize(() => {
+                  this.loadingMap[missionId] = false;
+                }),
+              ).subscribe({
+                next: (res: any) => {
+                  this.loadingMap[missionId] = false;
+
+                  if (!res.success) {
+                    this.missions_data = backup;
+                    this.swalService.showError(
+                      'Erreur lors de la suppression.',
+                    );
+                  }
+                },
+                error: () => {
+                  this.loadingMap[missionId] = false;
+                  this.missions_data = backup;
+                  this.swalService.showError('Erreur serveur.');
+                },
+              });
+          });
       });
   }
 }
