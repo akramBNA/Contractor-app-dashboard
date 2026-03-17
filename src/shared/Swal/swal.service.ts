@@ -3,11 +3,10 @@ import Swal from 'sweetalert2';
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SwalService {
-
-  constructor() { }
+  constructor() {}
 
   showSuccess(message: string, title: string = 'Succès') {
     return Swal.fire({
@@ -36,10 +35,7 @@ export class SwalService {
     });
   }
 
-  showConfirmation(
-    message: string,
-    title: string = 'Attention !'
-  ) {
+  showConfirmation(message: string, title: string = 'Attention !') {
     return Swal.fire({
       icon: 'warning',
       title: title,
@@ -59,6 +55,22 @@ export class SwalService {
       title: title,
       text: message,
       confirmButtonText: 'OK',
+    });
+  }
+
+  showUndo(message: string, timer: number): Promise<boolean> {
+    return new Promise((resolve) => {
+      Swal.fire({
+        title: message,
+        toast: true,
+        position: 'bottom-end',
+        showConfirmButton: true,
+        confirmButtonText: 'Annuler',
+        timer: timer,
+        timerProgressBar: true,
+      }).then((result) => {
+        resolve(result.isConfirmed);
+      });
     });
   }
 }
