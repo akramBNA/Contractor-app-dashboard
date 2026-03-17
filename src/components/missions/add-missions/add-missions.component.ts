@@ -38,12 +38,11 @@ import { MatAutocompleteSelectedEvent, MatAutocomplete, MatAutocompleteModule } 
     MatNativeDateModule,
     MatAutocomplete,
     MatAutocompleteModule,
-],
+  ],
   templateUrl: './add-missions.component.html',
   styleUrls: ['./add-missions.component.css'],
 })
 export class AddMissionsComponent implements OnInit {
-
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   employeeCtrl = new FormControl('');
@@ -53,15 +52,15 @@ export class AddMissionsComponent implements OnInit {
   missionForm: FormGroup;
   isLoading = false;
   employeesList: any[] = [];
+  minStartDate: Date = new Date();
   minEndDate: Date | null = null;
-
 
   constructor(
     private fb: FormBuilder,
     private missionService: MissionsService,
     private employeeService: EmployeesService,
     private router: Router,
-    private swalService: SwalService
+    private swalService: SwalService,
   ) {
     this.missionForm = this.fb.group({
       mission_name: ['', Validators.required],
@@ -75,73 +74,103 @@ export class AddMissionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    this.minStartDate = today;
+
     this.getAllActiveEmployeesNames();
 
-    this.employeeCtrl.valueChanges.subscribe(value => {
+    this.employeeCtrl.valueChanges.subscribe((value) => {
       const filterValue = value?.toLowerCase?.() || '';
-      this.filteredEmployees = this.employeesList.filter(emp =>
-        (emp.employee_name + ' ' + emp.employee_lastname).toLowerCase().includes(filterValue)
+      this.filteredEmployees = this.employeesList.filter((emp) =>
+        (emp.employee_name + ' ' + emp.employee_lastname)
+          .toLowerCase()
+          .includes(filterValue),
       );
     });
 
-    this.missionForm.get('start_at')?.valueChanges.subscribe((startDate: Date) => {
-    this.minEndDate = startDate;
+    this.missionForm
+      .get('start_at')
+      ?.valueChanges.subscribe((startDate: Date) => {
+        if (!startDate) return;
 
-    const endDate = this.missionForm.get('end_at')?.value;
-    if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
-        this.missionForm.get('end_at')?.setValue(null);
-      }
-    });
+        const normalizedStart = new Date(startDate);
+        normalizedStart.setHours(0, 0, 0, 0);
 
+        this.minEndDate = normalizedStart;
+
+        const endDate = this.missionForm.get('end_at')?.value;
+        if (endDate) {
+          const normalizedEnd = new Date(endDate);
+          normalizedEnd.setHours(0, 0, 0, 0);
+
+          if (normalizedEnd < normalizedStart) {
+            this.missionForm.get('end_at')?.setValue(null);
+          }
+        }
+      });
   }
 
- getAllActiveEmployeesNames() {
+  getAllActiveEmployeesNames() {
     this.employeeService.getAllActiveEmployeesNames().subscribe((data: any) => {
       this.employeesList = data.data;
       this.filteredEmployees = [...this.employeesList];
     });
   }
 
-selected(event: MatAutocompleteSelectedEvent): void {
+  selected(event: MatAutocompleteSelectedEvent): void {
     const selectedEmp = event.option.value;
-    if (!this.selectedEmployees.some(e => e.employee_id === selectedEmp.employee_id)) {
+    if (
+      !this.selectedEmployees.some(
+        (e) => e.employee_id === selectedEmp.employee_id,
+      )
+    ) {
       this.selectedEmployees.push(selectedEmp);
       this.updateEmployeeFormValue();
     }
     this.employeeCtrl.setValue('');
   }
 
-removeEmployee(emp: any): void {
-    this.selectedEmployees = this.selectedEmployees.filter(e => e.employee_id !== emp.employee_id);
+  removeEmployee(emp: any): void {
+    this.selectedEmployees = this.selectedEmployees.filter(
+      (e) => e.employee_id !== emp.employee_id,
+    );
     this.updateEmployeeFormValue();
   }
 
-addEmployeeFromInput(event: MatChipInputEvent): void {
+  addEmployeeFromInput(event: MatChipInputEvent): void {
     this.employeeCtrl.setValue('');
   }
 
-updateEmployeeFormValue(): void {
-    const ids = this.selectedEmployees.map(emp => emp.employee_id);
+  updateEmployeeFormValue(): void {
+    const ids = this.selectedEmployees.map((emp) => emp.employee_id);
     this.missionForm.get('employee_id')?.setValue(ids);
   }
 
   formatDate(date: any): string | null {
     if (!date) return null;
+
     const d = new Date(date);
-    return d.toISOString().split('T')[0];
+    d.setHours(0, 0, 0, 0);
+
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
   }
 
   onSubmitMission() {
     this.isLoading = true;
     const formData = {
       ...this.missionForm.value,
-      date_debut: this.formatDate(this.missionForm.value.date_debut),
-      date_fin: this.formatDate(this.missionForm.value.date_fin),
+      start_at: this.formatDate(this.missionForm.value.start_at),
+      end_at: this.formatDate(this.missionForm.value.end_at),
     };
 
     if (!this.missionForm.valid) {
       this.isLoading = false;
-      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.');
+      this.swalService.showWarning('Veuillez remplir tous les champs obligatoires.',);
       return;
     }
 
@@ -155,10 +184,14 @@ updateEmployeeFormValue(): void {
         });
       } else {
         this.isLoading = false;
-        this.swalService.showError('Une erreur s\'est produite lors de l\'ajout de la mission.').then(() => {
-          this.router.navigate(['/main-page/missions/missions-list']);
-        });
+        this.swalService.showError("Une erreur s'est produite lors de l'ajout de la mission.").then(() => {
+            this.router.navigate(['/main-page/missions/missions-list']);
+          });
       }
     });
+  }
+
+  goBack() {
+    this.router.navigate(['/main-page/missions/missions-list']);
   }
 }
