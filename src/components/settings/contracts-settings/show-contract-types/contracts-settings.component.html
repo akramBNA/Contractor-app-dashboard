@@ -41,68 +41,116 @@
 </div>
 
 <div class="bg-white shadow-md rounded-lg p-4">
-  <table class="min-w-full divide-y divide-gray-200">
-    <thead class="bg-gray-100">
-      <tr>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-          Type de Contrat
-        </th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-          Crédits Congés
-        </th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-          Statut
-        </th>
-        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-200">
-      <tr *ngIf="isEmpty">
-        <td colspan="4" class="text-center text-gray-500 py-4">
-          Aucun type de contrat trouvé.
-        </td>
-      </tr>
+    <div class="grid grid-cols-1 gap-4 sm:hidden">
+    <div
+      *ngFor="let ct of contract_types_data"
+      class="bg-white shadow rounded-xl p-4 space-y-3"
+    >
+      <div class="flex justify-between items-center">
+        <h2 class="font-semibold text-gray-800">
+          {{ ct.contract_name }}
+        </h2>
 
-      <tr *ngFor="let ct of contract_types_data">
-        <td class="px-4 py-2 text-sm">{{ ct.contract_name }}</td>
-        <td class="px-4 py-2 text-sm">{{ ct.leaves_credit }}</td>
-        <td class="px-4 py-2 text-sm">
-          <span
-            class="px-2 py-1 rounded-full text-white text-xs font-semibold"
-            [ngClass]="{
-              'bg-green-500': ct.active === 'Y',
-              'bg-red-500': ct.active !== 'Y'
-            }"
-          >
-            {{ ct.active === 'Y' ? 'Actif' : 'Inactif' }}
-          </span>
-        </td>
-        <td class="px-4 py-2 text-sm flex space-x-2">
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="onEditContractType(ct)"
-            class="cursor-pointer"
-          >
-            <mat-icon style="color: #3b82f6;">edit</mat-icon>
-          </button>
+        <span
+          class="px-2 py-1 rounded-full text-white text-xs font-semibold"
+          [ngClass]="{
+            'bg-green-500': ct.active === 'Y',
+            'bg-red-500': ct.active !== 'Y'
+          }"
+        >
+          {{ ct.active === 'Y' ? 'Actif' : 'Inactif' }}
+        </span>
+      </div>
 
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="onDeleteContractType(ct.contract_type_id)"
-            [disabled]="loadingMap[ct.contract_type_id]"
-            class="cursor-pointer"
-          >
-            <mat-icon *ngIf="!loadingMap[ct.contract_type_id]" style="color: #ef4444;">delete</mat-icon>
-            <mat-icon *ngIf="loadingMap[ct.contract_type_id]" class="animate-spin">refresh</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <p class="text-sm text-gray-600">
+        Crédits congés: <span class="font-semibold">{{ ct.leaves_credit }}</span>
+      </p>
+
+      <div class="flex justify-end space-x-2 pt-2">
+        <button
+          mat-icon-button
+          (click)="onEditContractType(ct)"
+        >
+          <mat-icon style="color: #3b82f6;">edit</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          (click)="onDeleteContractType(ct.contract_type_id)"
+          [disabled]="loadingMap[ct.contract_type_id]"
+        >
+          <mat-icon *ngIf="!loadingMap[ct.contract_type_id]" style="color: #ef4444;">delete</mat-icon>
+          <mat-icon *ngIf="loadingMap[ct.contract_type_id]" class="animate-spin">refresh</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="isEmpty" class="text-center text-gray-500 py-4">Aucun type de contrat trouvé.</div>
+  </div>
+  <div class="hidden sm:block bg-white shadow-md rounded-lg p-4">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+            Type de Contrat
+          </th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+            Crédits Congés
+          </th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+            Statut
+          </th>
+          <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngIf="isEmpty">
+          <td colspan="4" class="text-center text-gray-500 py-4">
+            Aucun type de contrat trouvé.
+          </td>
+        </tr>
+  
+        <tr *ngFor="let ct of contract_types_data">
+          <td class="px-4 py-2 text-sm">{{ ct.contract_name }}</td>
+          <td class="px-4 py-2 text-sm">{{ ct.leaves_credit }}</td>
+          <td class="px-4 py-2 text-sm">
+            <span
+              class="px-2 py-1 rounded-full text-white text-xs font-semibold"
+              [ngClass]="{
+                'bg-green-500': ct.active === 'Y',
+                'bg-red-500': ct.active !== 'Y'
+              }"
+            >
+              {{ ct.active === 'Y' ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+          <td class="px-4 py-2 text-sm flex space-x-2">
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="onEditContractType(ct)"
+              class="cursor-pointer"
+            >
+              <mat-icon style="color: #3b82f6;">edit</mat-icon>
+            </button>
+  
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDeleteContractType(ct.contract_type_id)"
+              [disabled]="loadingMap[ct.contract_type_id]"
+              class="cursor-pointer"
+            >
+              <mat-icon *ngIf="!loadingMap[ct.contract_type_id]" style="color: #ef4444;">delete</mat-icon>
+              <mat-icon *ngIf="loadingMap[ct.contract_type_id]" class="animate-spin">refresh</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Paginator -->
   <!-- <mat-paginator
