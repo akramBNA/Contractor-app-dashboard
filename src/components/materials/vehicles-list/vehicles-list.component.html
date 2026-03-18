@@ -126,8 +126,15 @@
           <button mat-icon-button color="primary" (click)="onEditvehicle(vehicle.vehicle_id)">
             <mat-icon style="color: #3b82f6;">edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="onDeletevehicle(vehicle.vehicle_id)">
-            <mat-icon style="color: #ef4444;">delete</mat-icon>
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="onDeletevehicle(vehicle.vehicle_id)"
+            [disabled]="loadingMap[vehicle.vehicle_id]"
+            class="cursor-pointer"
+          >
+            <mat-icon *ngIf="!loadingMap[vehicle.vehicle_id]" style="color: #ef4444;">delete</mat-icon>
+            <mat-icon *ngIf="loadingMap[vehicle.vehicle_id]" class="animate-spin">refresh</mat-icon>
           </button>
         </div>
       </div>
