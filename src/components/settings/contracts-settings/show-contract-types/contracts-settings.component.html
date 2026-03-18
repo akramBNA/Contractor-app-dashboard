@@ -38,7 +38,7 @@
 <div class="grid grid-cols-1 gap-4 sm:hidden">
   <div *ngFor="let ct of contract_types_data" class="bg-white shadow rounded-xl p-4 space-y-3">
     <div class="flex justify-between">
-      <span class="text-sm font-semibold">Type de contrat:</span>
+      <span class="text-sm font-semibold max-w-[60%] truncate">Type de contrat:</span>
       <span class="text-sm">
         {{ ct.contract_name }}
       </span>
