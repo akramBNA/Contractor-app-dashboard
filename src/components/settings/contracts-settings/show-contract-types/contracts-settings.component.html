@@ -93,9 +93,11 @@
             mat-icon-button
             color="warn"
             (click)="onDeleteContractType(ct.contract_type_id)"
+            [disabled]="loadingMap[ct.contract_type_id]"
             class="cursor-pointer"
           >
-            <mat-icon style="color: #ef4444;">delete</mat-icon>
+            <mat-icon *ngIf="!loadingMap[ct.contract_type_id]" style="color: #ef4444;">delete</mat-icon>
+            <mat-icon *ngIf="loadingMap[ct.contract_type_id]" class="animate-spin">refresh</mat-icon>
           </button>
         </td>
       </tr>
