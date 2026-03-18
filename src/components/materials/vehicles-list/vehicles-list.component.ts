@@ -7,7 +7,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, finalize } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
@@ -41,6 +41,7 @@ export class VehiclesListComponent {
   total_count: number = 0;
   page_size_options: number[] = [2, 5, 10, 20, 50];
   keywordControl: FormControl = new FormControl('');
+  loadingMap: { [key: number]: boolean } = {};
 
   vehicleTypeTranslations: { [key: string]: string } = {
     car: 'Voiture',
@@ -60,10 +61,10 @@ export class VehiclesListComponent {
   constructor(
     private vehiclesService: VehiclesService,
     private swalService: SwalService,
-    private router: Router
+    private router: Router,
   ) {}
-  
-  ngOnInit() {
+
+  ngOnInit() {    
     this.checkScreen();
     window.addEventListener('resize', () => this.checkScreen());
     this.fetchVehiclesData(this.limit, this.offset, this.keyword ?? '');
@@ -102,7 +103,7 @@ export class VehiclesListComponent {
       error: () => {
         this.isLoading = false;
         this.swalService.showError(
-          'Une erreur est survenue lors de la récupération des véhicules.'
+          'Une erreur est survenue lors de la récupération des véhicules.',
         );
       },
     });
@@ -120,29 +121,45 @@ export class VehiclesListComponent {
 
   onDeletevehicle(vehicleId: number) {
     this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce véhicule ?').then((result) => {
-        if (result.isConfirmed) {
-          this.isLoading = true;
-          this.vehiclesService.deleteVehicle(vehicleId).subscribe({
-            next: (response) => {
-              if (response.success) {
-                this.isLoading = false;
-                this.swalService.showSuccess('Véhicule supprimé avec succès.');
-                this.vehicles_data = this.vehicles_data.filter(
-                  (v) => v.id !== vehicleId
-                );
+        if (!result.isConfirmed) return;
 
-                this.total_count = this.total_count - 1;
+        const backup = [...this.vehicles_data];
+        this.vehicles_data = this.vehicles_data.filter(
+          (v) => v.vehicle_id !== vehicleId,
+        );
+        this.total_count = this.vehicles_data.length;
+        this.isEmpty = this.vehicles_data.length === 0;
 
-                this.isEmpty = this.vehicles_data.length === 0;
-              } else {
-                this.swalService.showError('Échec de la suppression du véhicule. Veuillez réessayer.');
-              }
-            },
-            error: () => {
-              this.swalService.showError('Une erreur est survenue lors de la suppression du véhicule. Veuillez réessayer.');
-            },
+        this.swalService.showUndo('Véhicule supprimé', 5000).then((undoClicked: boolean) => {
+            if (undoClicked) {
+              this.vehicles_data = backup;
+              this.total_count = this.vehicles_data.length;
+              this.isEmpty = this.vehicles_data.length === 0;
+              return;
+            }
+
+            this.loadingMap[vehicleId] = true;
+            this.vehiclesService.deleteVehicle(vehicleId).pipe(finalize(() => {
+                  this.loadingMap[vehicleId] = false;
+                }),
+              ).subscribe({
+                next: (res: any) => {
+                  if (!res.success) {
+                    this.vehicles_data = backup;
+                    this.total_count = this.vehicles_data.length;
+                    this.isEmpty = this.vehicles_data.length === 0;
+
+                    this.swalService.showError('Erreur lors de la suppression.',);}
+                },
+                error: () => {
+                  this.vehicles_data = backup;
+                  this.total_count = this.vehicles_data.length;
+                  this.isEmpty = this.vehicles_data.length === 0;
+
+                  this.swalService.showError('Erreur serveur.');
+                },
+              });
           });
-        }
       });
   }
 
@@ -162,18 +179,20 @@ export class VehiclesListComponent {
     // doc.setFontSize(12);
     // doc.text(`Date: ${new Date().toLocaleDateString()}`, 14, 30);
 
-    const head = [[
-      'Type de véhicule',
-      'Marque',
-      'Modèle',
-      'Année',
-      'Matricule',
-      '1e mise en circulation',
-      'N° VIN',
-      'N° Assurance'
-    ]];
+    const head = [
+      [
+        'Type de véhicule',
+        'Marque',
+        'Modèle',
+        'Année',
+        'Matricule',
+        '1e mise en circulation',
+        'N° VIN',
+        'N° Assurance',
+      ],
+    ];
 
-    const body = this.vehicles_data.map(v => [
+    const body = this.vehicles_data.map((v) => [
       this.translateVehicleType(v.vehicle_type),
       v.brand,
       v.model,
@@ -181,7 +200,7 @@ export class VehiclesListComponent {
       v.licence_plate,
       v.circulation_date,
       v.vin_number,
-      v.insurance_number
+      v.insurance_number,
     ]);
 
     autoTable(doc, {
@@ -195,7 +214,7 @@ export class VehiclesListComponent {
       headStyles: {
         fillColor: [41, 128, 185],
         textColor: 255,
-        halign: 'center'
+        halign: 'center',
       },
       alternateRowStyles: { fillColor: [240, 240, 240] },
     });
@@ -204,10 +223,13 @@ export class VehiclesListComponent {
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
       doc.setFontSize(10);
-      doc.text(`Page ${i} / ${pageCount}`, doc.internal.pageSize.getWidth() - 30, doc.internal.pageSize.getHeight() - 10);
+      doc.text(
+        `Page ${i} / ${pageCount}`,
+        doc.internal.pageSize.getWidth() - 30,
+        doc.internal.pageSize.getHeight() - 10,
+      );
     }
 
     doc.save(`liste_vehicules_${new Date().toLocaleDateString()}.pdf`);
   }
-
 }
