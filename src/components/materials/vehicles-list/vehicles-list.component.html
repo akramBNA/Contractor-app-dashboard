@@ -69,6 +69,9 @@
         <td class="px-4 py-2 text-sm">{{ vehicle.vin_number }}</td>
         <td class="px-4 py-2 text-sm">{{ vehicle.insurance_number }}</td>
         <td class="px-4 py-2 text-sm flex space-x-2">
+            <button mat-icon-button color="primary" (click)="onEditvehicle(vehicle.vehicle_id)" class="cursor-pointer">
+                <mat-icon style="color: #3b82f6;">edit</mat-icon>
+            </button>
             <button
               mat-icon-button
               color="warn"
@@ -76,7 +79,7 @@
               [disabled]="loadingMap[vehicle.vehicle_id]"
               class="cursor-pointer"
             >
-              <mat-icon *ngIf="!loadingMap[vehicle.vehicle_id]" style="color: #ef4444;">delete</mat-icon>
+              <mat-icon *ngIf="!loadingMap[vehicle.vehicle_id]" style="color: #ef4444;"> delete</mat-icon>
               <mat-icon *ngIf="loadingMap[vehicle.vehicle_id]" class="animate-spin">refresh</mat-icon>
             </button>
         </td>
