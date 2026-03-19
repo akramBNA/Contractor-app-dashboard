@@ -10,18 +10,29 @@ import { SwalService } from '../../../../shared/Swal/swal.service';
 import { MatDialog } from '@angular/material/dialog';
 import { addContractTypeFormDialogComponent } from '../add-contract-types/add-contract-types.component';
 import { EditContractTypeFormDialogComponent } from '../edit-contract-types/edit-contract-types.component';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { DeleteWithUndoService } from '../../../../shared/delete-with-undo/delete-with-undo.service';
 
 
 @Component({
   selector: 'app-contracts-settings',
-  imports: [CommonModule,LoadingSpinnerComponent, MatSelectModule, MatIconModule, MatPaginatorModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule],
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    MatSelectModule,
+    MatIconModule,
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './contracts-settings.component.html',
-  styleUrl: './contracts-settings.component.css'
+  styleUrl: './contracts-settings.component.css',
 })
 export class ContractsSettingsComponent {
+  loadingMap: { [key: number]: boolean } = {};
   isLoading: boolean = false;
   isEmpty: boolean = false;
 
@@ -39,28 +50,27 @@ export class ContractsSettingsComponent {
   constructor(
     private contractTypesService: ContractTypesService,
     private swalService: SwalService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private deleteWithUndoService: DeleteWithUndoService
 
   ) {}
 
   ngOnInit(): void {
     this.getContractTypes(this.limit, this.offset, '');
 
-    this.keywordControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe((value: string | null) => {
-            this.offset = 0;
-            this.getContractTypes(
-              this.limit,
-              this.offset,
-              (value ?? '').trim()
-            );
-          });
-  };
+    this.keywordControl.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value: string | null) => {
+        this.offset = 0;
+        this.getContractTypes(this.limit, this.offset, (value ?? '').trim());
+      });
+  }
 
-  getContractTypes(lim:number, off: number, key: string): void {
+  getContractTypes(lim: number, off: number, key: string): void {
     this.isLoading = true;
     this.contractTypesService.getAllContractTypes(lim, off, key).subscribe({
       next: (response) => {
-        if(response.success){
+        if (response.success) {
           this.contract_types_data = response.data;
           this.overall_count = response.data.length;
           this.isLoading = false;
@@ -73,16 +83,19 @@ export class ContractsSettingsComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        this.swalService.showError('Erreur', 'Une erreur est survenue lors de la récupération des types de contrat.');
-      }
+        this.swalService.showError(
+          'Erreur',
+          'Une erreur est survenue lors de la récupération des types de contrat.',
+        );
+      },
     });
-  };
+  }
 
   onAddContractType(): void {
     const dialogRef = this.dialog.open(addContractTypeFormDialogComponent, {
       width: '450px',
       disableClose: true,
-      data: null
+      data: null,
     });
 
     dialogRef.afterClosed().subscribe((newData) => {
@@ -92,19 +105,19 @@ export class ContractsSettingsComponent {
         this.isEmpty = false;
       }
     });
-  };
+  }
 
   onEditContractType(contractType: any): void {
     const dialogRef = this.dialog.open(EditContractTypeFormDialogComponent, {
       width: '450px',
       disableClose: true,
-      data: contractType
+      data: contractType,
     });
 
     dialogRef.afterClosed().subscribe((updatedData) => {
       if (updatedData) {
         const index = this.contract_types_data.findIndex(
-          ct => ct.contract_type_id === updatedData.contract_type_id
+          (ct) => ct.contract_type_id === updatedData.contract_type_id,
         );
 
         if (index !== -1) {
@@ -113,45 +126,99 @@ export class ContractsSettingsComponent {
         }
       }
     });
-  };
+  }
+
+  // onDeleteContractType(contractTypeId: number): void {
+  //   this.swalService
+  //     .showConfirmation('Voulez-vous vraiment supprimer ce type de contrat ?')
+  //     .then((result: any) => {
+  //       if (!result.isConfirmed) return;
+  //       const backup = [...this.contract_types_data];
+  //       this.contract_types_data = this.contract_types_data.filter(
+  //         (ct) => ct.contract_type_id !== contractTypeId,
+  //       );
+
+  //       this.overall_count = this.contract_types_data.length;
+  //       this.isEmpty = this.overall_count === 0;
+
+  //       this.swalService
+  //         .showUndo('Type de contrat supprimé', 5000)
+  //         .then((undoClicked: boolean) => {
+  //           if (undoClicked) {
+  //             this.contract_types_data = backup;
+  //             this.overall_count = this.contract_types_data.length;
+  //             this.isEmpty = this.overall_count === 0;
+  //             return;
+  //           }
+
+  //           this.loadingMap[contractTypeId] = true;
+  //           this.contractTypesService
+  //             .deleteContractType(contractTypeId)
+  //             .pipe(
+  //               finalize(() => {
+  //                 this.loadingMap[contractTypeId] = false;
+  //               }),
+  //             )
+  //             .subscribe({
+  //               next: (response: any) => {
+  //                 if (!response.success) {
+  //                   this.contract_types_data = backup;
+  //                   this.overall_count = this.contract_types_data.length;
+  //                   this.isEmpty = this.overall_count === 0;
+
+  //                   this.swalService.showError(
+  //                     'Erreur lors de la suppression.',
+  //                   );
+  //                 }
+  //               },
+  //               error: () => {
+  //                 this.contract_types_data = backup;
+  //                 this.overall_count = this.contract_types_data.length;
+  //                 this.isEmpty = this.overall_count === 0;
+
+  //                 this.swalService.showError(
+  //                   'Une erreur est survenue lors de la suppression.',
+  //                 );
+  //               },
+  //             });
+  //         });
+  //     });
+  // }
 
   onDeleteContractType(contractTypeId: number): void {
-    this.swalService.showConfirmation('Voulez-vous vraiment supprimer ce type de contrat ?').then((result: any) => {
-      if (result.isConfirmed) {
-        this.isLoading = true;
+    this.deleteWithUndoService.handle({
+      data: this.contract_types_data,
+      
+      setData: (data) => (this.contract_types_data = data),
 
-        this.contractTypesService.deleteContractType(contractTypeId).subscribe({
-          next: (response) => {
-            if (response.success) {
-              this.contract_types_data = this.contract_types_data.filter(
-                ct => ct.contract_type_id !== contractTypeId
-              );
+      id: contractTypeId,
 
-              this.overall_count = this.contract_types_data.length;
-              this.isEmpty = this.overall_count === 0;
+      matchFn: (ct) => ct.contract_type_id === contractTypeId,
 
-              this.swalService.showSuccess('Le type de contrat a été supprimé avec succès.');
-            } else {
-              this.swalService.showError('Erreur', response.message || 'Impossible de supprimer ce type de contrat.');
-            }
+      deleteFn: () =>
+        this.contractTypesService.deleteContractType(contractTypeId),
 
-            this.isLoading = false;
-          },
-          error: () => {
-            this.isLoading = false;
-            this.swalService.showError('Erreur','Une erreur est survenue lors de la suppression.');
-          }
-        });
-      }
+      loadingMap: this.loadingMap,
+
+      messages: {
+        confirm: 'Voulez-vous vraiment supprimer ce type de contrat ?',
+        undo: 'Type de contrat supprimé',
+        error: 'Erreur lors de la suppression.',
+      },
+
+      afterUpdate: (data) => {
+        this.overall_count = data.length;
+        this.isEmpty = data.length === 0;
+      },
     });
-  };
+  }
 
   onPageChange(event: any): void {
     // Logic to handle page change
-  };
+  }
 
   clearSearch(): void {
     this.keywordControl.setValue('');
     this.getContractTypes(this.limit, this.offset, '');
-  };
+  }
 }
