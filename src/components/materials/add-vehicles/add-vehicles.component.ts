@@ -2,10 +2,16 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogRef } from '@angular/material/dialog';
 import { VehiclesService } from '../../../services/vehicles.services';
 import { VehicleTypesService } from '../../../services/vehicle_types.services';
 
@@ -35,15 +41,15 @@ export class AddVehiclesComponent {
     van: 'Fourgon',
     bus: 'Bus',
     'construction vehicle': 'Engin de chantier',
-    other: 'Autre'
+    other: 'Autre',
   };
-
 
   constructor(
     private fb: FormBuilder,
     private vehiclesService: VehiclesService,
     private vehicleTypesService: VehicleTypesService,
-    private swal: SwalService
+    private swal: SwalService,
+    private dialogRef: MatDialogRef<AddVehiclesComponent>,
   ) {
     this.vehicleForm = this.fb.group({
       vehicle_type_id: ['', Validators.required],
@@ -59,7 +65,7 @@ export class AddVehiclesComponent {
 
   ngOnInit() {
     this.fetchVehicleTypes();
-  };
+  }
 
   async fetchVehicleTypes() {
     this.isLoading = true;
@@ -68,23 +74,28 @@ export class AddVehiclesComponent {
         if (response.success) {
           this.vehicle_types_data = response.data.map((vt: any) => ({
             ...vt,
-            vehicle_type_fr: this.vehicleTypeTranslations[vt.vehicle_type] || vt.vehicle_type
+            vehicle_type_fr:
+              this.vehicleTypeTranslations[vt.vehicle_type] || vt.vehicle_type,
           }));
           this.isLoading = false;
         } else {
-          this.swal.showError('Erreur lors de la récupération des types de véhicules.').then(() => {
-            this.isLoading = false;
-          });
+          this.swal
+            .showError('Erreur lors de la récupération des types de véhicules.')
+            .then(() => {
+              this.isLoading = false;
+            });
         }
       },
       error: (err) => {
         console.error(err);
-        this.swal.showError('Erreur lors de la récupération des types de véhicules.').then(() => {
-          this.isLoading = false;
-        });
+        this.swal
+          .showError('Erreur lors de la récupération des types de véhicules.')
+          .then(() => {
+            this.isLoading = false;
+          });
       },
     });
-  };
+  }
 
   async onSubmitVehicle() {
     if (this.vehicleForm.invalid) {
@@ -92,23 +103,24 @@ export class AddVehiclesComponent {
       return;
     }
 
-    this.isLoading = true;    
+    this.isLoading = true;
+
     this.vehiclesService.addVehicle(this.vehicleForm.value).subscribe({
       next: (response) => {
         if (response.success) {
           this.swal.showSuccess('Véhicule ajouté avec succès!');
-          this.vehicleForm.reset();
           this.isLoading = false;
+
+          this.dialogRef.close('refresh');
         } else {
           this.isLoading = false;
           this.swal.showError("Erreur lors de l'ajout du véhicule.");
         }
       },
-      error: (err) => {
-        console.error(err);
-        this.swal.showError("Erreur lors de l'ajout du véhicule.");
+      error: () => {
         this.isLoading = false;
+        this.swal.showError("Erreur lors de l'ajout du véhicule.");
       },
     });
-  };
+  }
 }
