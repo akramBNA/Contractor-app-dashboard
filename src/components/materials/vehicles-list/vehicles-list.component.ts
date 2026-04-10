@@ -10,6 +10,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, finalize } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { AddVehiclesComponent } from '../add-vehicles/add-vehicles.component';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -62,6 +64,7 @@ export class VehiclesListComponent {
     private vehiclesService: VehiclesService,
     private swalService: SwalService,
     private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {    
