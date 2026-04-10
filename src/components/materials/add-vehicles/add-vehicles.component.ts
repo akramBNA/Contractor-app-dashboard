@@ -123,4 +123,8 @@ export class AddVehiclesComponent {
       },
     });
   }
+
+  onCancel() {
+    this.dialogRef.close();
+  }
 }
