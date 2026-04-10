@@ -64,10 +64,10 @@ export class VehiclesListComponent {
     private vehiclesService: VehiclesService,
     private swalService: SwalService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
-  ngOnInit() {    
+  ngOnInit() {
     this.checkScreen();
     window.addEventListener('resize', () => this.checkScreen());
     this.fetchVehiclesData(this.limit, this.offset, this.keyword ?? '');
@@ -123,7 +123,9 @@ export class VehiclesListComponent {
   }
 
   onDeletevehicle(vehicleId: number) {
-    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer ce véhicule ?').then((result) => {
+    this.swalService
+      .showConfirmation('Êtes-vous sûr de vouloir supprimer ce véhicule ?')
+      .then((result) => {
         if (!result.isConfirmed) return;
 
         const backup = [...this.vehicles_data];
@@ -133,7 +135,9 @@ export class VehiclesListComponent {
         this.total_count = this.vehicles_data.length;
         this.isEmpty = this.vehicles_data.length === 0;
 
-        this.swalService.showUndo('Véhicule supprimé', 5000).then((undoClicked: boolean) => {
+        this.swalService
+          .showUndo('Véhicule supprimé', 5000)
+          .then((undoClicked: boolean) => {
             if (undoClicked) {
               this.vehicles_data = backup;
               this.total_count = this.vehicles_data.length;
@@ -142,17 +146,24 @@ export class VehiclesListComponent {
             }
 
             this.loadingMap[vehicleId] = true;
-            this.vehiclesService.deleteVehicle(vehicleId).pipe(finalize(() => {
+            this.vehiclesService
+              .deleteVehicle(vehicleId)
+              .pipe(
+                finalize(() => {
                   this.loadingMap[vehicleId] = false;
                 }),
-              ).subscribe({
+              )
+              .subscribe({
                 next: (res: any) => {
                   if (!res.success) {
                     this.vehicles_data = backup;
                     this.total_count = this.vehicles_data.length;
                     this.isEmpty = this.vehicles_data.length === 0;
 
-                    this.swalService.showError('Erreur lors de la suppression.',);}
+                    this.swalService.showError(
+                      'Erreur lors de la suppression.',
+                    );
+                  }
                 },
                 error: () => {
                   this.vehicles_data = backup;
@@ -234,5 +245,19 @@ export class VehiclesListComponent {
     }
 
     doc.save(`liste_vehicules_${new Date().toLocaleDateString()}.pdf`);
+  }
+
+  openAddVehicleDialog() {
+    const dialogRef = this.dialog.open(AddVehiclesComponent, {
+      width: '900px',
+      maxHeight: '90vh',
+      panelClass: 'custom-dialog-container',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'refresh') {
+        this.fetchVehiclesData(this.limit, this.offset, this.keyword);
+      }
+    });
   }
 }
