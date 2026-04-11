@@ -129,6 +129,7 @@ export class UpdateVehiclesComponent {
         if(res.success) {
           this.isLoading = false;
           this.swal.showSuccess('Véhicule mis à jour avec succès.');
+          this.dialogRef.close();
         } else {
           this.isLoading = false;
           this.swal.showError('Une erreur est survenue lors de la mise à jour du véhicule. Veuillez réessayer.');
