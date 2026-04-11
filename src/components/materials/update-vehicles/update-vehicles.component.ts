@@ -11,6 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Inject } from '@angular/core';
 
 @Component({
   selector: 'app-update-vehicles',
@@ -31,6 +33,7 @@ export class UpdateVehiclesComponent {
   vehicle_types_data: any[] = [];
   vehicle_data: any = {};
   vehicleForm: any;
+  vehicleId!: number;
 
   vehicleTypeTranslations: { [key: string]: string } = {
     car: 'Voiture',
@@ -48,8 +51,8 @@ export class UpdateVehiclesComponent {
     private vehiclesService: VehiclesService,
     private vehicleTypesService: VehicleTypesService,
     private swal: SwalService,
-    private route: ActivatedRoute,
     private dialogRef: MatDialogRef<UpdateVehiclesComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.vehicleForm = this.fb.group({
       vehicle_type_id: ['', Validators.required],
@@ -65,13 +68,17 @@ export class UpdateVehiclesComponent {
 
   ngOnInit(): void {
     this.getVehicleTypes();
-    const veh_id_num = Number(window.location.pathname.split('/').pop());
 
-    if (!isNaN(veh_id_num)) {
-      this.getVehicle(veh_id_num);
-    } else {
+    const veh_id_num = Number(this.data?.vehicleId);
+
+    if (!veh_id_num || isNaN(veh_id_num)) {
       this.swal.showError('ID du véhicule invalide.');
+      this.dialogRef.close();
+      return;
     }
+
+    this.getVehicle(veh_id_num);
+    this.vehicleId = veh_id_num;
   }
 
   async getVehicleTypes() {
@@ -131,33 +138,28 @@ export class UpdateVehiclesComponent {
     });
   }
 
-  onUpdate(id: any) {
+  onUpdate() {
     if (this.vehicleForm.invalid) {
       this.swal.showWarning('Veuillez remplir tous les champs obligatoires.');
       return;
     }
+
     this.isLoading = true;
 
-    this.vehiclesService
-      .updateVehicle(parseInt(id), this.vehicleForm.value)
-      .subscribe({
+    this.vehiclesService.updateVehicle(this.vehicleId, this.vehicleForm.value).subscribe({
         next: (res) => {
           if (res.success) {
             this.isLoading = false;
             this.swal.showSuccess('Véhicule mis à jour avec succès.');
-            this.dialogRef.close();
+            this.dialogRef.close('refresh');
           } else {
             this.isLoading = false;
-            this.swal.showError(
-              'Une erreur est survenue lors de la mise à jour du véhicule. Veuillez réessayer.',
-            );
+            this.swal.showError('Erreur lors de la mise à jour.');
           }
         },
-        error: (err) => {
+        error: () => {
           this.isLoading = false;
-          this.swal.showError(
-            'Une erreur est survenue lors de la mise à jour du véhicule. Veuillez réessayer.',
-          );
+          this.swal.showError('Erreur serveur.');
         },
       });
   }

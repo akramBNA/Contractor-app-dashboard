@@ -56,7 +56,7 @@
     </div>
 
     <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4 sm:pt-6">
-      <button type="button" (click)="onUpdate(vehicle_data.vehicle_id)" [disabled]="vehicleForm.invalid || isLoading"
+      <button type="button" (click)="onUpdate()" [disabled]="vehicleForm.invalid || isLoading"
         class="btn-edit">Modifier</button>
       <button type="button" (click)="onCancel()" class="btn-cancel">Annuler</button>
     </div>

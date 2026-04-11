@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { AddVehiclesComponent } from '../add-vehicles/add-vehicles.component';
+import { UpdateVehiclesComponent } from '../update-vehicles/update-vehicles.component';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -264,12 +265,12 @@ export class VehiclesListComponent {
   openUpdateVehicleDialog(vehicleId: number) {
     const veh_id_num = Number(vehicleId);
     
-    if (isNaN(veh_id_num)) {      
-      this.swalService.showError('ID du véhicule invalide.');
-      return;
-    }
+    // if (isNaN(veh_id_num)) {      
+    //   this.swalService.showError('ID du véhicule invalide.');
+    //   return;
+    // }
 
-    const dialogRef = this.dialog.open(AddVehiclesComponent, {
+    const dialogRef = this.dialog.open(UpdateVehiclesComponent, {
       width: '900px',
       maxHeight: '90vh',
       panelClass: 'custom-dialog-container',
