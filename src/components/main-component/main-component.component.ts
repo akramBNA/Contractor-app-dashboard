@@ -22,7 +22,6 @@ export class MainComponentComponent {
   showPlanningSubmenu: boolean = false;
   showSettingsSubmenu: boolean = false;
   showMissionsSubmenu: boolean = false;
-  showMaterialsSubmenu: boolean = false;
 
   showSttingsMenu: boolean = false;
   showPlanningMenu: boolean = false;
@@ -106,7 +105,6 @@ export class MainComponentComponent {
     this.showPlanningSubmenu = false;
     this.showSettingsSubmenu = false;
     this.showMissionsSubmenu = false;
-    this.showMaterialsSubmenu = false;
   };
 
   toggleRHSubmenu() {
@@ -131,12 +129,6 @@ export class MainComponentComponent {
     const newState = !this.showMissionsSubmenu;
     this.closeAllMenus();
     this.showMissionsSubmenu = newState;
-  };
-
-  toggleMaterialsSubmenu() {
-    const newState = !this.showMaterialsSubmenu;
-    this.closeAllMenus();
-    this.showMaterialsSubmenu = newState;
   };
 
   logout(): void {
