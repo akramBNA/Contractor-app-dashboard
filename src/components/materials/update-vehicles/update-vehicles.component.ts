@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { LoadingSpinnerComponent } from "../../../shared/loading-spinner/loading-spinner.component";
-import { MatSelectModule } from "@angular/material/select";
-import { MatDatepickerModule } from "@angular/material/datepicker";
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { VehiclesService } from '../../../services/vehicles.services';
 import { VehicleTypesService } from '../../../services/vehicle_types.services';
@@ -12,12 +12,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDialogRef } from '@angular/material/dialog';
 
-
 @Component({
   selector: 'app-update-vehicles',
-  imports: [CommonModule, LoadingSpinnerComponent, MatSelectModule, MatDatepickerModule, ReactiveFormsModule, MatInputModule, MatFormFieldModule],
+  imports: [
+    CommonModule,
+    LoadingSpinnerComponent,
+    MatSelectModule,
+    MatDatepickerModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
+  ],
   templateUrl: './update-vehicles.component.html',
-  styleUrl: './update-vehicles.component.css'
+  styleUrl: './update-vehicles.component.css',
 })
 export class UpdateVehiclesComponent {
   isLoading = false;
@@ -33,7 +40,7 @@ export class UpdateVehiclesComponent {
     van: 'Fourgon',
     bus: 'Bus',
     'construction vehicle': 'Engin de chantier',
-    other: 'Autre'
+    other: 'Autre',
   };
 
   constructor(
@@ -42,7 +49,7 @@ export class UpdateVehiclesComponent {
     private vehicleTypesService: VehicleTypesService,
     private swal: SwalService,
     private route: ActivatedRoute,
-    private dialogRef: MatDialogRef<UpdateVehiclesComponent>
+    private dialogRef: MatDialogRef<UpdateVehiclesComponent>,
   ) {
     this.vehicleForm = this.fb.group({
       vehicle_type_id: ['', Validators.required],
@@ -56,16 +63,16 @@ export class UpdateVehiclesComponent {
     });
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.getVehicleTypes();
     const veh_id_num = Number(window.location.pathname.split('/').pop());
-    
-    if (!isNaN(veh_id_num)) {      
+
+    if (!isNaN(veh_id_num)) {
       this.getVehicle(veh_id_num);
     } else {
       this.swal.showError('ID du véhicule invalide.');
     }
-  };
+  }
 
   async getVehicleTypes() {
     this.isLoading = true;
@@ -74,26 +81,29 @@ export class UpdateVehiclesComponent {
         this.vehicle_types_data = res.data;
         this.vehicle_types_data = this.vehicle_types_data.map((vt: any) => ({
           ...vt,
-          vehicle_type_fr: this.vehicleTypeTranslations[vt.vehicle_type] || vt.vehicle_type
+          vehicle_type_fr:
+            this.vehicleTypeTranslations[vt.vehicle_type] || vt.vehicle_type,
         }));
         this.isLoading = false;
       },
       error: (err) => {
         this.isLoading = false;
-        this.swal.showError('Une erreur est survenue lors de la récupération des types de véhicules. Veuillez réessayer.');
-      }
+        this.swal.showError(
+          'Une erreur est survenue lors de la récupération des types de véhicules. Veuillez réessayer.',
+        );
+      },
     });
-  };
-  
+  }
+
   async getVehicle(ID: any) {
     this.isLoading = true;
     this.vehiclesService.getVehicleById(ID).subscribe({
       next: (res) => {
-        console.log("res ===> ", res);
-        
-        if(res.success) {
+        console.log('res ===> ', res);
+
+        if (res.success) {
           this.vehicle_data = res.data;
-          console.log("vehicle data ===> ", this.vehicle_data);
+          console.log('vehicle data ===> ', this.vehicle_data);
           this.vehicleForm.patchValue({
             vehicle_type_id: this.vehicle_data.vehicle_type_id,
             brand: this.vehicle_data.brand,
@@ -107,38 +117,52 @@ export class UpdateVehiclesComponent {
           this.isLoading = false;
         } else {
           this.isLoading = false;
-          this.swal.showError('Une erreur est survenue lors de la récupération des données du véhicule. Veuillez réessayer.');
+          this.swal.showError(
+            'Une erreur est survenue lors de la récupération des données du véhicule. Veuillez réessayer.',
+          );
         }
       },
       error: (err) => {
         this.isLoading = false;
-        this.swal.showError('Une erreur est survenue lors de la récupération des données. Veuillez réessayer.');
-      }
+        this.swal.showError(
+          'Une erreur est survenue lors de la récupération des données. Veuillez réessayer.',
+        );
+      },
     });
   }
 
-  onUpdate(id:any) {    
+  onUpdate(id: any) {
     if (this.vehicleForm.invalid) {
       this.swal.showWarning('Veuillez remplir tous les champs obligatoires.');
       return;
-    };
+    }
     this.isLoading = true;
-    
-    this.vehiclesService.updateVehicle(parseInt(id), this.vehicleForm.value).subscribe({
-      next: (res) => {
-        if(res.success) {
+
+    this.vehiclesService
+      .updateVehicle(parseInt(id), this.vehicleForm.value)
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.isLoading = false;
+            this.swal.showSuccess('Véhicule mis à jour avec succès.');
+            this.dialogRef.close();
+          } else {
+            this.isLoading = false;
+            this.swal.showError(
+              'Une erreur est survenue lors de la mise à jour du véhicule. Veuillez réessayer.',
+            );
+          }
+        },
+        error: (err) => {
           this.isLoading = false;
-          this.swal.showSuccess('Véhicule mis à jour avec succès.');
-          this.dialogRef.close();
-        } else {
-          this.isLoading = false;
-          this.swal.showError('Une erreur est survenue lors de la mise à jour du véhicule. Veuillez réessayer.');
-        }
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.swal.showError('Une erreur est survenue lors de la mise à jour du véhicule. Veuillez réessayer.');
-      }
-    });
-  };
+          this.swal.showError(
+            'Une erreur est survenue lors de la mise à jour du véhicule. Veuillez réessayer.',
+          );
+        },
+      });
+  }
+
+  onCancel() {
+    this.dialogRef.close();
+  }
 }
