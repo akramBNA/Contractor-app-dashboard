@@ -10,6 +10,8 @@ import { SwalService } from '../../../shared/Swal/swal.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-update-vehicles',
@@ -39,7 +41,8 @@ export class UpdateVehiclesComponent {
     private vehiclesService: VehiclesService,
     private vehicleTypesService: VehicleTypesService,
     private swal: SwalService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialogRef: MatDialogRef<UpdateVehiclesComponent>
   ) {
     this.vehicleForm = this.fb.group({
       vehicle_type_id: ['', Validators.required],
