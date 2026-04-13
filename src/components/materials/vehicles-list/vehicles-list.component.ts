@@ -264,12 +264,6 @@ export class VehiclesListComponent {
 
   openUpdateVehicleDialog(vehicleId: number) {
     const veh_id_num = Number(vehicleId);
-    
-    // if (isNaN(veh_id_num)) {      
-    //   this.swalService.showError('ID du véhicule invalide.');
-    //   return;
-    // }
-
     const dialogRef = this.dialog.open(UpdateVehiclesComponent, {
       width: '900px',
       maxHeight: '90vh',
