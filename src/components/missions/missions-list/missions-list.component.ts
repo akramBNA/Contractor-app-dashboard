@@ -158,4 +158,6 @@ export class MissionsListComponent {
           });
       });
   }
+
+  openAddMissionDialog() {}
 }
