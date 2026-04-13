@@ -5,11 +5,13 @@ import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { MissionsService } from '../../../services/missions.services';
+import { AddMissionsComponent } from '../add-missions/add-missions.component';
 import { MatIconModule } from '@angular/material/icon';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from "@angular/material/input";
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 
@@ -60,6 +62,7 @@ export class MissionsListComponent {
     private router: Router,
     private swalService: SwalService,
     private breakpointObserver: BreakpointObserver,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
@@ -157,5 +160,19 @@ export class MissionsListComponent {
               });
           });
       });
+  }
+
+  openAddMissionDialog() {
+    const dialogRef = this.dialog.open(AddMissionsComponent, {
+      width: '900px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'refresh') {
+        this.getAllMissions(this.limit, this.offset, this.keyword);
+      }
+    });
   }
 }
