@@ -165,6 +165,7 @@ export class MissionsListComponent {
   openAddMissionDialog() {
     const dialogRef = this.dialog.open(AddMissionsComponent, {
       width: '900px',
+      maxWidth: '95vw',
       maxHeight: '90vh',
     });
 
