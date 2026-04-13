@@ -22,6 +22,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-missions',
@@ -61,6 +62,7 @@ export class AddMissionsComponent implements OnInit {
     private employeeService: EmployeesService,
     private router: Router,
     private swalService: SwalService,
+    private dialogRef: MatDialogRef<AddMissionsComponent>,
   ) {
     this.missionForm = this.fb.group({
       mission_name: ['', Validators.required],
@@ -199,6 +201,7 @@ export class AddMissionsComponent implements OnInit {
           this.missionForm.reset();
           this.selectedEmployees = [];
           this.router.navigate(['/main-page/missions/missions-list']);
+          this.dialogRef.close('refresh');
         });
       } else {
         this.isLoading = false;
