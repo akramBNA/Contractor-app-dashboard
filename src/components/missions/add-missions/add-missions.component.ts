@@ -22,7 +22,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-missions',
@@ -39,7 +39,8 @@ import { MatDialogRef } from '@angular/material/dialog';
     MatNativeDateModule,
     MatAutocomplete,
     MatAutocompleteModule,
-  ],
+    MatDialogModule
+],
   templateUrl: './add-missions.component.html',
   styleUrls: ['./add-missions.component.css'],
 })
