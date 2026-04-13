@@ -214,7 +214,7 @@ export class AddMissionsComponent implements OnInit {
     });
   }
 
-  goBack() {
-    this.router.navigate(['/main-page/missions/missions-list']);
+  cancel() {
+    this.dialogRef.close();
   }
 }
