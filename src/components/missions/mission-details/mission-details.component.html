@@ -1,89 +1,84 @@
-<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Détails de la Mission</h1>
+<h2 mat-dialog-title class="text-lg md:text-xl font-bold text-center pb-2">Détails de la Mission</h2>
 
-<app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+<mat-dialog-content class="max-h-[65vh] overflow-y-auto px-2 md:px-4">
 
-<form *ngIf="missionForm" [formGroup]="missionForm" class="space-y-12 px-6 md:px-12">
-  <div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <mat-form-field appearance="fill">
-        <mat-label>Nom de la Mission</mat-label>
-        <input matInput formControlName="mission_name" />
-      </mat-form-field>
+  <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Description</mat-label>
-        <textarea matInput formControlName="mission_description" rows="3"></textarea>
-      </mat-form-field>
+  <form *ngIf="missionForm" [formGroup]="missionForm" class="space-y-8 px-4 md:px-8">
+    <div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <mat-form-field appearance="fill">
+          <mat-label>Nom de la Mission</mat-label>
+          <input matInput formControlName="mission_name" />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Date de Début</mat-label>
-        <input matInput [matDatepicker]="startPicker" formControlName="start_at"/>
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker></mat-datepicker>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="mission_description" rows="3"></textarea>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Date de Fin</mat-label>
-        <input matInput [matDatepicker]="endPicker" formControlName="end_at" [min]="minEndDate"/>
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker></mat-datepicker>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Date de Début</mat-label>
+          <input matInput [matDatepicker]="startPicker" formControlName="start_at" />
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Priorité</mat-label>
-        <mat-select formControlName="priority">
-          <mat-option value="">-- Sélectionner --</mat-option>
-          <mat-option value="LOW">Faible</mat-option>
-          <mat-option value="MEDIUM">Moyenne</mat-option>
-          <mat-option value="HIGH">Élevée</mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Date de Fin</mat-label>
+          <input matInput [matDatepicker]="endPicker" formControlName="end_at" [min]="minEndDate" />
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Frais (TND)</mat-label>
-        <input matInput type="number" formControlName="expenses" />
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Priorité</mat-label>
+          <mat-select formControlName="priority">
+            <mat-option value="">-- Sélectionner --</mat-option>
+            <mat-option value="LOW">Faible</mat-option>
+            <mat-option value="MEDIUM">Moyenne</mat-option>
+            <mat-option value="HIGH">Élevée</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-<mat-form-field appearance="fill" class="w-full mt-8">
-  <mat-label>Employés Assignés</mat-label>
+        <mat-form-field appearance="fill">
+          <mat-label>Frais (TND)</mat-label>
+          <input matInput type="number" formControlName="expenses" />
+        </mat-form-field>
 
-  <mat-chip-grid #chipGrid aria-label="Sélection d'employés">
-    <mat-chip-row
-      *ngFor="let emp of selectedEmployees"
-      (removed)="removeEmployee(emp)"
-      color="primary"
-      selected
-    >
-      {{ emp.employee_name }} {{ emp.employee_lastname }}
-      <button matChipRemove [attr.aria-label]="'Supprimer ' + emp.employee_name">
-        <mat-icon>cancel</mat-icon>
-      </button>
-    </mat-chip-row>
-  </mat-chip-grid>
+        <mat-form-field appearance="fill" class="w-full mt-8">
+          <mat-label>Employés Assignés</mat-label>
 
-  <input
-    placeholder="Rechercher un employé..."
-    [formControl]="employeeCtrl"
-    [matAutocomplete]="auto"
-    [matChipInputFor]="chipGrid"
-    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-    (matChipInputTokenEnd)="addEmployeeFromInput()" />
+          <mat-chip-grid #chipGrid aria-label="Sélection d'employés">
+            <mat-chip-row *ngFor="let emp of selectedEmployees" (removed)="removeEmployee(emp)" color="primary"
+              selected>
+              {{ emp.employee_name }} {{ emp.employee_lastname }}
+              <button matChipRemove [attr.aria-label]="'Supprimer ' + emp.employee_name">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
 
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let emp of filteredEmployees" [value]="emp">
-        {{ emp.employee_name }} {{ emp.employee_lastname }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+          <input placeholder="Rechercher un employé..." [formControl]="employeeCtrl" [matAutocomplete]="auto"
+            [matChipInputFor]="chipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addEmployeeFromInput()" />
 
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+            <mat-option *ngFor="let emp of filteredEmployees" [value]="emp">
+              {{ emp.employee_name }} {{ emp.employee_lastname }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+</mat-dialog-content>
 
-<div class="text-center pt-6">
+<div class="text-center pt-6 mb-4">
   <div class="flex flex-col md:flex-row justify-center items-center gap-4">
-    <button type="button" (click)="exportToDocx()" class="btn-add">Telecharger</button>
-    <button type="button" (click)="updateMission()" class="btn-edit">Modifier</button>
-    <button type="button" (click)="goBack()" class="btn-cancel">Retour</button>
+    <button type="button" (click)="exportToDocx()" class="btn-add w-fit min-w-[140px]" type="button">Telecharger</button>
+    <button type="button" (click)="updateMission()" class="btn-edit w-fit min-w-[140px]" type="button">Modifier</button>
+    <button type="button" (click)="goBack()" class="btn-cancel w-fit min-w-[140px]" type="button">Retour</button>
   </div>
 </div>
