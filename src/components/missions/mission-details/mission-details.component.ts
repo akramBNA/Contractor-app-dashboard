@@ -67,7 +67,8 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/materia
     MatCardModule,
     MatAutocomplete,
     MatAutocompleteModule,
-  ],
+    MatDialogModule
+],
   templateUrl: './mission-details.component.html',
   styleUrl: './mission-details.component.css',
 })
