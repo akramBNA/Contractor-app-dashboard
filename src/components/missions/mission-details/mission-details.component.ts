@@ -48,7 +48,7 @@ import {
   ShadingType,
 } from "docx";
 import { saveAs } from "file-saver";
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mission-details',
