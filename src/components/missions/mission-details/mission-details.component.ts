@@ -275,7 +275,7 @@ export class MissionDetailsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/main-page/missions/missions-list']);
+    this.dialogRef.close();
   }
 
   exportToDocx() {
