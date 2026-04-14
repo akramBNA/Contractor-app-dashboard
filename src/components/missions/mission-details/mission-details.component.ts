@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -29,7 +29,9 @@ import {
 } from '@angular/material/autocomplete';
 import { SwalService } from '../../../shared/Swal/swal.service';
 import * as html2pdf from 'html2pdf.js';
+
 // import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle } from "docx";
+
 import {
   AlignmentType,
   BorderStyle,
@@ -46,6 +48,7 @@ import {
   ShadingType,
 } from "docx";
 import { saveAs } from "file-saver";
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mission-details',
