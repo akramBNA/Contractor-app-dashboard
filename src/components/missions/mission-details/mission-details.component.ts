@@ -66,7 +66,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     MatChipsModule,
     MatCardModule,
     MatAutocomplete,
-    MatAutocompleteModule
+    MatAutocompleteModule,
   ],
   templateUrl: './mission-details.component.html',
   styleUrl: './mission-details.component.css',
@@ -86,7 +86,6 @@ export class MissionDetailsComponent implements OnInit {
   employeesList: any[] = [];
   minEndDate: Date | null = null;
 
-
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
   constructor(
@@ -94,34 +93,44 @@ export class MissionDetailsComponent implements OnInit {
     private employeeService: EmployeesService,
     private router: Router,
     private fb: FormBuilder,
-    private swalService: SwalService
+    private swalService: SwalService,
+    private dialogRef: MatDialogRef<MissionDetailsComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { missionId: string },
   ) {}
 
   ngOnInit() {
     this.getAllActiveEmployeesNames();
-    const missionId = window.location.pathname.split('/').pop();
+    this.initForm();
+
+    const missionId = this.data?.missionId;
+
     if (missionId) {
-      this.initForm();
       this.getMissionDetails(missionId);
     } else {
-      console.error('Mission ID not found in the URL');
+      console.error('Mission ID not provided to dialog');
     }
 
     this.employeeCtrl.valueChanges.subscribe((value: string | any) => {
-      const filterValue = ( typeof value === 'string' ? value : '').toLowerCase();
+      const filterValue = (
+        typeof value === 'string' ? value : ''
+      ).toLowerCase();
       this.filteredEmployees = this.employeesList.filter((emp) =>
-        (emp.employee_name + ' ' + emp.employee_lastname).toLowerCase().includes(filterValue)
+        (emp.employee_name + ' ' + emp.employee_lastname)
+          .toLowerCase()
+          .includes(filterValue),
       );
     });
 
-    this.missionForm.get('start_at')?.valueChanges.subscribe((startDate: Date) => {
-    this.minEndDate = startDate;
+    this.missionForm
+      .get('start_at')
+      ?.valueChanges.subscribe((startDate: Date) => {
+        this.minEndDate = startDate;
 
-    const endDate = this.missionForm.get('end_at')?.value;
-    if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
-        this.missionForm.get('end_at')?.setValue(null);
-      }
-    });
+        const endDate = this.missionForm.get('end_at')?.value;
+        if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
+          this.missionForm.get('end_at')?.setValue(null);
+        }
+      });
   }
 
   initForm() {
@@ -145,12 +154,18 @@ export class MissionDetailsComponent implements OnInit {
 
   getMissionDetails(missionId: string) {
     this.isLoading = true;
-    this.missionsService.getMissionById(missionId).subscribe((response: any) => {
+    this.missionsService
+      .getMissionById(missionId)
+      .subscribe((response: any) => {
         if (response.success) {
           this.isLoading = false;
           this.missionData = response.data;
 
-          this.assignedEmployees = Array.isArray( this.missionData?.assigned_employees ) ? this.missionData.assigned_employees : [];
+          this.assignedEmployees = Array.isArray(
+            this.missionData?.assigned_employees,
+          )
+            ? this.missionData.assigned_employees
+            : [];
           this.assignedEmployees = this.missionData?.assigned_employees;
           this.selectedEmployees = this.missionData?.assigned_employees || [];
 
@@ -169,8 +184,6 @@ export class MissionDetailsComponent implements OnInit {
             expenses: this.missionData.expenses,
             employee_id: this.selectedEmployees.map((emp) => emp.employee_id),
           });
-
-          
         } else {
           this.isLoading = false;
           this.swalService.showError('Mission non trouvée.').then((result) => {
@@ -186,7 +199,7 @@ export class MissionDetailsComponent implements OnInit {
     const selectedEmp = event.option.value;
     if (
       !this.selectedEmployees.some(
-        (e) => e.employee_id === selectedEmp.employee_id
+        (e) => e.employee_id === selectedEmp.employee_id,
       )
     ) {
       this.selectedEmployees.push(selectedEmp);
@@ -197,7 +210,7 @@ export class MissionDetailsComponent implements OnInit {
 
   removeEmployee(emp: any): void {
     this.selectedEmployees = this.selectedEmployees.filter(
-      (e) => e.employee_id !== emp.employee_id
+      (e) => e.employee_id !== emp.employee_id,
     );
     this.updateEmployeeFormValue();
   }
@@ -205,31 +218,31 @@ export class MissionDetailsComponent implements OnInit {
   addEmployeeFromInput(): void {
     this.employeeCtrl.setValue('');
   }
-  
+
   updateEmployeeFormValue(): void {
     const ids = this.selectedEmployees.map((emp) => emp.employee_id);
     this.missionForm.get('employee_id')?.setValue(ids);
   }
 
   formatDateLocal(dateInput: any): string {
-    const date = (dateInput instanceof Date) ? dateInput : new Date(dateInput);
+    const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
     if (isNaN(date.getTime())) {
       console.error('Invalid date input:', dateInput);
       return '';
     }
 
     const year = date.getFullYear();
-    const month = (`0${date.getMonth() + 1}`).slice(-2);
-    const day = (`0${date.getDate()}`).slice(-2);
+    const month = `0${date.getMonth() + 1}`.slice(-2);
+    const day = `0${date.getDate()}`.slice(-2);
     return `${year}-${month}-${day}`;
   }
 
   updateMission() {
     this.isLoading = true;
-    
+
     if (!this.missionForm.valid) {
       this.isLoading = false;
-      this.swalService.showWarning('Veuiller controlez vos données.');
+      this.swalService.showWarning('Veuillez contrôler vos données.');
       return;
     }
 
@@ -241,15 +254,21 @@ export class MissionDetailsComponent implements OnInit {
       end_at: this.formatDateLocal(formValue.end_at),
     };
 
-    this.missionsService.editMission(this.mission_id, formattedPayload).subscribe((response: any) => {
+    this.missionsService
+      .editMission(this.mission_id, formattedPayload)
+      .subscribe((response: any) => {
+        this.isLoading = false;
+
         if (response.success) {
-          this.isLoading = false;
-          this.swalService.showSuccess('Mission mise à jour avec succès.').then(() => {
-            this.router.navigate(['/main-page/missions/missions-list']);
-          });
+          this.swalService
+            .showSuccess('Mission mise à jour avec succès.')
+            .then(() => {
+              this.dialogRef.close('refresh');
+            });
         } else {
-          this.isLoading = false;
-          this.swalService.showError('Une erreur s\'est produite lors de la mise à jour de la mission.');
+          this.swalService.showError(
+            "Une erreur s'est produite lors de la mise à jour.",
+          );
         }
       });
   }
@@ -262,34 +281,34 @@ export class MissionDetailsComponent implements OnInit {
     if (!this.missionForm) return;
 
     const priorityMap: Record<string, string> = {
-      LOW: "Faible",
-      MEDIUM: "Moyenne",
-      HIGH: "Élevée",
-      "": "—",
+      LOW: 'Faible',
+      MEDIUM: 'Moyenne',
+      HIGH: 'Élevée',
+      '': '—',
     };
 
     const today = new Date();
-    const todayFormatted = `${String(today.getDate()).padStart(2, "0")} - ${String(
-      today.getMonth() + 1
-    ).padStart(2, "0")} - ${today.getFullYear()}`;
+    const todayFormatted = `${String(today.getDate()).padStart(2, '0')} - ${String(
+      today.getMonth() + 1,
+    ).padStart(2, '0')} - ${today.getFullYear()}`;
 
     const fv = this.missionForm.value;
 
     const missionId = this.mission_id;
-    const missionName = fv.mission_name || "—";
-    const missionDesc = fv.mission_description || "—";
-    const startDate   = this.formatDateLocal(fv.start_at) || "—";
-    const endDate     = this.formatDateLocal(fv.end_at) || "—";
-    const priority    = priorityMap[fv.priority] || "—";    
-    const expenses    = `${fv?.expenses ?? 0} TND`;
-    const employees   = (this.selectedEmployees || []).map(
-      (e: any) => `${e.employee_name} ${e.employee_lastname}`
+    const missionName = fv.mission_name || '—';
+    const missionDesc = fv.mission_description || '—';
+    const startDate = this.formatDateLocal(fv.start_at) || '—';
+    const endDate = this.formatDateLocal(fv.end_at) || '—';
+    const priority = priorityMap[fv.priority] || '—';
+    const expenses = `${fv?.expenses ?? 0} TND`;
+    const employees = (this.selectedEmployees || []).map(
+      (e: any) => `${e.employee_name} ${e.employee_lastname}`,
     );
 
     const headerCell = (label: string) =>
       new TableCell({
         width: { size: 35, type: WidthType.PERCENTAGE },
-        shading: { type: ShadingType.CLEAR, color: "auto", fill: "D9D9D9" },
+        shading: { type: ShadingType.CLEAR, color: 'auto', fill: 'D9D9D9' },
         margins: { top: 200, bottom: 200, left: 200, right: 200 },
         children: [
           new Paragraph({
@@ -312,24 +331,24 @@ export class MissionDetailsComponent implements OnInit {
       });
 
     const bulletParagraphs = (items: string[]) =>
-      (items.length
+      items.length
         ? items.map(
             (t) =>
               new Paragraph({
                 text: t,
                 bullet: { level: 0 },
-              })
+              }),
           )
-        : [new Paragraph("—")]);
+        : [new Paragraph('—')];
 
     const rows: TableRow[] = [
-      row("Nom de la Mission", [new Paragraph(missionName)]),
-      row("Description", [new Paragraph(missionDesc)]),
-      row("Date de Début", [new Paragraph(startDate)]),
-      row("Date de Fin", [new Paragraph(endDate)]),
-      row("Priorité", [new Paragraph(priority)]),
-      row("Frais (TND)", [new Paragraph(expenses)]),
-      row("Employés Assignés", bulletParagraphs(employees)),
+      row('Nom de la Mission', [new Paragraph(missionName)]),
+      row('Description', [new Paragraph(missionDesc)]),
+      row('Date de Début', [new Paragraph(startDate)]),
+      row('Date de Fin', [new Paragraph(endDate)]),
+      row('Priorité', [new Paragraph(priority)]),
+      row('Frais (TND)', [new Paragraph(expenses)]),
+      row('Employés Assignés', bulletParagraphs(employees)),
     ];
 
     const detailsTable = new Table({
@@ -362,10 +381,10 @@ export class MissionDetailsComponent implements OnInit {
             new TableCell({
               children: [
                 new Paragraph({
-                  children: [new TextRun({ text: "Manager", size: 18 })],
+                  children: [new TextRun({ text: 'Manager', size: 18 })],
                   alignment: AlignmentType.LEFT,
                 }),
-                new Paragraph({ text: "", spacing: { before: 1000 } }),
+                new Paragraph({ text: '', spacing: { before: 1000 } }),
               ],
               margins: { top: 100, bottom: 100, left: 200, right: 200 },
             }),
@@ -373,10 +392,12 @@ export class MissionDetailsComponent implements OnInit {
             new TableCell({
               children: [
                 new Paragraph({
-                  children: [new TextRun({ text: "Employé(s) affecté(s)", size: 18 })],
+                  children: [
+                    new TextRun({ text: 'Employé(s) affecté(s)', size: 18 }),
+                  ],
                   alignment: AlignmentType.LEFT,
                 }),
-                new Paragraph({ text: "", spacing: { before: 1000 } }),
+                new Paragraph({ text: '', spacing: { before: 1000 } }),
               ],
               margins: { top: 100, bottom: 100, left: 200, right: 200 },
             }),
@@ -400,10 +421,12 @@ export class MissionDetailsComponent implements OnInit {
           children: [
             new TableCell({
               width: { size: 50, type: WidthType.PERCENTAGE },
-              verticalAlign: "center",
+              verticalAlign: 'center',
               children: [
                 new Paragraph({
-                  children: [new TextRun({ text: "SOHABA", bold: true, size: 28 })],
+                  children: [
+                    new TextRun({ text: 'SOHABA', bold: true, size: 28 }),
+                  ],
                   alignment: AlignmentType.LEFT,
                 }),
               ],
@@ -411,10 +434,12 @@ export class MissionDetailsComponent implements OnInit {
 
             new TableCell({
               width: { size: 50, type: WidthType.PERCENTAGE },
-              verticalAlign: "center",
+              verticalAlign: 'center',
               children: [
                 new Paragraph({
-                  children: [new TextRun({ text: todayFormatted, bold: true, size: 28 })],
+                  children: [
+                    new TextRun({ text: todayFormatted, bold: true, size: 28 }),
+                  ],
                   alignment: AlignmentType.RIGHT,
                 }),
               ],
@@ -430,7 +455,7 @@ export class MissionDetailsComponent implements OnInit {
           children: [
             headerTable,
 
-            new Paragraph({ text: "", spacing: { after: 300 } }),
+            new Paragraph({ text: '', spacing: { after: 300 } }),
 
             new Paragraph({
               text: `Ordre de Mission N° ${missionId}`,
@@ -438,10 +463,10 @@ export class MissionDetailsComponent implements OnInit {
               alignment: AlignmentType.CENTER,
             }),
 
-            new Paragraph({ text: "", spacing: { after: 300 } }),
+            new Paragraph({ text: '', spacing: { after: 300 } }),
 
             detailsTable,
-            new Paragraph({ text: "", spacing: { after: 800 } }),
+            new Paragraph({ text: '', spacing: { after: 800 } }),
             signatureTable,
           ],
         },
@@ -452,5 +477,4 @@ export class MissionDetailsComponent implements OnInit {
       saveAs(blob, `Mission_${missionName}.docx`);
     });
   }
-
 }
