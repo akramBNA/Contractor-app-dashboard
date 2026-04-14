@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { EmployeesService } from '../../../services/employees.services';
 import { MissionsService } from '../../../services/missions.services';
@@ -61,7 +60,6 @@ export class AddMissionsComponent implements OnInit {
     private fb: FormBuilder,
     private missionService: MissionsService,
     private employeeService: EmployeesService,
-    private router: Router,
     private swalService: SwalService,
     private dialogRef: MatDialogRef<AddMissionsComponent>,
   ) {
@@ -201,7 +199,6 @@ export class AddMissionsComponent implements OnInit {
         this.swalService.showSuccess('Mission ajoutée avec succès').then(() => {
           this.missionForm.reset();
           this.selectedEmployees = [];
-          this.router.navigate(['/main-page/missions/missions-list']);
           this.dialogRef.close('refresh');
         });
       } else {
@@ -209,7 +206,8 @@ export class AddMissionsComponent implements OnInit {
         this.swalService
           .showError("Une erreur s'est produite lors de l'ajout de la mission.")
           .then(() => {
-            this.router.navigate(['/main-page/missions/missions-list']);
+            this.missionForm.reset();
+            this.selectedEmployees = [];
           });
       }
     });
