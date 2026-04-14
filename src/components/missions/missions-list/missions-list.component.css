@@ -1,10 +1,21 @@
 mat-form-field {
   max-width: full-width;
   width: 100%;
-  border-radius: 8px; 
+  border-radius: 8px;
 }
 
-::ng-deep .custom-dialog-container {
+::ng-deep .responsive-dialog .mat-mdc-dialog-container {
   border-radius: 16px;
   padding: 0;
+}
+
+@media (max-width: 640px) {
+  ::ng-deep .responsive-dialog .mat-mdc-dialog-container {
+    width: 95vw !important;
+    max-width: 95vw !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
 }
