@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { MissionsService } from '../../../services/missions.services';
 import { EmployeesService } from '../../../services/employees.services';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -92,7 +91,6 @@ export class MissionDetailsComponent implements OnInit {
   constructor(
     private missionsService: MissionsService,
     private employeeService: EmployeesService,
-    private router: Router,
     private fb: FormBuilder,
     private swalService: SwalService,
     private dialogRef: MatDialogRef<MissionDetailsComponent>,
@@ -189,7 +187,7 @@ export class MissionDetailsComponent implements OnInit {
           this.isLoading = false;
           this.swalService.showError('Mission non trouvée.').then((result) => {
             if (result.isConfirmed) {
-              this.router.navigate(['/main-page/missions/missions-list']);
+              this.dialogRef.close();
             }
           });
         }
