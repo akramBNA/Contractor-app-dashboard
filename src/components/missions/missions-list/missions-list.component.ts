@@ -13,6 +13,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from "@angular/material/input";
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { MissionDetailsComponent } from '../mission-details/mission-details.component';
 
 
 
@@ -107,7 +108,19 @@ export class MissionsListComponent {
   }
 
   onEditMission(missionId: string) {
-    this.router.navigate(['/main-page/missions/mission-details', missionId]);
+    const dialogRef = this.dialog.open(MissionDetailsComponent, {
+      width: '900px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      data: { missionId },
+      panelClass: 'custom-dialog-container'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'refresh') {
+        this.getAllMissions(this.limit, this.offset, this.keyword);
+      }
+    });
   }
 
   onPageChange(event: any) {
@@ -117,7 +130,9 @@ export class MissionsListComponent {
   }
 
   onDeleteMission(missionId: string) {
-    this.swalService.showConfirmation('Êtes-vous sûr de vouloir supprimer cette mission ?').then((result) => {
+    this.swalService
+      .showConfirmation('Êtes-vous sûr de vouloir supprimer cette mission ?')
+      .then((result) => {
         if (!result.isConfirmed) return;
 
         const backup = [...this.missions_data];
@@ -130,7 +145,9 @@ export class MissionsListComponent {
         );
         this.overall_count = this.missions_data.length;
 
-        this.swalService.showUndo('Mission supprimée', 5000).then((undoClicked: boolean) => {
+        this.swalService
+          .showUndo('Mission supprimée', 5000)
+          .then((undoClicked: boolean) => {
             if (undoClicked) {
               this.missions_data = backup;
               this.overall_count = this.missions_data.length;
@@ -138,10 +155,14 @@ export class MissionsListComponent {
             }
             this.loadingMap[missionId] = true;
 
-            this.missionsService.deleteMission(missionId).pipe(finalize(() => {
+            this.missionsService
+              .deleteMission(missionId)
+              .pipe(
+                finalize(() => {
                   this.loadingMap[missionId] = false;
                 }),
-              ).subscribe({
+              )
+              .subscribe({
                 next: (res: any) => {
                   this.loadingMap[missionId] = false;
 
