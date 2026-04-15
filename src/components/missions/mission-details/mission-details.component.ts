@@ -1,15 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild, Inject } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MissionsService } from '../../../services/missions.services';
 import { EmployeesService } from '../../../services/employees.services';
 import { CommonModule } from '@angular/common';
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,16 +14,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
-import {
-  MatAutocompleteSelectedEvent,
-  MatAutocomplete,
-  MatAutocompleteModule,
-} from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent, MatAutocomplete, MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SwalService } from '../../../shared/Swal/swal.service';
-import * as html2pdf from 'html2pdf.js';
-
-// import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, BorderStyle } from "docx";
-
 import {
   AlignmentType,
   BorderStyle,
@@ -45,9 +30,13 @@ import {
   TextRun,
   WidthType,
   ShadingType,
-} from "docx";
-import { saveAs } from "file-saver";
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+} from 'docx';
+import { saveAs } from 'file-saver';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogModule,
+} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-mission-details',
@@ -66,25 +55,29 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/materia
     MatCardModule,
     MatAutocomplete,
     MatAutocompleteModule,
-    MatDialogModule
-],
+    MatDialogModule,
+  ],
   templateUrl: './mission-details.component.html',
   styleUrl: './mission-details.component.css',
 })
 export class MissionDetailsComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
+
   employeeCtrl = new FormControl('');
   filteredEmployees: any[] = [];
   selectedEmployees: any[] = [];
 
   isLoading: boolean = false;
   missionForm!: FormGroup;
+
   missionData: any = [];
   assignedEmployees: any[] = [];
   temp_emp_ids: any[] = [];
   mission_id: string = '';
   employeesList: any[] = [];
+
   minEndDate: Date | null = null;
+  minStartDate: Date | null = null;
 
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
 
@@ -113,6 +106,7 @@ export class MissionDetailsComponent implements OnInit {
       const filterValue = (
         typeof value === 'string' ? value : ''
       ).toLowerCase();
+
       this.filteredEmployees = this.employeesList.filter((emp) =>
         (emp.employee_name + ' ' + emp.employee_lastname)
           .toLowerCase()
@@ -123,11 +117,22 @@ export class MissionDetailsComponent implements OnInit {
     this.missionForm
       .get('start_at')
       ?.valueChanges.subscribe((startDate: Date) => {
-        this.minEndDate = startDate;
+        if (!startDate) return;
+
+        const normalizedStart = new Date(startDate);
+        normalizedStart.setHours(0, 0, 0, 0);
+
+        this.minEndDate = normalizedStart;
 
         const endDate = this.missionForm.get('end_at')?.value;
-        if (endDate && startDate && new Date(endDate) < new Date(startDate)) {
-          this.missionForm.get('end_at')?.setValue(null);
+
+        if (endDate) {
+          const normalizedEnd = new Date(endDate);
+          normalizedEnd.setHours(0, 0, 0, 0);
+
+          if (normalizedEnd < normalizedStart) {
+            this.missionForm.get('end_at')?.setValue(null);
+          }
         }
       });
   }
@@ -153,49 +158,52 @@ export class MissionDetailsComponent implements OnInit {
 
   getMissionDetails(missionId: string) {
     this.isLoading = true;
+
     this.missionsService
       .getMissionById(missionId)
       .subscribe((response: any) => {
-        if (response.success) {
-          this.isLoading = false;
-          this.missionData = response.data;
+        this.isLoading = false;
 
-          this.assignedEmployees = Array.isArray(
-            this.missionData?.assigned_employees,
-          )
-            ? this.missionData.assigned_employees
-            : [];
-          this.assignedEmployees = this.missionData?.assigned_employees;
-          this.selectedEmployees = this.missionData?.assigned_employees || [];
-
-          for (let i = 0; i < this.assignedEmployees.length; i++) {
-            this.temp_emp_ids.push(this.assignedEmployees[i].employee_id);
-          }
-
-          this.mission_id = response.data.mission_id;
-
-          this.missionForm.patchValue({
-            mission_name: this.missionData.mission_name,
-            mission_description: this.missionData.mission_description,
-            start_at: this.missionData.start_at,
-            end_at: this.missionData.end_at,
-            priority: this.missionData.priority,
-            expenses: this.missionData.expenses,
-            employee_id: this.selectedEmployees.map((emp) => emp.employee_id),
+        if (!response.success) {
+          this.swalService.showError('Mission non trouvée.').then(() => {
+            this.dialogRef.close();
           });
-        } else {
-          this.isLoading = false;
-          this.swalService.showError('Mission non trouvée.').then((result) => {
-            if (result.isConfirmed) {
-              this.dialogRef.close();
-            }
-          });
+          return;
+        }
+
+        this.missionData = response.data;
+
+        this.selectedEmployees = this.missionData?.assigned_employees || [];
+
+        this.temp_emp_ids = this.selectedEmployees.map(
+          (emp: any) => emp.employee_id,
+        );
+
+        this.mission_id = this.missionData.mission_id;
+
+        this.missionForm.patchValue({
+          mission_name: this.missionData.mission_name,
+          mission_description: this.missionData.mission_description,
+          start_at: this.missionData.start_at,
+          end_at: this.missionData.end_at,
+          priority: this.missionData.priority,
+          expenses: this.missionData.expenses,
+          employee_id: this.selectedEmployees.map(
+            (emp: any) => emp.employee_id,
+          ),
+        });
+
+        if (this.missionData.start_at) {
+          const startDate = new Date(this.missionData.start_at);
+          startDate.setHours(0, 0, 0, 0);
+          this.minEndDate = startDate;
         }
       });
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     const selectedEmp = event.option.value;
+
     if (
       !this.selectedEmployees.some(
         (e) => e.employee_id === selectedEmp.employee_id,
@@ -204,6 +212,7 @@ export class MissionDetailsComponent implements OnInit {
       this.selectedEmployees.push(selectedEmp);
       this.updateEmployeeFormValue();
     }
+
     this.employeeCtrl.setValue('');
   }
 
@@ -225,14 +234,13 @@ export class MissionDetailsComponent implements OnInit {
 
   formatDateLocal(dateInput: any): string {
     const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
-    if (isNaN(date.getTime())) {
-      console.error('Invalid date input:', dateInput);
-      return '';
-    }
+
+    if (isNaN(date.getTime())) return '';
 
     const year = date.getFullYear();
     const month = `0${date.getMonth() + 1}`.slice(-2);
     const day = `0${date.getDate()}`.slice(-2);
+
     return `${year}-${month}-${day}`;
   }
 
@@ -247,23 +255,21 @@ export class MissionDetailsComponent implements OnInit {
 
     const formValue = this.missionForm.value;
 
-    const formattedPayload = {
+    const payload = {
       ...formValue,
       start_at: this.formatDateLocal(formValue.start_at),
       end_at: this.formatDateLocal(formValue.end_at),
     };
 
     this.missionsService
-      .editMission(this.mission_id, formattedPayload)
+      .editMission(this.mission_id, payload)
       .subscribe((response: any) => {
         this.isLoading = false;
 
         if (response.success) {
           this.swalService
             .showSuccess('Mission mise à jour avec succès.')
-            .then(() => {
-              this.dialogRef.close('refresh');
-            });
+            .then(() => this.dialogRef.close('refresh'));
         } else {
           this.swalService.showError(
             "Une erreur s'est produite lors de la mise à jour.",
