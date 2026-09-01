@@ -1,1 +1,264 @@
-<p>view-attendance works!</p>
+<h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">Liste des Présences</h1>
+
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+    <div
+        class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+        <h2 class="text-gray-900 text-sm">Employés Présents</h2>
+        <p class="text-2xl font-bold text-green-600">
+            {{ present_employees_count }}
+        </p>
+    </div>
+
+    <div
+        class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+        <h2 class="text-gray-900 text-sm">Employés Absents</h2>
+        <p class="text-2xl font-bold text-gray-700">
+            {{ absent_employees_count }}
+        </p>
+    </div>
+
+    <div
+        class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+        <h2 class="text-gray-900 text-sm">Employés En Retard</h2>
+        <p class="text-2xl font-bold text-yellow-600">
+            {{ late_employees_count }}
+        </p>
+    </div>
+
+    <div
+        class="bg-gray-200 shadow rounded-lg p-4 transition duration-300 ease-in-out transform hover:scale-105 cursor-pointer">
+        <h2 class="text-gray-900 text-sm">Total Employés</h2>
+        <p class="text-2xl font-bold text-blue-600">
+            {{ total_employees_count }}
+        </p>
+    </div>
+
+</div>
+
+<div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+
+    <mat-form-field class="w-full sm:w-1/3" appearance="fill">
+        <mat-label>Rechercher un employé</mat-label>
+
+        <input matInput type="text" [formControl]="keyword" placeholder="Tapez un prénom ou un nom..." />
+
+        <button *ngIf="keyword.value" matSuffix mat-icon-button aria-label="Effacer" (click)="clearSearch()">
+
+            <mat-icon>close</mat-icon>
+
+        </button>
+
+    </mat-form-field>
+
+    <mat-form-field class="w-full sm:w-1/4" appearance="fill">
+
+        <mat-label>Période</mat-label>
+
+        <mat-select [(ngModel)]="selectedPeriod" (selectionChange)="onPeriodChange()">
+
+            <mat-option value="daily">
+                Journalier
+            </mat-option>
+
+            <mat-option value="weekly">
+                Hebdomadaire
+            </mat-option>
+
+            <mat-option value="yearly">
+                Annuel
+            </mat-option>
+
+        </mat-select>
+
+    </mat-form-field>
+
+</div>
+
+<ng-container *ngIf="!isMobile; else mobileView">
+
+    <div class="bg-white shadow-md rounded-lg p-4 overflow-x-auto">
+
+        ```
+        <table class="min-w-full divide-y divide-gray-200">
+
+            <thead class="bg-gray-100">
+
+                <tr>
+
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                        Matricule
+                    </th>
+
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                        Prénom
+                    </th>
+
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                        Nom
+                    </th>
+
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                        N° de Téléphone
+                    </th>
+
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                        Email
+                    </th>
+
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">
+                        Statut
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody class="divide-y divide-gray-200">
+                <tr *ngIf="isEmpty">
+                    <td colspan="6" class="text-center text-gray-500 py-6">
+                        Aucun employé trouvé.
+                    </td>
+                </tr>
+
+
+                <tr *ngFor="let employee of attendanceList">
+
+                    <td class="px-4 py-3 text-sm">
+                        {{ employee.matricule }}
+                    </td>
+
+                    <td class="px-4 py-3 text-sm">
+                        {{ employee.name }}
+                    </td>
+
+                    <td class="px-4 py-3 text-sm">
+                        {{ employee.lastname }}
+                    </td>
+
+                    <td class="px-4 py-3 text-sm">
+                        {{ employee.phone }}
+                    </td>
+
+                    <td class="px-4 py-3 text-sm">
+                        {{ employee.email }}
+                    </td>
+
+                    <td class="px-4 py-3 text-sm">
+
+                        <span *ngIf="employee.status === 'present'"
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+
+                            Présent
+
+                        </span>
+
+
+                        <span *ngIf="employee.status === 'late'"
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
+                            En retard
+                        </span>
+
+                        <span *ngIf="employee.status === 'absent'"
+                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white border border-gray-300 text-gray-600">
+                            Absent
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+        <mat-paginator [length]="total_employees_count" [pageSize]="limit" [pageSizeOptions]="[5, 20, 50, 100]"
+            (page)="onPageChange($event)">
+
+        </mat-paginator>
+
+    </div>
+
+</ng-container>
+
+<ng-template #mobileView>
+
+    <div class="space-y-4">
+
+        ```
+        <div *ngIf="isEmpty" class="bg-white shadow rounded-lg p-6 text-center text-gray-500">
+
+            Aucun employé trouvé.
+
+        </div>
+
+
+        <div *ngFor="let employee of attendanceList" class="bg-gray-200 shadow rounded-lg p-4">
+
+            <div class="flex justify-between">
+                <div class="text-sm font-semibold">Matricule:</div>
+                <div class="text-sm">{{ employee.matricule }}</div>
+            </div>
+
+            <div class="flex justify-between mt-2">
+                <div class="text-sm font-semibold">Prénom:</div>
+                <div class="text-sm">{{ employee.name }}</div>
+            </div>
+
+            <div class="flex justify-between mt-2">
+                <div class="text-sm font-semibold">Nom:</div>
+                <div class="text-sm">{{ employee.lastname }}</div>
+            </div>
+
+            <div class="flex justify-between mt-2">
+                <div class="text-sm font-semibold">Téléphone:</div>
+                <div class="text-sm">{{ employee.phone }}</div>
+            </div>
+
+            <div class="flex justify-between mt-2">
+                <div class="text-sm font-semibold">Email:</div>
+                <div class="text-sm ml-4 text-right break-all">
+                    {{ employee.email }}
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center mt-3 pt-3 border-t border-gray-300">
+
+                <div class="text-sm font-semibold">
+                    Statut:
+                </div>
+
+                <span *ngIf="employee.status === 'present'"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+
+                    Présent
+
+                </span>
+
+                <span *ngIf="employee.status === 'late'"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
+
+                    En retard
+
+                </span>
+
+                <span *ngIf="employee.status === 'absent'"
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white border border-gray-300 text-gray-600">
+
+                    Absent
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <mat-paginator [length]="total_employees_count" [pageSize]="limit" [pageSizeOptions]="[5, 20, 50, 100]"
+            (page)="onPageChange($event)">
+        </mat-paginator>
+
+    </div>
+</ng-template>
