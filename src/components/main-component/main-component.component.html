@@ -120,6 +120,12 @@
                   Statistiques
                 </a>
               </li>
+              <li *ngIf="showAttendanceMenu">
+                <a routerLink="/main-page/hr/attendance/view-attendance" routerLinkActive="text-yellow-400"
+                  class="block text-white bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg text-sm">
+                  Présence
+                </a>
+              </li>
             </ul>
           </li>
 
