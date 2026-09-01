@@ -28,6 +28,7 @@ import { MyLeavesComponent } from '../components/hr/leaves/my-leaves/my-leaves.c
 import { VehiclesListComponent } from '../components/materials/vehicles-list/vehicles-list.component';
 import { AddVehiclesComponent } from '../components/materials/add-vehicles/add-vehicles.component';
 import { UpdateVehiclesComponent } from '../components/materials/update-vehicles/update-vehicles.component';
+import { ViewAttendanceComponent } from '../components/hr/attendance/view-attendance/view-attendance.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -50,6 +51,7 @@ export const routes: Routes = [
           { path: 'my-leaves', component: MyLeavesComponent },
           { path: 'salaries', component: SalariesComponent },
           { path: 'holidays-list', component: HolidaysListComponent },
+          { path: 'attendance/view-attendance', component: ViewAttendanceComponent },
         ],
       },
       {
