@@ -35,6 +35,7 @@ export class MainComponentComponent {
   showSalariesMenu: boolean = true;
   showStatsMenu: boolean = true;
   showHolidaysMenu: boolean = true;
+  showAttendanceMenu: boolean = true;
 
   showNotificationsDropdown = false;
 
@@ -85,6 +86,7 @@ export class MainComponentComponent {
       this.showSalariesMenu = true;
       this.showStatsMenu = true;
       this.showHolidaysMenu = true;
+      this.showAttendanceMenu = true;
     }
 
     if (userRole === 'user') {
